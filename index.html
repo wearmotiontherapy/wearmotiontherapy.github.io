@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<meta property="og:title" content="Motion Therapy">
+<meta property="og:description" content="Movement fuels a better mind. Drop 01 lands December 4 at AWB.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://lliang09116.github.io/motiontherapy/img/lily-hoodie.jpg">
+<meta name="theme-color" content="#ECE3D8">
+<title>Motion Therapy</title>
+<meta name="description" content="Motion Therapy. Movement fuels a better mind. Drop 01 lands December 4.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=Mrs+Saint+Delafield&display=swap">
+<style>
+/* Layout: an expanded-type wordmark hero over the lily hoodie, a training-split ticker, then the drop laid out like a garment line sheet. */
+:root{
+  --bone:#ECE3D8;      /* page ground, matches the cream garments */
+  --putty:#DCCBBE;     /* photo backdrop from the mockups */
+  --ink:#141210;       /* garment black */
+  --ink-soft:#554C45;
+  --rule:rgba(20,18,16,.18);
+  --bg:var(--bone); --fg:var(--ink); --muted:var(--ink-soft); --line:var(--rule);
+  --panel:#E3D8CB;
+  --invert-bg:var(--ink); --invert-fg:var(--bone);
+  --wide:"Archivo","Arial Black",system-ui,sans-serif;
+  --body:"Archivo",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --script:"Mrs Saint Delafield","Brush Script MT",cursive;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#12100E; --fg:#ECE3D8; --muted:#A99C90; --line:rgba(236,227,216,.16);
+  --panel:#1C1916; --invert-bg:#ECE3D8; --invert-fg:#12100E; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12100E; --fg:#ECE3D8; --muted:#A99C90; --line:rgba(236,227,216,.16);
+  --panel:#1C1916; --invert-bg:#ECE3D8; --invert-fg:#12100E; color-scheme:dark}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--fg);outline-offset:3px}
+.wrap{max-width:1240px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+.wide{font-family:var(--wide);font-stretch:125%;font-weight:800;text-transform:uppercase;letter-spacing:-.01em;line-height:.92}
+.label{font-size:.72rem;letter-spacing:.32em;text-transform:uppercase;font-weight:500}
+.muted{color:var(--muted)}
+.reg{font-size:.32em;vertical-align:super;font-weight:600;letter-spacing:0}
+
+/* header */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:14px}
+.mono{display:inline-grid;place-items:center;width:34px;height:34px;background:var(--fg);color:var(--bg);font-family:var(--wide);font-stretch:125%;font-weight:900;font-style:italic;font-size:.8rem;letter-spacing:-.04em}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+.brand span:last-child{font-family:var(--wide);font-stretch:125%;font-weight:700;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase}
+nav{display:flex;gap:24px}
+nav a{text-decoration:none;font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;font-weight:500}
+nav a:hover{text-decoration:underline;text-underline-offset:4px}
+@media (max-width:640px){nav a:not(.cta-link){display:none}.brand span:last-child{display:none}}
+
+/* hero */
+.hero{padding-block:clamp(40px,7vw,88px) 0}
+.hero h1{margin:0;font-size:clamp(2.7rem,11.4vw,9.6rem);text-wrap:balance}
+.tagline{margin:18px 0 0;font-size:clamp(.7rem,1.4vw,.95rem);letter-spacing:.5em;text-transform:uppercase;font-weight:500}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:clamp(20px,3vw,40px);margin-top:clamp(28px,4vw,48px);align-items:stretch}
+.hero-img{background:var(--putty);overflow:hidden;aspect-ratio:4/3;max-width:100%}
+.hero-img img{width:100%;height:100%;object-fit:cover;display:block}
+.drop-card{background:var(--invert-bg);color:var(--invert-fg);padding:clamp(22px,3vw,36px);display:flex;flex-direction:column;justify-content:space-between;gap:28px;min-width:0}
+.drop-card .script{font-family:var(--script);font-size:clamp(3rem,6vw,4.6rem);line-height:.8;margin:6px 0 0;font-weight:400}
+.drop-card h2{margin:10px 0 0;font-size:clamp(1.6rem,3.2vw,2.5rem)}
+.count{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;border-top:1px solid color-mix(in srgb,var(--invert-fg) 25%,transparent);padding-top:18px}
+.count div{display:flex;flex-direction:column;gap:4px}
+.count b{font-family:var(--wide);font-stretch:125%;font-weight:800;font-size:clamp(1.5rem,3vw,2.2rem);font-variant-numeric:tabular-nums;line-height:1}
+.count span{font-size:.62rem;letter-spacing:.26em;text-transform:uppercase;opacity:.7}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:14px 22px;border:1px solid currentColor;text-decoration:none;font-size:.72rem;letter-spacing:.26em;text-transform:uppercase;font-weight:600;transition:background .2s,color .2s}
+.drop-card .btn:hover{background:var(--invert-fg);color:var(--invert-bg)}
+@media (max-width:820px){.hero-grid{grid-template-columns:1fr}}
+
+/* ticker */
+.ticker{margin-top:clamp(40px,6vw,72px);border-block:1px solid var(--line);overflow:hidden;white-space:nowrap}
+.ticker-track{display:inline-flex;gap:48px;padding-block:16px;animation:slide 32s linear infinite}
+.ticker-track span{font-family:var(--wide);font-stretch:125%;font-weight:700;font-size:.9rem;letter-spacing:.3em;text-transform:uppercase}
+.ticker-track i{font-style:normal;opacity:.4}
+@keyframes slide{to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){.ticker-track{animation:none}}
+
+/* collection */
+section{padding-block:clamp(56px,8vw,104px)}
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:clamp(28px,4vw,48px)}
+.sec-head h2{margin:8px 0 0;font-size:clamp(2rem,5.4vw,4rem)}
+.sec-head p{max-width:38ch;margin:0}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(16px,2.4vw,28px)}
+@media (max-width:900px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.grid{grid-template-columns:1fr}}
+.piece{display:flex;flex-direction:column;gap:14px;min-width:0}
+.piece figure{margin:0;background:var(--putty);aspect-ratio:4/5;overflow:hidden;position:relative;max-width:100%}
+.piece figure img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s ease}
+.piece:hover figure img{transform:scale(1.03)}
+@media (prefers-reduced-motion:reduce){.piece figure img{transition:none}.piece:hover figure img{transform:none}}
+.tag{position:absolute;bottom:12px;left:12px;background:var(--ink);color:var(--bone);font-size:.6rem;letter-spacing:.24em;text-transform:uppercase;padding:6px 9px;font-weight:600}
+.piece-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.piece h3{margin:0;font-family:var(--wide);font-stretch:112%;font-weight:700;font-size:1rem;letter-spacing:.06em;text-transform:uppercase}
+.piece .price{font-family:var(--wide);font-stretch:112%;font-weight:700;font-size:1rem;font-variant-numeric:tabular-nums;white-space:nowrap}
+.set{margin-top:clamp(28px,4vw,44px);display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:clamp(16px,3vw,40px);align-items:center;border:1px solid var(--fg);padding:clamp(18px,2.6vw,28px)}
+.set h3{margin:0;font-size:clamp(1.3rem,3vw,2.2rem)}
+.set p{margin:0;color:var(--muted);max-width:48ch}
+.set .price{font-family:var(--wide);font-stretch:125%;font-weight:800;font-size:clamp(2rem,5vw,3.4rem);line-height:1}
+@media (max-width:640px){.set{grid-template-columns:1fr}}
+.piece p{margin:0;font-size:.92rem;color:var(--muted);max-width:42ch}
+.specs{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;font-weight:500;border-top:1px solid var(--line);padding-top:12px}
+.swatches{display:flex;gap:8px;align-items:center}
+.swatch{width:22px;height:22px;border-radius:50%;border:1px solid var(--line);cursor:pointer;padding:0;position:relative}
+.swatch[aria-pressed="true"]{outline:1.5px solid var(--fg);outline-offset:3px}
+.swatch.black{background:#141210}.swatch.cream{background:#E6DACB}
+
+/* ethos */
+.ethos{background:var(--invert-bg);color:var(--invert-fg)}
+.ethos-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(28px,5vw,72px);align-items:center}
+@media (max-width:820px){.ethos-grid{grid-template-columns:1fr}}
+.ethos .script{font-family:var(--script);font-size:clamp(3.4rem,8vw,6.6rem);line-height:.85;margin:0}
+.ethos h2{margin:14px 0 0;font-size:clamp(1.5rem,3.6vw,2.6rem)}
+.ethos p{max-width:56ch;margin:0 0 16px;opacity:.85}
+.split{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid color-mix(in srgb,var(--invert-fg) 25%,transparent);margin-top:28px}
+.split div{padding:16px 10px 0 0;display:flex;flex-direction:column;gap:6px}
+.split b{font-family:var(--wide);font-stretch:125%;font-weight:700;font-size:.78rem;letter-spacing:.16em;text-transform:uppercase}
+.split span{font-size:.8rem;opacity:.65;line-height:1.4}
+@media (max-width:480px){.split{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:16px}}
+
+/* drop info */
+.info{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--fg)}
+.info>div{padding:22px 22px 26px 0;display:flex;flex-direction:column;gap:10px;min-width:0}
+.info>div+div{border-left:1px solid var(--line);padding-left:22px}
+.info h3{margin:0;font-family:var(--wide);font-stretch:125%;font-weight:800;font-size:clamp(1.2rem,2.4vw,1.7rem);text-transform:uppercase;line-height:1}
+.info p{margin:0;color:var(--muted);font-size:.95rem}
+@media (max-width:760px){.info{grid-template-columns:1fr}.info>div+div{border-left:0;border-top:1px solid var(--line);padding-left:0}}
+.tbd{display:inline-block;border:1px dashed var(--muted);padding:2px 8px;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);width:max-content}
+
+/* footer */
+footer{border-top:1px solid var(--line);padding-block:40px 32px}
+.foot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;align-items:end}
+.foot .big{font-size:clamp(2.2rem,8vw,6rem);margin:0}
+.coords{font-size:.7rem;letter-spacing:.26em;text-transform:uppercase;color:var(--muted);display:flex;flex-direction:column;gap:6px;text-align:right}
+@media (max-width:560px){.coords{text-align:left}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap bar">
+    <a class="brand" href="#top" aria-label="Motion Therapy home"><span class="mono">MT</span><span>Motion Therapy®</span></a>
+    <nav aria-label="Main">
+      <a href="#collection">Collection</a>
+      <a href="#ethos">Ethos</a>
+      <a href="https://www.instagram.com/wearmotiontherapy/" target="_blank" rel="noopener">Instagram</a>
+      <a class="cta-link" href="#drop">Dec 4 Drop</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <div class="wrap hero">
+    <h1 class="wide">Motion Therapy<span class="reg">®</span></h1>
+    <p class="tagline">Movement fuels a better mind.</p>
+
+    <div class="hero-grid">
+      <div class="hero-img"><img src="img/lily-hoodie.jpg" alt="Black Motion Therapy hoodie, front and back. The back shows a cream lily illustration wrapped in a ribbon with the wordmark across it." width="1200" height="900"></div>
+      <aside class="drop-card" aria-labelledby="drop-title">
+        <div>
+          <span class="label">Drop 01 · First run</span>
+          <p class="script">Thursday</p>
+          <h2 class="wide" id="drop-title">December 4</h2>
+        </div>
+        <div>
+          <div class="count" id="count" aria-live="off">
+            <div><b id="cd-d">--</b><span>Days</span></div>
+            <div><b id="cd-h">--</b><span>Hrs</span></div>
+            <div><b id="cd-m">--</b><span>Min</span></div>
+            <div><b id="cd-s">--</b><span>Sec</span></div>
+          </div>
+          <p id="count-note" class="label" style="margin:16px 0 20px;opacity:.7">Live at AWB · 9 AM to 4 PM</p>
+          <a class="btn" href="#collection">See the collection →</a>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track">
+      <span>Train</span><i>/</i><span>Recover</span><i>/</i><span>Grow</span><i>/</i><span>Repeat</span><i>/</i><span>Discipline builds freedom</span><i>/</i>
+      <span>Train</span><i>/</i><span>Recover</span><i>/</i><span>Grow</span><i>/</i><span>Repeat</span><i>/</i><span>Discipline builds freedom</span><i>/</i>
+      <span>Train</span><i>/</i><span>Recover</span><i>/</i><span>Grow</span><i>/</i><span>Repeat</span><i>/</i><span>Discipline builds freedom</span><i>/</i>
+      <span>Train</span><i>/</i><span>Recover</span><i>/</i><span>Grow</span><i>/</i><span>Repeat</span><i>/</i><span>Discipline builds freedom</span><i>/</i>
+    </div>
+  </div>
+
+  <section id="collection">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="label muted">Drop 01 · 6 pieces</span>
+          <h2 class="wide">The Collection</h2>
+        </div>
+        <p class="muted">Everyday pieces in two colours, black and bone, at student-friendly prices. Every piece is printed in a small first run, so once a size is gone, it's gone.</p>
+      </div>
+
+      <div class="grid">
+        <article class="piece">
+          <figure><img src="img/signature-tee.jpg" alt="Washed black Signature Tee with the script Motion Therapy logo on the chest and a larger script logo on the back." loading="lazy" width="960" height="1200"><span class="tag">Signature</span></figure>
+          <div class="piece-top"><h3>Signature Tee</h3><span class="price">$18</span></div>
+          <p>Script logo on the chest. On the back: the full signature, the tagline, and Train Recover Grow Repeat.</p>
+          <div class="specs"><span>Black</span><span>100% cotton</span><span>Front + back print</span></div>
+        </article>
+
+        <article class="piece">
+          <figure><img src="img/contrast-hoodie.jpg" alt="Bone-coloured Clean Contrast Hoodie with a small black wordmark on the chest, and a back print reading Discipline Builds Freedom with a globe and coordinates." loading="lazy" width="960" height="1200"></figure>
+          <div class="piece-top"><h3>Clean Contrast Hoodie</h3><span class="price">$39</span></div>
+          <p>Bone fleece with sharp black type. The back carries Discipline Builds Freedom and our coordinates.</p>
+          <div class="specs"><span>Bone</span><span>Everyday fleece</span><span>Front + back print</span></div>
+        </article>
+
+        <article class="piece">
+          <figure><img src="img/lily-hoodie.jpg" alt="Black Lily Hoodie, front and back, with a large lily and ribbon illustration on the back." loading="lazy" width="1200" height="900" style="object-position:72% 50%"><span class="tag">Statement</span></figure>
+          <div class="piece-top"><h3>Lily Hoodie</h3><span class="price">$39</span></div>
+          <p>Clean wordmark on the front, full lily illustration across the back. The loudest piece in the drop.</p>
+          <div class="specs"><span>Black</span><span>Everyday fleece</span><span>Front + back print</span></div>
+        </article>
+
+        <article class="piece">
+          <figure><img src="img/summit-tee.jpg" alt="Bone Summit Tee with a script logo on the chest and a mountain landscape print on the back." loading="lazy" width="1200" height="800" style="object-position:75% 50%"></figure>
+          <div class="piece-top"><h3>Summit Tee</h3><span class="price">$18</span></div>
+          <p>A hand-drawn mountain range on the back, because the hardest climbs are the ones that change you.</p>
+          <div class="specs"><span>Bone</span><span>100% cotton</span><span>Front + back print</span></div>
+        </article>
+
+        <article class="piece" id="sweats">
+          <figure><img id="sweats-img" src="img/sweats-black.jpg" alt="Black Everyday Sweatpants with a stacked Motion Therapy wordmark on the left thigh." loading="lazy" width="800" height="1200"></figure>
+          <div class="piece-top"><h3>Everyday Sweatpants</h3><span class="price">$32</span></div>
+          <p>Stacked wordmark on the thigh, cuffed ankle. Pairs with either hoodie.</p>
+          <div class="specs" style="align-items:center;justify-content:space-between">
+            <span id="sweats-colour">Black</span>
+            <div class="swatches" role="group" aria-label="Colour">
+              <button class="swatch black" type="button" id="sw-black" aria-pressed="true" aria-label="Black"></button>
+              <button class="swatch cream" type="button" id="sw-cream" aria-pressed="false" aria-label="Bone"></button>
+            </div>
+          </div>
+        </article>
+
+        <article class="piece">
+          <figure><img src="img/toque.jpg" alt="Bone ribbed beanie with Motion Therapy embroidered in black on the cuff." loading="lazy" width="1200" height="800"></figure>
+          <div class="piece-top"><h3>Ribbed Beanie</h3><span class="price">$12</span></div>
+          <p>Rib-knit with the wordmark on the cuff. One size, made for early-morning runs in December.</p>
+          <div class="specs"><span>Bone</span><span>Knit</span><span>One size</span></div>
+        </article>
+      </div>
+
+      <div class="set">
+        <span class="label">Matching set</span>
+        <div>
+          <h3 class="wide">Hoodie + Sweatpants</h3>
+          <p>Any hoodie with a pair of Everyday Sweatpants. Bought separately it's $71, so the set saves you $6.</p>
+        </div>
+        <span class="price">$65</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="ethos" id="ethos">
+    <div class="wrap ethos-grid">
+      <div>
+        <p class="script">Motion Therapy</p>
+        <h2 class="wide">Discipline builds freedom.</h2>
+      </div>
+      <div>
+        <p>We started Motion Therapy as a group of friends who noticed the same thing: the days we moved were the days our heads felt clear. A run before school, a lift after a bad test, a long walk when everything felt like too much.</p>
+        <p>So we made clothes for that. Pieces you can train in, recover in, and wear everywhere after. A lifestyle brand for a stronger tomorrow.</p>
+        <div class="split">
+          <div><b>Train</b><span>Show up, even on the off days.</span></div>
+          <div><b>Recover</b><span>Rest is part of the work.</span></div>
+          <div><b>Grow</b><span>Small gains, stacked daily.</span></div>
+          <div><b>Repeat</b><span>That's the whole secret.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="drop">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="label muted">Drop 01</span>
+          <h2 class="wide">Find us Dec 4</h2>
+        </div>
+        <p class="muted">The first batch launches in person at AWB, 9 AM to 4 PM. Every piece is a limited first run.</p>
+      </div>
+      <div class="info">
+        <div>
+          <span class="label muted">When</span>
+          <h3>Thu, Dec 4</h3>
+          <p>Our booth is open from 9 AM to 4 PM. Come early for the best size range.</p>
+        </div>
+        <div>
+          <span class="label muted">Where</span>
+          <h3>AWB</h3>
+          <p>Find our booth at the AWB trade show. Look for the black and bone setup with the lily banner.</p>
+        </div>
+        <div>
+          <span class="label muted">Stay posted</span>
+          <h3>Follow the drop</h3>
+          <p>Restocks, sizing and behind-the-scenes go up on Instagram first.</p>
+          <a class="btn" style="width:max-content" href="https://www.instagram.com/wearmotiontherapy/" target="_blank" rel="noopener">@wearmotiontherapy →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <p class="wide big">MT<span class="reg">®</span></p>
+    <div class="coords">
+      <span>Movement fuels a better mind.</span>
+      <a href="https://www.instagram.com/wearmotiontherapy/" target="_blank" rel="noopener">@wearmotiontherapy</a>
+      <span>40.7128° N · 74.0060° W</span>
+      <span>© 2026 Motion Therapy</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // Drop opens 9:00 AM on Dec 4, 2026 in the viewer's local time.
+  var target = new Date(2026, 11, 4, 9, 0, 0).getTime();
+  var ids = ['d','h','m','s'].map(function(k){return document.getElementById('cd-'+k)});
+  var note = document.getElementById('count-note');
+  function pad(n){return n<10?'0'+n:''+n}
+  function tick(){
+    var diff = target - Date.now();
+    if (diff <= 0){
+      ids.forEach(function(el){el.textContent='00'});
+      note.textContent = 'Drop 01 is live';
+      return;
+    }
+    var s = Math.floor(diff/1000);
+    ids[0].textContent = pad(Math.floor(s/86400));
+    ids[1].textContent = pad(Math.floor(s%86400/3600));
+    ids[2].textContent = pad(Math.floor(s%3600/60));
+    ids[3].textContent = pad(s%60);
+    setTimeout(tick, 1000 - (Date.now()%1000));
+  }
+  tick();
+
+  var img = document.getElementById('sweats-img');
+  var label = document.getElementById('sweats-colour');
+  var bBlack = document.getElementById('sw-black');
+  var bCream = document.getElementById('sw-cream');
+  function set(c){
+    var black = c==='black';
+    img.src = black ? 'img/sweats-black.jpg' : 'img/sweats-cream.jpg';
+    img.alt = (black?'Black':'Bone') + ' Everyday Sweatpants with a stacked Motion Therapy wordmark on the left thigh.';
+    label.textContent = black ? 'Black' : 'Bone';
+    bBlack.setAttribute('aria-pressed', black);
+    bCream.setAttribute('aria-pressed', !black);
+  }
+  bBlack.addEventListener('click', function(){set('black')});
+  bCream.addEventListener('click', function(){set('cream')});
+  new Image().src = 'img/sweats-cream.jpg';
+})();
+</script>
+
+</body>
+</html>
