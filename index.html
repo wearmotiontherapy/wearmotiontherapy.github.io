@@ -388,7 +388,7 @@
           <li><b>2</b><span>Win a hand and enter your email.</span></li>
           <li><b>3</b><span>Show the code from your inbox at our AWB booth on December 4.</span></li>
         </ol>
-        <p class="bj__terms" id="bj-terms">The code takes $10 off any order of $65 or more. One code per person, used once, at the booth only. The game is free. Every hand has a 2 in 5 chance to win however you play it, and you get one hand per visit: refresh the page to play again.</p>
+        <p class="bj__terms" id="bj-terms">The code takes $10 off an order above $60, for the first 5 orders only. One code per person, used once, at the booth only. The game is free. Every hand has a 2 in 5 chance to win however you play it, and you get one hand per visit: refresh the page to play again.</p>
       </div>
       <div class="bj bj--teaser ground-inverse span-7">
         <div class="bj__cards" aria-hidden="true">
@@ -478,6 +478,7 @@
           <div class="field"><label for="bj-email">Email for your code</label>
             <input id="bj-email" name="email" type="email" autocomplete="email" inputmode="email" required aria-describedby="bj-email-err">
             <p class="field__error" id="bj-email-err" hidden>Write an email address with an @, like name@example.com.</p></div>
+          <p class="bj__note">Only for orders above $60, and only for the first 5 orders.</p>
           <div class="bj__actions"><button class="btn btn--primary" type="submit" id="bj-send">Email my code</button></div>
         </form>
         <div class="bj__claim" id="bj-done" hidden>
@@ -610,7 +611,7 @@
     // EmailJS (emailjs.com): fill these three in to switch email delivery on. The template sends to
     // {{to_email}} and copies the brand's own inbox, which is set inside the EmailJS template, not here.
     var EMAIL = { serviceId: 'service_qhrfaoj', templateId: 'template_bzoc9k9', publicKey: 'VPz4HT9fkX5xFaYqL' };
-    var OFFER = '$10 off any order of $65 or more';
+    var OFFER = '$10 off an order above $60 (first 5 orders only)';
 
     var $ = function (id) { return document.getElementById(id); };
     var dealerEl = $('bj-dealer'), playerEl = $('bj-player'), statusEl = $('bj-status');
@@ -740,7 +741,7 @@
       for (var i = 1; i < rest.length; i++) { dealer.push(card(rest[i])); render(); await wait(BEAT); }
       var d = total(dealer);
       busy = false;
-      if (d > 21 || p > d) return win(natural ? 'Blackjack. You win $10 off.' : 'You win, ' + p + ' to ' + (d > 21 ? 'a dealer bust' : d) + '. That is $10 off.');
+      if (d > 21 || p > d) return win('Congratulations! You won! Claim your $10 off below.');
       over('Dealer wins, ' + d + ' to ' + p + '. Refresh the page to play again.');
     }
     function stored() { try { return localStorage.getItem('mt-bj-code'); } catch (e) { return null; } }
