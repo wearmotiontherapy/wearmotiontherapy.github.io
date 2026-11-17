@@ -10,7 +10,15 @@
   var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   // how full each kind of piece is: depth is half the body's thickness (the piece is 2 units tall),
   // round is how far in from the outline the body keeps rising, as a share of the picture's width
-  var FORMS = { top: { depth: 0.34, k: 0.56 }, pants: { depth: 0.24, k: 0.72 }, beanie: { depth: 0.7, k: 0.9 } };   // depth caps how deep a part can get; k is its roundness
+  // Real proportions. A worn torso is about 0.4 times as deep as it is wide; a sleeve or leg is a round tube,
+  // about 0.62 times its flat width deep; a beanie is nearly as deep as it is wide. Parts in between blend.
+  // kBig applies to wide parts (the torso, the waist), kSmall to narrow ones (sleeves, legs, hood), split at
+  // half-widths of `small` and `big` (the piece is 2 units tall). depth caps the half-depth.
+  var FORMS = {
+    top:    { depth: 0.24, kBig: 0.4, kSmall: 0.62, small: 0.14, big: 0.34 },
+    pants:  { depth: 0.16, kBig: 0.42, kSmall: 0.62, small: 0.12, big: 0.3 },
+    beanie: { depth: 0.62, kBig: 0.85, kSmall: 0.85, small: 0.2, big: 0.5 }
+  };
   function formOf(name) { return /beanie/i.test(name) ? 'beanie' : /pants/i.test(name) ? 'pants' : 'top'; }
 
   // the pieces, read from the collection tiles so the viewer never drifts from the page
@@ -164,7 +172,15 @@
     }
     return id;
   }
-  function cutTo(id, mask) {               // the shared outline, with a one pixel soft edge
+  function clothColour(id, mask) {           // the typical fabric colour: the middle of the inside pixels by brightness
+    var d = id.data, list = [], i;
+    for (i = 0; i < mask.length; i += 7) if (mask[i]) list.push(i);
+    list.sort(function (a, b) { return (d[a * 4] + d[a * 4 + 1] + d[a * 4 + 2]) - (d[b * 4] + d[b * 4 + 1] + d[b * 4 + 2]); });
+    var mid = list.slice(Math.floor(list.length * 0.35), Math.ceil(list.length * 0.65)), c = [0, 0, 0];
+    mid.forEach(function (k) { c[0] += d[k * 4]; c[1] += d[k * 4 + 1]; c[2] += d[k * 4 + 2]; });
+    return c.map(function (v) { return v / Math.max(1, mid.length); });
+  }
+  function cutTo(id, mask, base) {               // the shared outline, with a one pixel soft edge
     var w = id.width, h = id.height, d = id.data, x, y, k;
     for (y = 0; y < h; y++) for (x = 0; x < w; x++) {
       var s = 0, c = 0;
@@ -174,8 +190,9 @@
       }
       d[(y * w + x) * 4 + 3] = 255;   // fully opaque: the mesh gives the shape, and see-through pixels lose their colour on upload
     }
-    // darken toward the outline, the way cloth falls into shadow as it turns away
-    var soft = new Float32Array(w * h), tmp = new Float32Array(w * h), r = 14, sum, n, k2;
+    // Toward the outline the picture is seen edge-on and smears, and front and back pictures differ in tone, so
+    // fade into one shared cloth colour there: the sides read as one even piece of fabric.
+    var soft = new Float32Array(w * h), tmp = new Float32Array(w * h), r = 26, sum, n, k2;
     for (y = 0; y < h; y++) for (x = 0; x < w; x++) soft[y * w + x] = mask[y * w + x];
     for (var pass = 0; pass < 2; pass++) {
       for (y = 0; y < h; y++) { sum = 0; for (k2 = -r; k2 <= r; k2++) sum += x0v(soft, y, k2); for (x = 0; x < w; x++) { tmp[y * w + x] = sum / (2 * r + 1); sum += x0v(soft, y, x + r + 1) - x0v(soft, y, x - r); } }
@@ -184,8 +201,8 @@
     function x0v(a, yy, xx) { return xx < 0 || xx >= w ? 0 : a[yy * w + xx]; }
     function y0v(a, yy, xx) { return yy < 0 || yy >= h ? 0 : a[yy * w + xx]; }
     for (y = 0; y < h; y++) for (x = 0; x < w; x++) {
-      var e = Math.min(1, Math.max(0, (soft[y * w + x] - 0.5) * 2)), f = 0.72 + 0.28 * Math.sqrt(e), j2 = (y * w + x) * 4;
-      d[j2] *= f; d[j2 + 1] *= f; d[j2 + 2] *= f;
+      var e = Math.min(1, Math.max(0, (soft[y * w + x] - 0.5) * 2)), t2 = e * e * (3 - 2 * e), f = 0.9 + 0.1 * t2, j2 = (y * w + x) * 4;
+      for (var c2 = 0; c2 < 3; c2++) d[j2 + c2] = (base[c2] + (d[j2 + c2] - base[c2]) * t2) * f;
     }
     var out = blank(w, h); out.getContext('2d').putImageData(id, 0, 0);
     return out;
@@ -256,7 +273,8 @@
     }
     bm = shrink(bm, w, h, 1);
     var fmAll = flipMask(bm, w, h);
-    return { w: w, h: h, front: cutTo(fabric(f), fmAll), back: cutTo(fabric(b), bm), frontMask: fmAll, backMask: bm };
+    var fF = fabric(f), fB = fabric(b), base = clothColour(fF, fmAll);
+    return { w: w, h: h, front: cutTo(fF, fmAll, base), back: cutTo(fB, bm, base), frontMask: fmAll, backMask: bm };
   }
 
   // how far each point sits from the outline, turned into a rounded thickness
@@ -306,7 +324,9 @@
     for (i = 0; i < cw * ch; i++) {
       if (d[i] <= 0) { z[i] = -0.006; continue; }
       var rr = Math.max(R[i], d[i]), q = Math.min(d[i], rr);
-      z[i] = Math.min(form.depth, form.k * unit * Math.sqrt(Math.max(0, rr * rr - (rr - q) * (rr - q))));
+      var half = rr * unit, mix = Math.min(1, Math.max(0, (half - form.small) / (form.big - form.small)));
+      var k = form.kSmall + (form.kBig - form.kSmall) * mix * mix * (3 - 2 * mix);
+      z[i] = Math.min(form.depth, k * unit * Math.sqrt(Math.max(0, rr * rr - (rr - q) * (rr - q))));
     }
     soften(z, 1, 2);
     for (i = 0; i < cw * ch; i++) z[i] = d[i] > 0 ? z[i] - 0.006 : -0.006;
