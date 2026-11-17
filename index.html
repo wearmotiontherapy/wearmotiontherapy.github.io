@@ -115,6 +115,8 @@
   .swatch[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--bg), 0 0 0 3.5px var(--ink); }
   .swatch--black { background: #151311; }
   .swatch--bone { background: #e3d7c8; }
+  .swatch--pink { background: #de3a98; }
+  .tile__limited { position: absolute; left: var(--s-3); top: var(--s-3); z-index: 1; min-height: 26px; display: inline-flex; align-items: center; padding: 0 10px; border-radius: 999px; background: #de3a98; color: #fff; font-size: 12px; font-weight: 600; letter-spacing: 0.01em; pointer-events: none; }
   .tile__foot { display: flex; justify-content: space-between; align-items: center; gap: var(--s-4); }
   /* the detail strip: four square close-ups from line to line */
   .strip { margin-top: var(--s-7); }
@@ -233,7 +235,7 @@
             <div class="menu-col span-3">
               <p class="t-label">Bottoms and more</p>
               <a href="#collection">Everyday Sweatpants<span>Black or bone, $32</span></a>
-              <a href="#collection">Ribbed Beanie<span>Bone, one size, $12</span></a>
+              <a href="#collection">Ribbed Beanie<span>Bone or limited pink, $12</span></a>
               <a href="#set">Matching set<span>Hoodie and sweatpants, $65</span></a>
             </div>
             <a class="menu-card span-3 start-10" href="#details">
@@ -311,15 +313,21 @@
           <div class="tile__foot">
             <p class="tile__facts" id="sweats-colour" style="margin-top:0">Bone fleece, cuffed ankle</p>
             <div class="swatches" role="group" aria-label="Sweatpants colour">
-              <button class="swatch swatch--bone" type="button" aria-pressed="true" aria-label="Bone" data-src="img/spin-sweats-bone-f.webp" data-tone="bone" data-name="Bone"></button>
-              <button class="swatch swatch--black" type="button" aria-pressed="false" aria-label="Black" data-src="img/spin-sweats-black-f.webp" data-tone="black" data-name="Black"></button>
+              <button class="swatch swatch--bone" type="button" aria-pressed="true" aria-label="Bone" data-src="img/spin-sweats-bone-f.webp" data-tone="bone" data-name="Bone" data-facts="Bone fleece, cuffed ankle" data-alt="Bone Everyday Sweatpants with the stacked wordmark on the left thigh"></button>
+              <button class="swatch swatch--black" type="button" aria-pressed="false" aria-label="Black" data-src="img/spin-sweats-black-f.webp" data-tone="black" data-name="Black" data-facts="Black fleece, cuffed ankle" data-alt="Black Everyday Sweatpants with the stacked wordmark on the left thigh"></button>
             </div>
           </div>
         </article>
         <article class="tile span-4">
-          <div class="tile__media spin" data-spin data-tone="bone" data-start="0" style="--ar: 1.0473684210526315"><div class="spin__shadow" aria-hidden="true"></div><div class="spin__stage"><div class="spin__body"><img class="spin__face" src="img/spin-beanie-f.webp" alt="The bone Ribbed Beanie with the wordmark embroidered in black on the cuff" loading="lazy" width="796" height="760" draggable="false" data-source="client" data-subject="Ribbed Beanie"></div></div><button class="spin__open" type="button" aria-label="View the Ribbed Beanie in 3D">View in 3D</button></div>
+          <div class="tile__media spin" data-spin data-tone="bone" data-start="0" style="--ar: 1.0473684210526315"><span class="tile__limited">Limited pink, 10 made</span><div class="spin__shadow" aria-hidden="true"></div><div class="spin__stage"><div class="spin__body"><img class="spin__face" src="img/spin-beanie-f.webp" alt="The bone Ribbed Beanie with the wordmark embroidered in black on the cuff" loading="lazy" width="796" height="760" draggable="false" data-source="client" data-subject="Ribbed Beanie"></div></div><button class="spin__open" type="button" aria-label="View the Ribbed Beanie in 3D">View in 3D</button></div>
           <div class="tile__head"><h3>Ribbed Beanie</h3><span class="tile__price">$12</span></div>
-          <p class="tile__facts">Bone knit, one size</p>
+          <div class="tile__foot">
+            <p class="tile__facts" style="margin-top:0">Bone knit, one size</p>
+            <div class="swatches" role="group" aria-label="Beanie colour">
+              <button class="swatch swatch--bone" type="button" aria-pressed="true" aria-label="Bone" data-src="img/spin-beanie-f.webp" data-tone="bone" data-name="Bone" data-facts="Bone knit, one size" data-alt="The bone Ribbed Beanie with the wordmark embroidered in black on the cuff"></button>
+              <button class="swatch swatch--pink" type="button" aria-pressed="false" aria-label="Pink, limited to 10" data-src="img/spin-beanie-pink-f.webp" data-tone="bone" data-name="Pink" data-facts="Limited pink, only 10 made. First 10 customers." data-alt="The limited pink Ribbed Beanie with the wordmark embroidered in black on the cuff"></button>
+            </div>
+          </div>
         </article>
       </div>
     </div>
@@ -502,21 +510,20 @@
 </nav>
 
 <script>
-  // the sweatpants swatches swap the picture and the colour line
-  (function () {
-    var img = document.getElementById('sweats-img');
-    var line = document.getElementById('sweats-colour');
-    var buttons = document.querySelectorAll('#sweatpants .swatch');
+  // colour swatches swap the picture, its colour and the facts line on their own tile
+  document.querySelectorAll('#collection .tile').forEach(function (tile) {
+    var buttons = tile.querySelectorAll('.swatch');
+    if (!buttons.length) return;
+    var img = tile.querySelector('.spin__face'), line = tile.querySelector('.tile__facts'), badge = tile.querySelector('.tile__limited');
     buttons.forEach(function (b) {
       b.addEventListener('click', function () {
         buttons.forEach(function (o) { o.setAttribute('aria-pressed', String(o === b)); });
-        img.src = b.dataset.src;
+        img.src = b.dataset.src; img.alt = b.dataset.alt;
         img.closest('.spin').dataset.tone = b.dataset.tone;
-        img.alt = b.dataset.name + ' Everyday Sweatpants with the stacked wordmark on the left thigh';
-        line.textContent = b.dataset.name + ' fleece, cuffed ankle';
+        line.textContent = b.dataset.facts;
       });
     });
-  })();
+  });
 </script>
 <script>
   // Turnable pieces. Drag a piece to turn it; it carries on with the throw and settles on its front or back.

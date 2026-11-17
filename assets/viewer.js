@@ -30,7 +30,7 @@
     var swatches = tile.querySelectorAll('.swatch'), first = items.length;
     if (swatches.length) {
       swatches.forEach(function (s) {
-        items.push({ name: name, price: price, facts: s.dataset.name + ' fleece, cuffed ankle', label: name + ', ' + s.dataset.name.toLowerCase(),
+        items.push({ name: name, price: price, facts: s.dataset.facts, label: name + ', ' + s.dataset.name.toLowerCase(),
           front: s.dataset.src, back: null, tone: s.dataset.tone, swatch: s });
       });
     } else {
@@ -60,7 +60,7 @@
     picks.appendChild(b); it.button = b;
   });
 
-  var libP, T, renderer, scene, camera, model, raf = 0, token = 0;
+  var libP, T, renderer, scene, camera, model, floor, raf = 0, token = 0;
   var yaw = 0, pitch = 0, vyaw = 0, zoom = 1, ar = 1, lastTouch = 0, held = false;
 
   // Sculpted models, when there are any: a GLB file per piece in models/, keyed by the item's label.
@@ -333,6 +333,14 @@
     var inside = new Uint8Array(cw * ch); for (i = 0; i < cw * ch; i++) inside[i] = d[i] > 0 ? 1 : 0;
     return { cw: cw, ch: ch, z: z, inside: inside };
   }
+  // the folds and seams of the picture, without the fine weave: a soft copy used as a bump map, so the
+  // big shapes catch the light as the piece turns but the surface doesn't look gritty
+  function folds(tex) {
+    var w = tex.width, h = tex.height, sm = blank(Math.max(1, w >> 3), Math.max(1, h >> 3)), out = blank(w, h);
+    sm.getContext('2d').drawImage(tex, 0, 0, sm.width, sm.height);
+    var g = out.getContext('2d'); g.imageSmoothingQuality = 'high'; g.drawImage(sm, 0, 0, w, h);
+    var t = new T.CanvasTexture(out); return t;
+  }
   function shell(tex, mask, w, h, form, tone) {
     var hf = heights(mask, w, h, form);
     var geo = new T.PlaneGeometry(2 * w / h, 2, hf.cw - 1, hf.ch - 1), pos = geo.attributes.position;
@@ -368,7 +376,7 @@
     model.traverse(function (m) {
       if (!m.isMesh) return;
       m.geometry.dispose();
-      [].concat(m.material).forEach(function (mt) { if (mt.map) mt.map.dispose(); mt.dispose(); });
+      [].concat(m.material).forEach(function (mt) { if (mt.map) mt.map.dispose(); if (mt.bumpMap) mt.bumpMap.dispose(); mt.dispose(); });
     });
     scene.remove(model); model = null;
   }
@@ -379,8 +387,17 @@
     scene.add(new T.HemisphereLight(0xffffff, 0xb9a796, 0.75));
     var key = new T.DirectionalLight(0xffffff, 0.75); key.position.set(-1.6, 2.2, 4); scene.add(key);
     var rim = new T.DirectionalLight(0xffffff, 0.3); rim.position.set(3, 0.5, 1.5); scene.add(rim);
+    // a soft contact shadow on the floor, so the piece sits in the space instead of floating
+    var sc = blank(256, 256), sg = sc.getContext('2d'), grad = sg.createRadialGradient(128, 128, 0, 128, 128, 128);
+    grad.addColorStop(0, 'rgba(60,40,25,0.42)'); grad.addColorStop(0.55, 'rgba(60,40,25,0.16)'); grad.addColorStop(1, 'rgba(60,40,25,0)');
+    sg.fillStyle = grad; sg.fillRect(0, 0, 256, 256);
+    var st = new T.CanvasTexture(sc);
+    floor = new T.Mesh(new T.PlaneGeometry(1, 1), new T.MeshBasicMaterial({ map: st, transparent: true, depthWrite: false }));
+    floor.rotation.x = -Math.PI / 2; floor.position.y = -1.04; scene.add(floor);
   }
+  function shadowFor(r) { if (floor) floor.scale.set(Math.max(1.2, r * 2.1), 1, Math.max(0.55, r * 0.9)); }
   function fit() {
+    shadowFor(ar);
     var w = stage.clientWidth, h = stage.clientHeight;
     if (!w || !h || !renderer) return;
     renderer.setSize(w, h, false); camera.aspect = w / h;
