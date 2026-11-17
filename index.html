@@ -208,6 +208,17 @@
   #set .pair .shot { height: auto !important; aspect-ratio: 4 / 5; }
   /* the game teaser is as tall as what's in it */
   .bj--teaser { min-height: 0 !important; }
+  /* Train/Recover/Grow pictures in the stacked rows: each at its own shape and a real size, no bands */
+  [data-moment="pinned-chapters"]#train:not(.is-live) .mo-pc__visual { display: flex; justify-content: flex-end; align-self: center; background: none; border-radius: 0; overflow: visible; }
+  [data-moment="pinned-chapters"]#train:not(.is-live) .mo-pc__visual > img { width: auto !important; max-width: 100%; height: clamp(240px, 28vw, 360px) !important; max-height: none !important; aspect-ratio: auto !important; object-fit: contain; border-radius: var(--r-md); display: block; }
+  @media (max-width: 639px) {
+    [data-moment="pinned-chapters"]#train:not(.is-live) .mo-pc__visual { justify-content: center; }
+    [data-moment="pinned-chapters"]#train:not(.is-live) .mo-pc__visual > img { height: 260px !important; }
+  }
+  /* the pinned version on wide screens: each picture whole and centred in the frame, no bands */
+  [data-moment="pinned-chapters"]#train.is-live .mo-pc__visuals { background: none !important; border: 0 !important; box-shadow: none !important; }
+  [data-moment="pinned-chapters"]#train.is-live .mo-pc__visual { display: flex; align-items: center; justify-content: center; background: none; }
+  [data-moment="pinned-chapters"]#train.is-live .mo-pc__visual > img { width: auto !important; height: auto !important; max-width: 100%; max-height: 100%; aspect-ratio: auto !important; object-fit: contain; border-radius: var(--r-md); }
   /* the hero shows both hoodies whole */
   .hero__stage > img.is-whole { object-fit: contain; }
   /* on a phone the front/back switch sits under the piece, not over it */
