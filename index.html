@@ -225,6 +225,28 @@
     #drop .rows > li { grid-template-columns: auto minmax(0, 1fr); }
     #drop .rows__value { white-space: normal; max-width: none; text-wrap: pretty; }
   }
+  /* Front/Back and the larger view: a short blur bridges the two pictures, so the swap reads as one change, not a blink */
+  .spin .spin__face, .zoom__img { transition: opacity 160ms ease, filter 160ms ease; }
+  .spin .spin__face.is-swapping, .zoom__img.is-swapping { opacity: 0; filter: blur(4px); }
+  /* every Front/Back button is a 44px target for a thumb, without growing the pill */
+  .flip button { position: relative; }
+  .flip button::before { content: ""; position: absolute; inset: -8px 0; }
+  button, a, .tile__zoom { -webkit-tap-highlight-color: transparent; }
+  /* with a mouse: the piece leans in a little under the pointer, and the idle side of the switch answers */
+  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    .spin__body { transition: transform 500ms cubic-bezier(0.23, 1, 0.32, 1); }
+    .tile:hover .spin__body { transform: scale(1.03); }
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .flip button[aria-pressed="false"]:hover { background: color-mix(in oklab, var(--ink) 9%, transparent); }
+  }
+  /* the game card starts on the same line as the other splits' right column */
+  @media (min-width: 1024px) { #play .bj--teaser { grid-column: 7 / -1; } }
+  /* contrast: the pink badge and the game's small print read at AA or better */
+  .tile__limited { background: #c62a83; }
+  .bj__terms { color: #433c36; }
+  /* the popup Close button takes the page's button corner, so the page keeps one button family */
+  .pop__close { border-radius: var(--r-btn); }
   /* the hero shows both hoodies whole */
   .hero__stage > img.is-whole { object-fit: contain; }
   /* on a phone the front/back switch sits under the piece, not over it */
@@ -310,17 +332,17 @@
         </div>
         <div class="grid">
           <article class="tile span-4">
-            <div class="tile__media spin" data-spin data-tone="black" data-start="0" data-back="img/spin-signature-b.webp" data-back-alt="The back of the Signature Tee with a large script logo and the line Movement fuels a better mind" style="--ar: 0.9085365853658537"><div class="spin__shadow" aria-hidden="true"></div><div class="spin__stage"><div class="spin__body"><img class="spin__face" src="img/spin-signature-f.webp" alt="The front of the washed black Signature Tee with the script logo on the chest" loading="lazy" width="745" height="820" draggable="false" data-source="client" data-subject="Signature Tee"></div></div></div>
+            <div class="tile__media spin" data-spin data-tone="black" data-start="0" data-back="img/spin-signature-b.webp" data-back-alt="The back of the Signature Tee with a large script logo and the line Movement fuels a better mind" style="--ar: 0.9085365853658537"><div class="spin__shadow" aria-hidden="true"></div><div class="spin__stage"><div class="spin__body"><img class="spin__face" src="img/spin-signature-f.webp" alt="The front of the washed black Signature Tee with the script logo on the chest" width="745" height="820" draggable="false" data-source="client" data-subject="Signature Tee"></div></div></div>
             <div class="tile__head"><h3>Signature Tee</h3><span class="tile__price">$18</span></div>
             <p class="tile__facts">Black cotton, script logo front and back</p>
           </article>
           <article class="tile span-4">
-            <div class="tile__media spin" data-spin data-tone="bone" data-start="180" data-back="img/spin-summit-b.webp" data-back-alt="The back of the Summit Tee: a drawn mountain range over the script logo" style="--ar: 0.9036585365853659"><div class="spin__shadow" aria-hidden="true"></div><div class="spin__stage"><div class="spin__body"><img class="spin__face" src="img/spin-summit-f.webp" alt="The front of the bone Summit Tee with a small script logo on the chest" loading="lazy" width="741" height="820" draggable="false" data-source="client" data-subject="Summit Tee"></div></div></div>
+            <div class="tile__media spin" data-spin data-tone="bone" data-start="180" data-back="img/spin-summit-b.webp" data-back-alt="The back of the Summit Tee: a drawn mountain range over the script logo" style="--ar: 0.9036585365853659"><div class="spin__shadow" aria-hidden="true"></div><div class="spin__stage"><div class="spin__body"><img class="spin__face" src="img/spin-summit-f.webp" alt="The front of the bone Summit Tee with a small script logo on the chest" width="741" height="820" draggable="false" data-source="client" data-subject="Summit Tee"></div></div></div>
             <div class="tile__head"><h3>Summit Tee</h3><span class="tile__price">$18</span></div>
             <p class="tile__facts">Bone cotton, mountain print on the back</p>
           </article>
           <article class="tile span-4">
-            <div class="tile__media spin" data-spin data-tone="black" data-start="180" data-back="img/spin-lily-b.webp" data-back-alt="The back of the Lily Hoodie with the cream lily and ribbon print" style="--ar: 0.8670731707317073"><div class="spin__shadow" aria-hidden="true"></div><div class="spin__stage"><div class="spin__body"><img class="spin__face" src="img/spin-lily-f.webp" alt="The front of the black Lily Hoodie with a small wordmark on the chest" loading="lazy" width="711" height="820" draggable="false" data-source="client" data-subject="Lily Hoodie"></div></div></div>
+            <div class="tile__media spin" data-spin data-tone="black" data-start="180" data-back="img/spin-lily-b.webp" data-back-alt="The back of the Lily Hoodie with the cream lily and ribbon print" style="--ar: 0.8670731707317073"><div class="spin__shadow" aria-hidden="true"></div><div class="spin__stage"><div class="spin__body"><img class="spin__face" src="img/spin-lily-f.webp" alt="The front of the black Lily Hoodie with a small wordmark on the chest" width="711" height="820" draggable="false" data-source="client" data-subject="Lily Hoodie"></div></div></div>
             <div class="tile__head"><h3>Lily Hoodie</h3><span class="tile__price">$39</span></div>
             <p class="tile__facts">Black fleece, lily print across the back</p>
           </article>
@@ -328,12 +350,12 @@
       </div>
       <div class="grid">
         <article class="tile span-4">
-          <div class="tile__media spin" data-spin data-tone="bone" data-start="0" data-back="img/spin-contrast-b.webp" data-back-alt="The back of the Clean Contrast Hoodie with Discipline Builds Freedom under the wordmark" style="--ar: 0.8621951219512195"><div class="spin__shadow" aria-hidden="true"></div><div class="spin__stage"><div class="spin__body"><img class="spin__face" src="img/spin-contrast-f.webp" alt="The front of the bone Clean Contrast Hoodie with the wordmark in black" loading="lazy" width="707" height="820" draggable="false" data-source="client" data-subject="Clean Contrast Hoodie"></div></div></div>
+          <div class="tile__media spin" data-spin data-tone="bone" data-start="0" data-back="img/spin-contrast-b.webp" data-back-alt="The back of the Clean Contrast Hoodie with Discipline Builds Freedom under the wordmark" style="--ar: 0.8621951219512195"><div class="spin__shadow" aria-hidden="true"></div><div class="spin__stage"><div class="spin__body"><img class="spin__face" src="img/spin-contrast-f.webp" alt="The front of the bone Clean Contrast Hoodie with the wordmark in black" width="707" height="820" draggable="false" data-source="client" data-subject="Clean Contrast Hoodie"></div></div></div>
           <div class="tile__head"><h3>Clean Contrast Hoodie</h3><span class="tile__price">$39</span></div>
           <p class="tile__facts">Bone fleece, Discipline Builds Freedom on the back</p>
         </article>
         <article class="tile span-4" id="sweatpants">
-          <div class="tile__media spin" data-spin data-tone="bone" data-start="0" style="--ar: 0.40555555555555556"><div class="spin__shadow" aria-hidden="true"></div><div class="spin__stage"><div class="spin__body"><img class="spin__face" id="sweats-img" src="img/spin-sweats-bone-f.webp" alt="Bone Everyday Sweatpants with the stacked wordmark on the left thigh" loading="lazy" width="365" height="900" draggable="false" data-source="client" data-subject="Everyday Sweatpants"></div></div></div>
+          <div class="tile__media spin" data-spin data-tone="bone" data-start="0" style="--ar: 0.40555555555555556"><div class="spin__shadow" aria-hidden="true"></div><div class="spin__stage"><div class="spin__body"><img class="spin__face" id="sweats-img" src="img/spin-sweats-bone-f.webp" alt="Bone Everyday Sweatpants with the stacked wordmark on the left thigh" width="365" height="900" draggable="false" data-source="client" data-subject="Everyday Sweatpants"></div></div></div>
           <div class="tile__head"><h3>Everyday Sweatpants</h3><span class="tile__price">$32</span></div>
           <div class="tile__foot">
             <p class="tile__facts" id="sweats-colour" style="margin-top:0">Bone fleece, cuffed ankle</p>
@@ -344,7 +366,7 @@
           </div>
         </article>
         <article class="tile span-4">
-          <div class="tile__media spin" data-spin data-tone="bone" data-start="0" style="--ar: 1.0473684210526315"><span class="tile__limited">Limited pink, 10 made</span><div class="spin__shadow" aria-hidden="true"></div><div class="spin__stage"><div class="spin__body"><img class="spin__face" src="img/spin-beanie-f.webp" alt="The bone Ribbed Beanie with the wordmark embroidered in black on the cuff" loading="lazy" width="796" height="760" draggable="false" data-source="client" data-subject="Ribbed Beanie"></div></div></div>
+          <div class="tile__media spin" data-spin data-tone="bone" data-start="0" style="--ar: 1.0473684210526315"><span class="tile__limited">Limited pink, 10 made</span><div class="spin__shadow" aria-hidden="true"></div><div class="spin__stage"><div class="spin__body"><img class="spin__face" src="img/spin-beanie-f.webp" alt="The bone Ribbed Beanie with the wordmark embroidered in black on the cuff" width="796" height="760" draggable="false" data-source="client" data-subject="Ribbed Beanie"></div></div></div>
           <div class="tile__head"><h3>Ribbed Beanie</h3><span class="tile__price">$12</span></div>
           <div class="tile__foot">
             <p class="tile__facts" style="margin-top:0">Bone knit, one size</p>
@@ -415,7 +437,7 @@
         </ol>
         <p class="bj__terms" id="bj-terms">The code takes $10 off an order above $60, for the first 5 orders only. One code per person, used once, at the booth only. The game is free. Every hand has a 2 in 5 chance to win however you play it, and you get one hand per visit: refresh the page to play again.</p>
       </div>
-      <div class="bj bj--teaser ground-inverse span-7">
+      <div class="bj bj--teaser ground-inverse span-6">
         <div class="bj__cards" aria-hidden="true">
           <div class="bj-card"><span class="bj-card__rank">A</span><span class="bj-card__suit">♠</span></div>
           <div class="bj-card bj-card--soft"><span class="bj-card__rank">K</span><span class="bj-card__suit">♥</span></div>
@@ -447,7 +469,9 @@
         <ul class="rows">
           <li><span class="rows__name">Hours</span><span class="rows__value">9 AM to 4 PM</span></li>
           <li><span class="rows__name">Where</span><span class="rows__value">In person at our AWB booth</span></li>
-          <li><span class="rows__name">Restocks and sizes</span><span class="rows__value">Posted on Instagram first</span></li>
+          <li><span class="rows__name">Sizes</span><span class="rows__value">S to XL, beanie one size</span></li>
+          <li><span class="rows__name">Payment</span><span class="rows__value">Cash, e-transfer or card</span></li>
+          <li><span class="rows__name">Restocks</span><span class="rows__value">Posted on Instagram first</span></li>
         </ul>
       </div>
       <div class="shot span-6 start-7"><img src="img/v-beanie.jpg" alt="The bone Ribbed Beanie, cuff folded, wordmark embroidered on the front" loading="lazy" width="1400" height="933" style="object-position: 50% 50%" data-source="client" data-subject="Ribbed Beanie"></div>
@@ -460,7 +484,7 @@
     <div class="closing__cta close--type">
       <div class="section-head">
         <h2 id="close-h">Follow the drop on Instagram</h2>
-        <p>Restocks, sizes and what sells out go up on @wearmotiontherapy first.</p>
+        <p>Restocks and what sells out go up on @wearmotiontherapy first.</p>
       </div>
       <a class="btn btn--primary btn--xl" href="https://www.instagram.com/wearmotiontherapy/" target="_blank" rel="noopener">Follow on Instagram<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a>
     </div>
