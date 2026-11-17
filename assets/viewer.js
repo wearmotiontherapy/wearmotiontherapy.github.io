@@ -10,7 +10,7 @@
   var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   // how full each kind of piece is: depth is half the body's thickness (the piece is 2 units tall),
   // round is how far in from the outline the body keeps rising, as a share of the picture's width
-  var FORMS = { top: { depth: 0.3, k: 0.6, rim: 0.09 }, pants: { depth: 0.2, k: 0.75, rim: 0.06 }, beanie: { depth: 0.62, k: 0.9, rim: 0.16 } };
+  var FORMS = { top: { depth: 0.34, k: 0.56 }, pants: { depth: 0.24, k: 0.72 }, beanie: { depth: 0.7, k: 0.9 } };   // depth caps how deep a part can get; k is its roundness
   function formOf(name) { return /beanie/i.test(name) ? 'beanie' : /pants/i.test(name) ? 'pants' : 'top'; }
 
   // the pieces, read from the collection tiles so the viewer never drifts from the page
@@ -172,7 +172,7 @@
         var px = x + l, py = y + k; if (px < 0 || py < 0 || px >= w || py >= h) { c++; continue; }
         s += mask[py * w + px]; c++;
       }
-      d[(y * w + x) * 4 + 3] = 255 * s / c;
+      d[(y * w + x) * 4 + 3] = 255;   // fully opaque: the mesh gives the shape, and see-through pixels lose their colour on upload
     }
     // darken toward the outline, the way cloth falls into shadow as it turns away
     var soft = new Float32Array(w * h), tmp = new Float32Array(w * h), r = 14, sum, n, k2;
@@ -261,7 +261,7 @@
 
   // how far each point sits from the outline, turned into a rounded thickness
   function heights(mask, w, h, form) {
-    var cw = 220, ch = Math.round(cw * h / w), d = new Float32Array(cw * ch), x, y, i, BIG = 1e4;
+    var cw = 300, ch = Math.round(cw * h / w), d = new Float32Array(cw * ch), x, y, i, BIG = 1e4;
     for (y = 0; y < ch; y++) for (x = 0; x < cw; x++) {
       var px = Math.round(x / (cw - 1) * (w - 1)), py = Math.round(y / (ch - 1) * (h - 1));
       d[y * cw + x] = mask[py * w + px] ? BIG : 0;
@@ -284,37 +284,63 @@
         }
       }
     }
-    // Each row of the piece is a set of solid runs (a torso with its sleeves, or one leg). Every run gets a
-    // round cross-section like a tube, deepest at its middle and closing to nothing at its sides, so the piece
-    // turns into a body rather than a slab. Top and bottom edges (shoulders, hems, cuffs) roll over the same way.
-    soften(d, 2, 2);
-    var unit = (2 * w / h) / (cw - 1), z = new Float32Array(cw * ch), Rr = cw * form.rim;
-    for (y = 0; y < ch; y++) {
-      x = 0;
-      while (x < cw) {
-        if (d[y * cw + x] <= 0.5) { x++; continue; }
-        var x0 = x; while (x < cw && d[y * cw + x] > 0.5) x++;
-        var x1 = x - 1, half = (x1 - x0 + 1) / 2, mid = (x0 + x1) / 2;
-        if (half < 1) continue;
-        var thick = Math.min(form.depth, form.k * half * unit);
-        for (var xx = x0; xx <= x1; xx++) {
-          var u = (xx - mid) / (half + 0.5), across = Math.sqrt(Math.max(0, 1 - u * u));
-          var t = 1 - Math.min(Math.max(d[y * cw + xx] - 1, 0) / Rr, 1), roll = Math.sqrt(1 - t * t);
-          z[y * cw + xx] = thick * Math.min(across, roll);
-        }
+    // Sculpt by inflation. Every point inside the outline belongs to the widest circle that fits inside the
+    // outline and covers it: the torso's circle is big, a sleeve's or a leg's is small. Each point is then
+    // raised to the surface of a tube of that radius, so the torso becomes round, the sleeves and legs become
+    // tubes, the beanie a dome, and every part closes smoothly at its own edge.
+    var R = new Float32Array(cw * ch), xx, yy;
+    for (y = 1; y < ch - 1; y++) for (x = 1; x < cw - 1; x++) {
+      i = y * cw + x; var r = d[i];
+      if (r < 1.5) continue;
+      if (r < d[i - 1] || r < d[i + 1] || r < d[i - cw] || r < d[i + cw] ||
+          r < d[i - cw - 1] || r < d[i - cw + 1] || r < d[i + cw - 1] || r < d[i + cw + 1]) continue;   // medial points only
+      var r2 = r * r, ri = Math.ceil(r);
+      for (yy = Math.max(0, y - ri); yy <= Math.min(ch - 1, y + ri); yy++) for (xx = Math.max(0, x - ri); xx <= Math.min(cw - 1, x + ri); xx++) {
+        var dx = xx - x, dy = yy - y;
+        if (dx * dx + dy * dy <= r2 && R[yy * cw + xx] < r) R[yy * cw + xx] = r;
       }
     }
-    soften(z, 2, 2);                           // rows join into one smooth surface
-    for (i = 0; i < cw * ch; i++) z[i] = d[i] > 0.5 ? z[i] - 0.008 : -0.008;
-    return { cw: cw, ch: ch, z: z };
+    for (i = 0; i < cw * ch; i++) if (d[i] > 0 && R[i] < d[i]) R[i] = d[i];
+    soften(R, 3, 2);                             // parts flow into each other instead of meeting at a step
+    var unit = (2 * w / h) / (cw - 1), z = new Float32Array(cw * ch);
+    for (i = 0; i < cw * ch; i++) {
+      if (d[i] <= 0) { z[i] = -0.006; continue; }
+      var rr = Math.max(R[i], d[i]), q = Math.min(d[i], rr);
+      z[i] = Math.min(form.depth, form.k * unit * Math.sqrt(Math.max(0, rr * rr - (rr - q) * (rr - q))));
+    }
+    soften(z, 1, 2);
+    for (i = 0; i < cw * ch; i++) z[i] = d[i] > 0 ? z[i] - 0.006 : -0.006;
+    var inside = new Uint8Array(cw * ch); for (i = 0; i < cw * ch; i++) inside[i] = d[i] > 0 ? 1 : 0;
+    return { cw: cw, ch: ch, z: z, inside: inside };
   }
   function shell(tex, mask, w, h, form, tone) {
     var hf = heights(mask, w, h, form);
     var geo = new T.PlaneGeometry(2 * w / h, 2, hf.cw - 1, hf.ch - 1), pos = geo.attributes.position;
     for (var i = 0; i < pos.count; i++) pos.setZ(i, hf.z[i]);
+    // keep only triangles that touch the piece: its edge then runs along the grid, where the front and the
+    // back meet vertex for vertex, so the seam is closed with no cut-out pixels to see through
+    var idx = geo.index.array, kept = [];
+    for (i = 0; i < idx.length; i += 3) if (hf.inside[idx[i]] || hf.inside[idx[i + 1]] || hf.inside[idx[i + 2]]) kept.push(idx[i], idx[i + 1], idx[i + 2]);
+    geo.setIndex(kept);
+    // pull each outside vertex of the edge in to where the outline actually runs, so the edge is smooth, not stepped
+    var cwv = hf.cw, chv = hf.ch, used = new Uint8Array(pos.count);
+    for (i = 0; i < kept.length; i++) used[kept[i]] = 1;
+    var moved = new Float32Array(pos.count * 2);
+    for (i = 0; i < pos.count; i++) {
+      if (!used[i] || hf.inside[i]) continue;
+      var vx = i % cwv, vy = (i / cwv) | 0, sx = 0, sy = 0, n = 0;
+      for (var oy = -1; oy <= 1; oy++) for (var ox = -1; ox <= 1; ox++) {
+        var nx = vx + ox, ny = vy + oy;
+        if (nx < 0 || ny < 0 || nx >= cwv || ny >= chv || !hf.inside[ny * cwv + nx]) continue;
+        sx += pos.getX(ny * cwv + nx); sy += pos.getY(ny * cwv + nx); n++;
+      }
+      if (n) { moved[i * 2] = pos.getX(i) * 0.5 + (sx / n) * 0.5; moved[i * 2 + 1] = pos.getY(i) * 0.5 + (sy / n) * 0.5; }
+      else { moved[i * 2] = pos.getX(i); moved[i * 2 + 1] = pos.getY(i); }
+    }
+    for (i = 0; i < pos.count; i++) if (used[i] && !hf.inside[i]) { pos.setX(i, moved[i * 2]); pos.setY(i, moved[i * 2 + 1]); }
     geo.computeVertexNormals();
     var map = new T.Texture(tex); map.encoding = T.sRGBEncoding; map.anisotropy = renderer.capabilities.getMaxAnisotropy(); map.needsUpdate = true;
-    var mat = new T.MeshStandardMaterial({ map: map, alphaTest: 0.5, roughness: 1, metalness: 0, side: T.DoubleSide });   // matte, like cotton
+    var mat = new T.MeshStandardMaterial({ map: map, roughness: 1, metalness: 0, side: T.DoubleSide });   // matte, like cotton
     return new T.Mesh(geo, mat);
   }
   function clear() {
