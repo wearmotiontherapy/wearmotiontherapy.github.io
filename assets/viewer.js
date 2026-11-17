@@ -1,5 +1,5 @@
-// The 3D viewer. Each piece is built as a real mesh: the cut-out front and back are puffed out into a soft
-// body (thicker in the middle, thin at the edges), lit, and turned freely with a drag. Pinch or scroll zooms.
+// The 3D viewer. Each piece is built as one solid body: the front and back share a single outline, are
+// puffed out into a rounded form, and meet at a sealed seam. Drag turns it freely; pinch or scroll zooms.
 (function () {
   var dlg = document.getElementById('viewer');
   if (!dlg) return;
@@ -8,7 +8,10 @@
   var factsEl = dlg.querySelector('.viewer__facts'), hint = dlg.querySelector('.viewer__hint');
   var picks = dlg.querySelector('.viewer__picks'), flat = dlg.querySelector('.viewer__flat');
   var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var PLAIN = { bone: '#dccfbe', black: '#171615' };
+  // how full each kind of piece is: depth is half the body's thickness (the piece is 2 units tall),
+  // round is how far in from the outline the body keeps rising, as a share of the picture's width
+  var FORMS = { top: { depth: 0.2, round: 0.2 }, pants: { depth: 0.17, round: 0.17 }, beanie: { depth: 0.6, round: 0.5 } };
+  function formOf(name) { return /beanie/i.test(name) ? 'beanie' : /pants/i.test(name) ? 'pants' : 'top'; }
 
   // the pieces, read from the collection tiles so the viewer never drifts from the page
   var items = [];
@@ -49,7 +52,7 @@
     picks.appendChild(b); it.button = b;
   });
 
-  var libP, T, renderer, scene, camera, model, raf = 0, current = -1, token = 0;
+  var libP, T, renderer, scene, camera, model, raf = 0, token = 0;
   var yaw = 0, pitch = 0, vyaw = 0, zoom = 1, ar = 1, lastTouch = 0, held = false;
 
   function lib() {
@@ -61,72 +64,205 @@
   function load(src) {
     return new Promise(function (res, rej) { var im = new Image(); im.onload = function () { res(im); }; im.onerror = rej; im.src = src; });
   }
-  function size(src) { return [src.naturalWidth || src.width, src.naturalHeight || src.height]; }
 
-  // how far each cell of the cut-out sits from its edge, turned into a rounded thickness
-  function heights(src) {
-    var wh = size(src), cw = 210, ch = Math.round(cw * wh[1] / wh[0]);
-    var c = document.createElement('canvas'); c.width = cw; c.height = ch;
-    var g = c.getContext('2d', { willReadFrequently: true }); g.drawImage(src, 0, 0, cw, ch);
-    var a = g.getImageData(0, 0, cw, ch).data, d = new Float32Array(cw * ch), x, y, i, BIG = 1e4;
-    for (i = 0; i < cw * ch; i++) d[i] = a[i * 4 + 3] > 110 ? BIG : 0;
+  // ---------- picture work: all on plain canvases, at the size of the front picture ----------
+  function blank(w, h) { var c = document.createElement('canvas'); c.width = w; c.height = h; return c; }
+  function pixels(c) { return c.getContext('2d', { willReadFrequently: true }).getImageData(0, 0, c.width, c.height); }
+  function drawn(src, w, h, flip) {
+    var c = blank(w, h), g = c.getContext('2d', { willReadFrequently: true });
+    if (flip) { g.translate(w, 0); g.scale(-1, 1); }
+    g.drawImage(src, 0, 0, w, h);
+    return c;
+  }
+  function solidMask(id, cut) {            // 1 where the picture is solid
+    var n = id.width * id.height, m = new Uint8Array(n);
+    for (var i = 0; i < n; i++) m[i] = id.data[i * 4 + 3] > cut ? 1 : 0;
+    return m;
+  }
+  function flipMask(m, w, h) {
+    var o = new Uint8Array(w * h);
+    for (var y = 0; y < h; y++) for (var x = 0; x < w; x++) o[y * w + x] = m[y * w + (w - 1 - x)];
+    return o;
+  }
+  function shrink(m, w, h, r, grow) {      // erode by r pixels (or dilate when grow is set)
+    var a = m, b, x, y, k, v, pass;
+    for (pass = 0; pass < 2; pass++) {
+      b = new Uint8Array(w * h);
+      for (y = 0; y < h; y++) for (x = 0; x < w; x++) {
+        v = grow ? 0 : 1;
+        for (k = -r; k <= r; k++) {
+          var px = pass ? x : x + k, py = pass ? y + k : y;
+          var s = px < 0 || py < 0 || px >= w || py >= h ? 0 : a[py * w + px];
+          if (grow ? s : !s) { v = grow ? 1 : 0; break; }
+        }
+        b[y * w + x] = v;
+      }
+      a = b;
+    }
+    return a;
+  }
+  function box(m, w, h) {
+    var x0 = w, x1 = 0, y0 = h, y1 = 0;
+    for (var y = 0; y < h; y++) for (var x = 0; x < w; x++) if (m[y * w + x]) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+    return [x0, y0, x1 + 1, y1 + 1];
+  }
+  // Fabric everywhere: drop the faint fringe around a cut-out and spread the nearest fabric colour into every
+  // empty pixel, so wherever the shared outline reaches past this picture there is cloth, not a hole.
+  function fabric(c) {
+    var w = c.width, h = c.height, id = pixels(c), d = id.data, keep = shrink(solidMask(id, 215), w, h, 6);
+    var q = 4, sw = Math.ceil(w / q), sh = Math.ceil(h / q), n = sw * sh, col = new Float32Array(n * 3), has = new Uint8Array(n), cnt = new Uint16Array(n), x, y, i, j;
+    for (y = 0; y < h; y++) for (x = 0; x < w; x++) {
+      if (!keep[y * w + x]) continue;
+      i = (y / q | 0) * sw + (x / q | 0); j = (y * w + x) * 4;
+      col[i * 3] += d[j]; col[i * 3 + 1] += d[j + 1]; col[i * 3 + 2] += d[j + 2]; cnt[i]++;
+    }
+    for (i = 0; i < n; i++) if (cnt[i]) { col[i * 3] /= cnt[i]; col[i * 3 + 1] /= cnt[i]; col[i * 3 + 2] /= cnt[i]; has[i] = 1; }
+    for (var pass = 0; pass < 220; pass++) {
+      var add = [], any = false;
+      for (y = 0; y < sh; y++) for (x = 0; x < sw; x++) {
+        i = y * sw + x; if (has[i]) continue;
+        var r = 0, g = 0, b = 0, k = 0, nb = [x > 0 ? i - 1 : -1, x < sw - 1 ? i + 1 : -1, y > 0 ? i - sw : -1, y < sh - 1 ? i + sw : -1];
+        for (var t = 0; t < 4; t++) if (nb[t] >= 0 && has[nb[t]]) { r += col[nb[t] * 3]; g += col[nb[t] * 3 + 1]; b += col[nb[t] * 3 + 2]; k++; }
+        if (k) add.push(i, r / k, g / k, b / k);
+      }
+      for (t = 0; t < add.length; t += 4) { i = add[t]; col[i * 3] = add[t + 1]; col[i * 3 + 1] = add[t + 2]; col[i * 3 + 2] = add[t + 3]; has[i] = 1; any = true; }
+      if (!any) break;
+    }
+    for (y = 0; y < h; y++) for (x = 0; x < w; x++) {
+      j = (y * w + x) * 4;
+      if (!keep[y * w + x]) {               // blend the four nearest fill cells so the spread colour has no blocks
+        var fx = Math.min(sw - 1.001, Math.max(0, x / q - 0.5)), fy = Math.min(sh - 1.001, Math.max(0, y / q - 0.5));
+        var ix = fx | 0, iy = fy | 0, ux = fx - ix, uy = fy - iy, i00 = (iy * sw + ix) * 3, i10 = i00 + 3, i01 = i00 + sw * 3, i11 = i01 + 3;
+        for (var ch2 = 0; ch2 < 3; ch2++)
+          d[j + ch2] = (col[i00 + ch2] * (1 - ux) + col[i10 + ch2] * ux) * (1 - uy) + (col[i01 + ch2] * (1 - ux) + col[i11 + ch2] * ux) * uy;
+      }
+      d[j + 3] = 255;
+    }
+    return id;
+  }
+  function cutTo(id, mask) {               // the shared outline, with a one pixel soft edge
+    var w = id.width, h = id.height, d = id.data, x, y, k;
+    for (y = 0; y < h; y++) for (x = 0; x < w; x++) {
+      var s = 0, c = 0;
+      for (k = -1; k <= 1; k++) for (var l = -1; l <= 1; l++) {
+        var px = x + l, py = y + k; if (px < 0 || py < 0 || px >= w || py >= h) { c++; continue; }
+        s += mask[py * w + px]; c++;
+      }
+      d[(y * w + x) * 4 + 3] = 255 * s / c;
+    }
+    var out = blank(w, h); out.getContext('2d').putImageData(id, 0, 0);
+    return out;
+  }
+  // A back for a piece that was only drawn from the front: the mirrored front with its print lifted out.
+  // Print pixels are the ones far brighter or darker than the cloth around them; each is refilled from the
+  // cloth just above and below it, which keeps the knit or fleece texture running through.
+  function unprinted(c) {
+    var w = c.width, h = c.height, id = pixels(c), d = id.data, q = 6, sw = Math.ceil(w / q), sh = Math.ceil(h / q), x, y, i, j;
+    var lum = new Float32Array(sw * sh), ok = new Uint8Array(sw * sh);
+    for (y = 0; y < sh; y++) for (x = 0; x < sw; x++) {
+      j = (Math.min(h - 1, y * q + 3) * w + Math.min(w - 1, x * q + 3)) * 4;
+      if (d[j + 3] > 200) { lum[y * sw + x] = (d[j] + d[j + 1] + d[j + 2]) / 3; ok[y * sw + x] = 1; }
+    }
+    var med = new Float32Array(sw * sh), list = [], R = 9;
+    for (y = 0; y < sh; y++) for (x = 0; x < sw; x++) {
+      list.length = 0;
+      for (var dy = -R; dy <= R; dy += 2) for (var dx = -R; dx <= R; dx += 2) {
+        var px = x + dx, py = y + dy; if (px < 0 || py < 0 || px >= sw || py >= sh || !ok[py * sw + px]) continue;
+        list.push(lum[py * sw + px]);
+      }
+      list.sort(function (a, b) { return a - b; });
+      med[y * sw + x] = list.length ? list[list.length >> 1] : -1;
+    }
+    var mark = new Uint8Array(w * h);
+    for (y = 0; y < h; y++) for (x = 0; x < w; x++) {
+      j = (y * w + x) * 4; if (d[j + 3] < 200) continue;
+      var m = med[(y / q | 0) * sw + (x / q | 0)];
+      if (m >= 0 && Math.abs((d[j] + d[j + 1] + d[j + 2]) / 3 - m) > 60) mark[y * w + x] = 1;
+    }
+    mark = shrink(mark, w, h, 5, true);
+    var src = new Uint8ClampedArray(d);
+    function good(px, py) { return py >= 0 && py < h && !mark[py * w + px] && src[(py * w + px) * 4 + 3] > 200; }
+    for (x = 0; x < w; x++) {
+      y = 0;
+      while (y < h) {
+        if (!mark[y * w + x]) { y++; continue; }
+        var y0 = y; while (y < h && mark[y * w + x]) y++;
+        var y1 = y - 1, len = y1 - y0 + 1;
+        for (var yy = y0; yy <= y1; yy++) {
+          var up = y0 - 1 - (yy - y0), dn = y1 + 1 + (y1 - yy), t = (yy - y0 + 0.5) / len;
+          var gu = good(x, up), gd = good(x, dn);
+          if (!gu && !gd) { up = y0 - 1; dn = y1 + 1; gu = good(x, up); gd = good(x, dn); if (!gu && !gd) continue; }
+          if (!gu) t = 1; if (!gd) t = 0;
+          var a = (up * w + x) * 4, b = (dn * w + x) * 4; j = (yy * w + x) * 4;
+          for (var ch = 0; ch < 3; ch++) d[j + ch] = (gu ? src[a + ch] * (1 - t) : 0) + (gd ? src[b + ch] * t : 0);
+        }
+      }
+    }
+    var out = blank(w, h); out.getContext('2d').putImageData(id, 0, 0);
+    return out;
+  }
+
+  // the two faces of one body: textures cut to the same outline, front as drawn and back as seen from behind
+  function faces(frontImg, backImg) {
+    var w = frontImg.naturalWidth, h = frontImg.naturalHeight;
+    var f = drawn(frontImg, w, h), fm = solidMask(pixels(f), 128), fmBack = flipMask(fm, w, h), b, bm;
+    if (backImg) {
+      // stretch the drawn back so it fills the same box as the front does when seen from behind
+      var raw = drawn(backImg, w, h), rb = box(solidMask(pixels(raw), 128), w, h), tb = box(fmBack, w, h);
+      b = blank(w, h);
+      b.getContext('2d', { willReadFrequently: true }).drawImage(raw, rb[0], rb[1], rb[2] - rb[0], rb[3] - rb[1], tb[0], tb[1], tb[2] - tb[0], tb[3] - tb[1]);
+      bm = solidMask(pixels(b), 128);
+      for (var i = 0; i < w * h; i++) bm[i] = bm[i] | fmBack[i];        // one outline for both faces
+    } else {
+      b = unprinted(drawn(frontImg, w, h, true));
+      bm = fmBack;
+    }
+    bm = shrink(bm, w, h, 1);
+    var fmAll = flipMask(bm, w, h);
+    return { w: w, h: h, front: cutTo(fabric(f), fmAll), back: cutTo(fabric(b), bm), frontMask: fmAll, backMask: bm };
+  }
+
+  // how far each point sits from the outline, turned into a rounded thickness
+  function heights(mask, w, h, form) {
+    var cw = 220, ch = Math.round(cw * h / w), d = new Float32Array(cw * ch), x, y, i, BIG = 1e4;
+    for (y = 0; y < ch; y++) for (x = 0; x < cw; x++) {
+      var px = Math.round(x / (cw - 1) * (w - 1)), py = Math.round(y / (ch - 1) * (h - 1));
+      d[y * cw + x] = mask[py * w + px] ? BIG : 0;
+    }
     function at(px, py) { return px < 0 || py < 0 || px >= cw || py >= ch ? 0 : d[py * cw + px]; }
     for (y = 0; y < ch; y++) for (x = 0; x < cw; x++) { i = y * cw + x; if (d[i]) d[i] = Math.min(d[i], at(x - 1, y) + 1, at(x, y - 1) + 1, at(x - 1, y - 1) + 1.41, at(x + 1, y - 1) + 1.41); }
     for (y = ch - 1; y >= 0; y--) for (x = cw - 1; x >= 0; x--) { i = y * cw + x; if (d[i]) d[i] = Math.min(d[i], at(x + 1, y) + 1, at(x, y + 1) + 1, at(x + 1, y + 1) + 1.41, at(x - 1, y + 1) + 1.41); }
-    var R = cw * 0.16, depth = 0.15 * Math.min(1, (wh[0] / wh[1]) / 0.8), z = new Float32Array(cw * ch);
-    for (i = 0; i < cw * ch; i++) { var t = 1 - Math.min(d[i] / R, 1); z[i] = depth * Math.sqrt(1 - t * t); }
-    var SEAL = 0.03;   // the two halves overlap a little at the outline, so no gap shows at the seam
-    for (var pass = 0; pass < 3; pass++) {       // soften the steps: a box blur across, then down
-      var o = new Float32Array(cw * ch), r = 3, k, sum, n;
-      for (y = 0; y < ch; y++) for (x = 0; x < cw; x++) {
-        sum = 0; n = 0;
-        for (k = -r; k <= r; k++) if (x + k >= 0 && x + k < cw) { sum += z[y * cw + x + k]; n++; }
-        o[y * cw + x] = sum / n;
-      }
-      for (y = 0; y < ch; y++) for (x = 0; x < cw; x++) {
-        sum = 0; n = 0;
-        for (k = -r; k <= r; k++) if (y + k >= 0 && y + k < ch) { sum += o[(y + k) * cw + x]; n++; }
-        z[y * cw + x] = sum / n;
+    function soften(a, r, passes) {            // a box blur across, then down
+      for (var pass = 0; pass < passes; pass++) {
+        var o = new Float32Array(cw * ch), k, sum, n;
+        for (y = 0; y < ch; y++) for (x = 0; x < cw; x++) {
+          sum = 0; n = 0;
+          for (k = -r; k <= r; k++) if (x + k >= 0 && x + k < cw) { sum += a[y * cw + x + k]; n++; }
+          o[y * cw + x] = sum / n;
+        }
+        for (y = 0; y < ch; y++) for (x = 0; x < cw; x++) {
+          sum = 0; n = 0;
+          for (k = -r; k <= r; k++) if (y + k >= 0 && y + k < ch) { sum += o[(y + k) * cw + x]; n++; }
+          a[y * cw + x] = sum / n;
+        }
       }
     }
-    for (i = 0; i < cw * ch; i++) z[i] -= SEAL;
+    // Smooth the distances first, so the rim follows the outline in one clean curve, and start the body a
+    // step inside the outline: it comes down to nothing just before the edge, where the two halves close.
+    soften(d, 2, 2);
+    var R = cw * form.round, z = new Float32Array(cw * ch);
+    for (i = 0; i < cw * ch; i++) { var t = 1 - Math.min(Math.max(d[i] - 1.8, 0) / R, 1); z[i] = form.depth * Math.sqrt(1 - t * t); }
+    soften(z, 1, 1);
+    for (i = 0; i < cw * ch; i++) z[i] -= 0.012;
     return { cw: cw, ch: ch, z: z };
   }
-  // the back of a piece that was only drawn from the front: the same outline, mirrored, with the print and
-  // cords taken out by a median filter so only the fabric and its shading are left
-  function plainBack(img, tone) {
-    var wh = size(img), sw = 120, sh = Math.round(sw * wh[1] / wh[0]), R = 9;
-    var small = document.createElement('canvas'); small.width = sw; small.height = sh;
-    var sg = small.getContext('2d', { willReadFrequently: true });
-    sg.translate(sw, 0); sg.scale(-1, 1); sg.drawImage(img, 0, 0, sw, sh); sg.setTransform(1, 0, 0, 1, 0, 0);
-    var id = sg.getImageData(0, 0, sw, sh), a = id.data, out = new Uint8ClampedArray(a.length), x, y, dx, dy, list = [];
-    var base = PLAIN[tone] || PLAIN.bone, fill = [parseInt(base.slice(1, 3), 16), parseInt(base.slice(3, 5), 16), parseInt(base.slice(5, 7), 16)];
-    for (y = 0; y < sh; y++) for (x = 0; x < sw; x++) {
-      list.length = 0;
-      for (dy = -R; dy <= R; dy += 2) for (dx = -R; dx <= R; dx += 2) {
-        var px = x + dx, py = y + dy; if (px < 0 || py < 0 || px >= sw || py >= sh) continue;
-        var j = (py * sw + px) * 4; if (a[j + 3] > 200) list.push(a[j] + a[j + 1] + a[j + 2]);
-      }
-      var o = (y * sw + x) * 4, lum;
-      if (list.length) { list.sort(function (p, q) { return p - q; }); lum = list[list.length >> 1] / 3; }
-      else lum = (fill[0] + fill[1] + fill[2]) / 3;
-      var scale = lum / ((fill[0] + fill[1] + fill[2]) / 3);      // keep the fabric colour, carry over the light and shade
-      out[o] = fill[0] * scale; out[o + 1] = fill[1] * scale; out[o + 2] = fill[2] * scale; out[o + 3] = 255;
-    }
-    id.data.set(out); sg.putImageData(id, 0, 0);
-    var c = document.createElement('canvas'); c.width = wh[0]; c.height = wh[1];
-    var g = c.getContext('2d');
-    g.translate(wh[0], 0); g.scale(-1, 1); g.drawImage(img, 0, 0); g.setTransform(1, 0, 0, 1, 0, 0);
-    g.globalCompositeOperation = 'source-in'; g.imageSmoothingQuality = 'high'; g.drawImage(small, 0, 0, wh[0], wh[1]);
-    return c;
-  }
-  function shell(src, tone) {
-    var hf = heights(src), wh = size(src);
-    var geo = new T.PlaneGeometry(2 * wh[0] / wh[1], 2, hf.cw - 1, hf.ch - 1), pos = geo.attributes.position;
+  function shell(tex, mask, w, h, form, tone) {
+    var hf = heights(mask, w, h, form);
+    var geo = new T.PlaneGeometry(2 * w / h, 2, hf.cw - 1, hf.ch - 1), pos = geo.attributes.position;
     for (var i = 0; i < pos.count; i++) pos.setZ(i, hf.z[i]);
     geo.computeVertexNormals();
-    var tex = new T.Texture(src); tex.encoding = T.sRGBEncoding; tex.anisotropy = renderer.capabilities.getMaxAnisotropy(); tex.needsUpdate = true;
-    var mat = new T.MeshPhongMaterial({ map: tex, alphaTest: 0.5, shininess: tone === 'black' ? 7 : 4,
+    var map = new T.Texture(tex); map.encoding = T.sRGBEncoding; map.anisotropy = renderer.capabilities.getMaxAnisotropy(); map.needsUpdate = true;
+    var mat = new T.MeshPhongMaterial({ map: map, alphaTest: 0.5, shininess: tone === 'black' ? 7 : 4,
       specular: new T.Color(tone === 'black' ? 0x191715 : 0x0c0b0a) });
     return new T.Mesh(geo, mat);
   }
@@ -139,9 +275,9 @@
     renderer = new T.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
     renderer.outputEncoding = T.sRGBEncoding; renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     scene = new T.Scene(); camera = new T.PerspectiveCamera(30, 1, 0.1, 50);
-    scene.add(new T.AmbientLight(0xffffff, 0.66));
-    var key = new T.DirectionalLight(0xffffff, 0.5); key.position.set(-1.6, 2.2, 4); scene.add(key);
-    var rim = new T.DirectionalLight(0xffffff, 0.18); rim.position.set(3, 0.5, 1.5); scene.add(rim);
+    scene.add(new T.AmbientLight(0xffffff, 0.6));
+    var key = new T.DirectionalLight(0xffffff, 0.58); key.position.set(-1.6, 2.2, 4); scene.add(key);
+    var rim = new T.DirectionalLight(0xffffff, 0.2); rim.position.set(3, 0.5, 1.5); scene.add(rim);
   }
   function fit() {
     var w = stage.clientWidth, h = stage.clientHeight;
@@ -164,7 +300,6 @@
 
   function show(i) {
     var it = items[i], mine = ++token;
-    current = i;
     items.forEach(function (o, k) { o.button.setAttribute('aria-pressed', String(k === i)); });
     nameEl.textContent = it.name; priceEl.textContent = it.price; factsEl.textContent = it.facts;
     hint.textContent = 'Loading';
@@ -173,16 +308,17 @@
       if (mine !== token) return;
       T = r[0];
       if (!renderer) setup();
+      if (!it.faces) it.faces = faces(r[1], r[2]);
+      var fc = it.faces, form = FORMS[formOf(it.name)];
       clear();
-      var front = r[1], wh = size(front);
-      ar = wh[0] / wh[1];
+      ar = fc.w / fc.h;
       model = new T.Group();
-      model.add(shell(front, it.tone));
-      var back = shell(r[2] || plainBack(front, it.tone), it.tone); back.rotation.y = Math.PI; model.add(back);
+      model.add(shell(fc.front, fc.frontMask, fc.w, fc.h, form, it.tone));
+      var back = shell(fc.back, fc.backMask, fc.w, fc.h, form, it.tone); back.rotation.y = Math.PI; model.add(back);
       scene.add(model);
       yaw = -0.5; pitch = 0.06; vyaw = 0; zoom = 1; lastTouch = performance.now() - 1200;
       fit();
-      hint.textContent = it.back ? 'Drag to rotate. Scroll or pinch to zoom.' : 'Drag to rotate. The back of this piece is plain.';
+      hint.textContent = 'Drag to rotate. Scroll or pinch to zoom.';
       if (!raf) raf = requestAnimationFrame(frame);
     }).catch(function () {          // no WebGL or a blocked file: show the piece flat instead of nothing
       if (mine !== token) return;
@@ -194,6 +330,7 @@
     show(i);
   }
   window.mtOpenViewer = open;
+  window.mtViewerTurn = function (y, p) { yaw = y; pitch = p || 0; vyaw = 0; lastTouch = performance.now() + 1e7; };   // for checks
 
   // drag to rotate, with a throw; two fingers or the wheel to zoom
   var pts = {}, pinch = 0;
