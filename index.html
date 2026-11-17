@@ -1,372 +1,708 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-type="product" data-radius="soft" data-buttons="solid" data-motion>
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
-<meta property="og:title" content="Motion Therapy">
-<meta property="og:description" content="Movement fuels a better mind. Drop 01 lands December 4 at AWB.">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Motion Therapy: black and bone streetwear, Drop 01 on December 4</title>
+<meta name="description" content="Six pieces from a student-led clothing brand, from $12 to $39, sold in person at the AWB trade show on December 4 from 9 AM to 4 PM.">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://lliang09116.github.io/motiontherapy/img/lily-hoodie.jpg">
-<meta name="theme-color" content="#ECE3D8">
-<title>Motion Therapy</title>
-<meta name="description" content="Motion Therapy. Movement fuels a better mind. Drop 01 lands December 4.">
+<meta property="og:title" content="Motion Therapy: Drop 01 at AWB on December 4">
+<meta property="og:description" content="Tees, hoodies, sweatpants and a beanie in black and bone, from $12. In person at AWB, 9 AM to 4 PM.">
+<meta property="og:image" content="https://wearmotiontherapy.github.io/share.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#e8e0d5">
+<link rel="canonical" href="https://wearmotiontherapy.github.io/">
+<meta name="site-kind" content="other">
+<meta name="page-type" content="product">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&family=Mrs+Saint+Delafield&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400..700&family=Archivo:wdth,wght@125,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/system.css">
+<link rel="stylesheet" href="assets/ui/cards.css">
+<link rel="stylesheet" href="assets/motion/motion.css">
+<link rel="stylesheet" href="assets/layout/layout.css">
 <style>
-/* Layout: an expanded-type wordmark hero over the lily hoodie, a training-split ticker, then the drop laid out like a garment line sheet. */
-:root{
-  --bone:#ECE3D8;      /* page ground, matches the cream garments */
-  --putty:#DCCBBE;     /* photo backdrop from the mockups */
-  --ink:#141210;       /* garment black */
-  --ink-soft:#554C45;
-  --rule:rgba(20,18,16,.18);
-  --bg:var(--bone); --fg:var(--ink); --muted:var(--ink-soft); --line:var(--rule);
-  --panel:#E3D8CB;
-  --invert-bg:var(--ink); --invert-fg:var(--bone);
-  --wide:"Archivo","Arial Black",system-ui,sans-serif;
-  --body:"Archivo",system-ui,-apple-system,"Segoe UI",sans-serif;
-  --script:"Mrs Saint Delafield","Brush Script MT",cursive;
+:root {
+  --p-bg: #e8e0d5; --p-surface: #ddd2c5; --p-ink: #151311; --p-muted: #5e554d;
+  --p-accent: #151311; --p-accent-ink: #e8e0d5; --p-action: #151311; --p-action-ink: #e8e0d5;
+  --p-inv-bg: #151311; --p-inv-surface: #211e1c; --p-inv-ink: #e8e0d5; --p-inv-muted: #8f8a83;
+  --p-inv-accent: #e8e0d5; --p-inv-accent-ink: #151311; --p-inv-action: #e8e0d5; --p-inv-action-ink: #151311;
+  --font-display: "Hanken Grotesk", system-ui, sans-serif;
+  --font-text: "Hanken Grotesk", system-ui, sans-serif;
+  --display-weight: 400;
+  --display-tracking: -0.03em;
+  --display-tracking-xl: -0.038em;
 }
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#12100E; --fg:#ECE3D8; --muted:#A99C90; --line:rgba(236,227,216,.16);
-  --panel:#1C1916; --invert-bg:#ECE3D8; --invert-fg:#12100E; color-scheme:dark}}
-:root[data-theme="dark"]{
-  --bg:#12100E; --fg:#ECE3D8; --muted:#A99C90; --line:rgba(236,227,216,.16);
-  --panel:#1C1916; --invert-bg:#ECE3D8; --invert-fg:#12100E; color-scheme:dark}
+</style>
+<script>document.documentElement.classList.add('m-enter');setTimeout(()=>document.documentElement.classList.add('m-enter-done'),700)</script>
+<script>document.documentElement.classList.add('mo-js');setTimeout(()=>document.documentElement.classList.add('mo-safe'),2500)</script>
+<link rel="modulepreload" href="assets/moments/moments.js">
+<link rel="modulepreload" href="assets/moments/lib.js">
+<link rel="modulepreload" href="assets/moments/pinned-chapters/moment.js">
+<link rel="modulepreload" href="assets/moments/word-highlight/moment.js">
+<style>
+  /* the client's own wordmark: wide, heavy capitals, as on every garment */
+  .wordmark { font-family: "Archivo", "Hanken Grotesk", sans-serif; font-stretch: 125%; font-weight: 700; text-transform: uppercase; letter-spacing: 0.02em; line-height: 1; white-space: nowrap; }
+  .wordmark sup { font-size: 0.45em; font-weight: 700; margin-left: 0.08em; vertical-align: 0.9em; }
+  .nav__logo.wordmark { font-size: 15px; }
+  .footer .nav__logo.wordmark { font-size: clamp(24px, 2.6vw, 40px); white-space: normal; line-height: 1.05; }
+  ::selection { background: var(--p-ink); color: var(--p-bg); }
+  html { caret-color: var(--p-ink); scrollbar-color: color-mix(in oklab, var(--p-ink) 40%, transparent) var(--p-bg); }
+  /* collection tiles: one ratio for the row, the mockups' own backdrop behind them */
+  #collection .tile { --tile-ratio: 6 / 7; }
+  #collection .tile__media { background: #dccbbe; }
+  /* turnable pieces: a cut-out front and back on a slab of fabric-coloured slices, dragged around its own axis */
+  .spin { touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; --edge: #cbbba8; }
+  .spin[data-tone="black"] { --edge: #0c0b0a; }
+  .spin.is-held { cursor: grabbing; }
+  .spin__stage { position: absolute; inset: 9% 9% 13%; container-type: size; display: grid; place-items: center; perspective: 900px; }
+  .spin__body { position: relative; width: min(100cqw, 100cqh * var(--ar)); aspect-ratio: var(--ar); transform-style: preserve-3d; transform: rotateY(var(--a, 0deg)); }
+  .spin__body > * { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .spin .spin__face { object-fit: contain; backface-visibility: hidden; -webkit-backface-visibility: hidden; filter: brightness(var(--lit, 1)); transform: translateZ(9px); transition: none; pointer-events: none; }
+  .spin .spin__face--back { transform: rotateY(180deg) translateZ(9px); }
+  .spin__slice { background: var(--edge); -webkit-mask: var(--m) center / contain no-repeat; mask: var(--m) center / contain no-repeat; transform: translateZ(var(--z)); }
+  .spin__shadow { position: absolute; left: 50%; bottom: 7.5%; width: 46%; height: 5%; border-radius: 50%; background: radial-gradient(closest-side, rgb(40 28 18 / 0.34), transparent); transform: translateX(-50%) scaleX(var(--sh, 1)); }
+  .spin__turn { position: absolute; right: var(--s-3); bottom: var(--s-3); min-height: 36px; padding: 0 14px; border-radius: 999px; border: 1px solid color-mix(in oklab, var(--ink) 18%, transparent); background: color-mix(in oklab, var(--bg) 82%, transparent); color: var(--ink); font: inherit; font-size: 13px; cursor: pointer; transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1); }
+  @media (max-width: 640px) { .spin__stage { inset: 6% 6% 12%; } .spin__turn { right: 6px; bottom: 6px; min-height: 30px; padding: 0 10px; font-size: 12px; } }
+  .spin__turn::after { content: ""; position: absolute; inset: -6px; }
+  .spin__turn:active { transform: scale(0.97); }
+  /* sweatpants colour swatches: the picture follows the colour */
+  .swatches { display: flex; gap: var(--s-3); align-items: center; }
+  .swatch { width: 28px; height: 28px; border-radius: 50%; border: 1px solid color-mix(in oklab, var(--ink) 25%, transparent); padding: 0; cursor: pointer; position: relative; transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1); }
+  .swatch::after { content: ""; position: absolute; inset: -9px; }
+  .swatch:active { transform: scale(0.94); }
+  .swatch[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--bg), 0 0 0 3.5px var(--ink); }
+  .swatch--black { background: #151311; }
+  .swatch--bone { background: #e3d7c8; }
+  .tile__foot { display: flex; justify-content: space-between; align-items: center; gap: var(--s-4); }
+  /* the detail strip: four square close-ups from line to line */
+  .strip { margin-top: var(--s-7); }
+  .strip .grid { align-items: start; }
+  .strip .shot { height: clamp(260px, 49svh, 440px); border-radius: var(--r-lg); overflow: hidden; background: #dccbbe; }
+  .strip .shot img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  /* the set: two photographs, one ratio, tops level */
+  #set .pair .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  #set .pair .shot { grid-column: auto; height: clamp(205px, 56svh - 40px, 500px); border-radius: var(--r-lg); overflow: hidden; background: #dccbbe; }
+  #set .pair .shot img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  #set .pair { margin-top: var(--s-7); }
+  /* the drop: the date set large, the rows under it, the beanie beside */
+  .type-moment { font: var(--display-weight) clamp(44px, 6.4vw, 96px)/1.02 var(--font-display); letter-spacing: -0.035em; margin: var(--s-6) 0 var(--s-7); text-wrap: balance; }
+  #drop .shot { border-radius: var(--r-lg); overflow: hidden; background: #dccbbe; height: 100%; max-height: 600px; }
+  #drop .shot img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .mo-pc__visual img { object-fit: cover; }
+  /* blackjack: the table is one dark panel beside the words */
+  .bj { background: var(--p-ink); color: var(--p-bg); border-radius: var(--r-lg); padding: var(--s-6); display: grid; gap: var(--s-5); align-content: start; min-height: 520px; }
+  .bj__row { display: grid; gap: var(--s-3); }
+  .bj__label { display: flex; justify-content: space-between; align-items: baseline; font: 500 var(--t-small)/1.2 var(--font-text); color: var(--p-inv-muted); }
+  .bj__total { font-variant-numeric: tabular-nums; color: var(--p-bg); }
+  .bj__cards { display: flex; gap: var(--s-3); min-height: 104px; flex-wrap: wrap; }
+  .bj-card { width: 74px; height: 104px; border-radius: 8px; background: var(--p-bg); color: var(--p-ink); position: relative; flex: none; font: 600 22px/1 var(--font-text); box-shadow: 0 6px 14px -8px rgba(0, 0, 0, 0.6); }
+  .bj-card__rank { position: absolute; top: 9px; left: 10px; letter-spacing: -0.02em; }
+  .bj-card__suit { position: absolute; bottom: 8px; right: 10px; font-size: 30px; }
+  .bj-card--soft { color: #6b5a4b; }
+  .bj-card--back { background: var(--p-inv-surface); border: 1px solid color-mix(in oklab, var(--p-bg) 30%, transparent); display: grid; place-items: center; box-shadow: none; }
+  .bj-card--back span { font: 700 13px/1 "Archivo", sans-serif; font-stretch: 125%; font-style: italic; color: color-mix(in oklab, var(--p-bg) 60%, transparent); }
+  .bj__status { font: var(--display-weight) 24px/1.25 var(--font-display); letter-spacing: -0.02em; min-height: 60px; margin: 0; }
+  .bj__actions { display: flex; gap: var(--s-3); flex-wrap: wrap; }
+  .bj .btn { transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1); }
+  .bj .btn:active { transform: scale(0.97); }
+  .bj .btn[disabled] { opacity: 0.4; pointer-events: none; }
+  .bj__claim { display: grid; gap: var(--s-4); }
+  .bj__claim .field input { background: var(--p-inv-surface); color: var(--p-bg); border-color: color-mix(in oklab, var(--p-bg) 35%, transparent); }
+  .bj__code { font: 700 clamp(28px, 4vw, 44px)/1 "Archivo", sans-serif; font-stretch: 125%; letter-spacing: 0.04em; margin: 0; user-select: all; }
+  .bj__note { font-size: var(--t-small); color: var(--p-inv-muted); margin: 0; }
+  .bj__terms { font-size: var(--t-small); color: var(--muted); max-width: 44ch; }
+  #play .steps { margin: var(--s-6) 0; padding: 0; list-style: none; display: grid; gap: var(--s-3); max-width: 44ch; }
+  #play .steps li { display: grid; grid-template-columns: 28px 1fr; gap: var(--s-3); }
+  #play .steps b { font-weight: 500; font-variant-numeric: tabular-nums; color: var(--muted); }
+  @media (max-width: 1023px) { .bj { margin-top: var(--s-6); min-height: 0; } }
+  @media (max-width: 639px) {
+    .bj { padding: var(--s-5); }
+    .bj-card { width: 52px; height: 74px; font-size: 17px; }
+    .bj-card__suit { font-size: 24px; }
+    .bj__cards { min-height: 74px; gap: var(--s-2); }
+    .bj__actions { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: var(--s-2); }
+    .bj__actions .btn { width: auto; min-width: 0; padding-inline: var(--s-2); }
+    .bj__claim .bj__actions { grid-template-columns: 1fr; }
+  }
 
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
-a{color:inherit}
-:focus-visible{outline:2px solid var(--fg);outline-offset:3px}
-.wrap{max-width:1240px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
-.wide{font-family:var(--wide);font-stretch:125%;font-weight:800;text-transform:uppercase;letter-spacing:-.01em;line-height:.92}
-.label{font-size:.72rem;letter-spacing:.32em;text-transform:uppercase;font-weight:500}
-.muted{color:var(--muted)}
-.reg{font-size:.32em;vertical-align:super;font-weight:600;letter-spacing:0}
-
-/* header */
-body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
-header{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
-.bar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:14px}
-.mono{display:inline-grid;place-items:center;width:34px;height:34px;background:var(--fg);color:var(--bg);font-family:var(--wide);font-stretch:125%;font-weight:900;font-style:italic;font-size:.8rem;letter-spacing:-.04em}
-.brand{display:flex;align-items:center;gap:12px;text-decoration:none}
-.brand span:last-child{font-family:var(--wide);font-stretch:125%;font-weight:700;font-size:.8rem;letter-spacing:.14em;text-transform:uppercase}
-nav{display:flex;gap:24px}
-nav a{text-decoration:none;font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;font-weight:500}
-nav a:hover{text-decoration:underline;text-underline-offset:4px}
-@media (max-width:640px){nav a:not(.cta-link){display:none}.brand span:last-child{display:none}}
-
-/* hero */
-.hero{padding-block:clamp(40px,7vw,88px) 0}
-.hero h1{margin:0;font-size:clamp(2.7rem,11.4vw,9.6rem);text-wrap:balance}
-.tagline{margin:18px 0 0;font-size:clamp(.7rem,1.4vw,.95rem);letter-spacing:.5em;text-transform:uppercase;font-weight:500}
-.hero-grid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:clamp(20px,3vw,40px);margin-top:clamp(28px,4vw,48px);align-items:stretch}
-.hero-img{background:var(--putty);overflow:hidden;aspect-ratio:4/3;max-width:100%}
-.hero-img img{width:100%;height:100%;object-fit:cover;display:block}
-.drop-card{background:var(--invert-bg);color:var(--invert-fg);padding:clamp(22px,3vw,36px);display:flex;flex-direction:column;justify-content:space-between;gap:28px;min-width:0}
-.drop-card .script{font-family:var(--script);font-size:clamp(3rem,6vw,4.6rem);line-height:.8;margin:6px 0 0;font-weight:400}
-.drop-card h2{margin:10px 0 0;font-size:clamp(1.6rem,3.2vw,2.5rem)}
-.count{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;border-top:1px solid color-mix(in srgb,var(--invert-fg) 25%,transparent);padding-top:18px}
-.count div{display:flex;flex-direction:column;gap:4px}
-.count b{font-family:var(--wide);font-stretch:125%;font-weight:800;font-size:clamp(1.5rem,3vw,2.2rem);font-variant-numeric:tabular-nums;line-height:1}
-.count span{font-size:.62rem;letter-spacing:.26em;text-transform:uppercase;opacity:.7}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:14px 22px;border:1px solid currentColor;text-decoration:none;font-size:.72rem;letter-spacing:.26em;text-transform:uppercase;font-weight:600;transition:background .2s,color .2s}
-.drop-card .btn:hover{background:var(--invert-fg);color:var(--invert-bg)}
-@media (max-width:820px){.hero-grid{grid-template-columns:1fr}}
-
-/* ticker */
-.ticker{margin-top:clamp(40px,6vw,72px);border-block:1px solid var(--line);overflow:hidden;white-space:nowrap}
-.ticker-track{display:inline-flex;gap:48px;padding-block:16px;animation:slide 32s linear infinite}
-.ticker-track span{font-family:var(--wide);font-stretch:125%;font-weight:700;font-size:.9rem;letter-spacing:.3em;text-transform:uppercase}
-.ticker-track i{font-style:normal;opacity:.4}
-@keyframes slide{to{transform:translateX(-50%)}}
-@media (prefers-reduced-motion:reduce){.ticker-track{animation:none}}
-
-/* collection */
-section{padding-block:clamp(56px,8vw,104px)}
-.sec-head{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:clamp(28px,4vw,48px)}
-.sec-head h2{margin:8px 0 0;font-size:clamp(2rem,5.4vw,4rem)}
-.sec-head p{max-width:38ch;margin:0}
-.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(16px,2.4vw,28px)}
-@media (max-width:900px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:560px){.grid{grid-template-columns:1fr}}
-.piece{display:flex;flex-direction:column;gap:14px;min-width:0}
-.piece figure{margin:0;background:var(--putty);aspect-ratio:4/5;overflow:hidden;position:relative;max-width:100%}
-.piece figure img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s ease}
-.piece:hover figure img{transform:scale(1.03)}
-@media (prefers-reduced-motion:reduce){.piece figure img{transition:none}.piece:hover figure img{transform:none}}
-.tag{position:absolute;bottom:12px;left:12px;background:var(--ink);color:var(--bone);font-size:.6rem;letter-spacing:.24em;text-transform:uppercase;padding:6px 9px;font-weight:600}
-.piece-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
-.piece h3{margin:0;font-family:var(--wide);font-stretch:112%;font-weight:700;font-size:1rem;letter-spacing:.06em;text-transform:uppercase}
-.piece .price{font-family:var(--wide);font-stretch:112%;font-weight:700;font-size:1rem;font-variant-numeric:tabular-nums;white-space:nowrap}
-.set{margin-top:clamp(28px,4vw,44px);display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:clamp(16px,3vw,40px);align-items:center;border:1px solid var(--fg);padding:clamp(18px,2.6vw,28px)}
-.set h3{margin:0;font-size:clamp(1.3rem,3vw,2.2rem)}
-.set p{margin:0;color:var(--muted);max-width:48ch}
-.set .price{font-family:var(--wide);font-stretch:125%;font-weight:800;font-size:clamp(2rem,5vw,3.4rem);line-height:1}
-@media (max-width:640px){.set{grid-template-columns:1fr}}
-.piece p{margin:0;font-size:.92rem;color:var(--muted);max-width:42ch}
-.specs{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;font-weight:500;border-top:1px solid var(--line);padding-top:12px}
-.swatches{display:flex;gap:8px;align-items:center}
-.swatch{width:22px;height:22px;border-radius:50%;border:1px solid var(--line);cursor:pointer;padding:0;position:relative}
-.swatch[aria-pressed="true"]{outline:1.5px solid var(--fg);outline-offset:3px}
-.swatch.black{background:#141210}.swatch.cream{background:#E6DACB}
-
-/* ethos */
-.ethos{background:var(--invert-bg);color:var(--invert-fg)}
-.ethos-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(28px,5vw,72px);align-items:center}
-@media (max-width:820px){.ethos-grid{grid-template-columns:1fr}}
-.ethos .script{font-family:var(--script);font-size:clamp(3.4rem,8vw,6.6rem);line-height:.85;margin:0}
-.ethos h2{margin:14px 0 0;font-size:clamp(1.5rem,3.6vw,2.6rem)}
-.ethos p{max-width:56ch;margin:0 0 16px;opacity:.85}
-.split{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid color-mix(in srgb,var(--invert-fg) 25%,transparent);margin-top:28px}
-.split div{padding:16px 10px 0 0;display:flex;flex-direction:column;gap:6px}
-.split b{font-family:var(--wide);font-stretch:125%;font-weight:700;font-size:.78rem;letter-spacing:.16em;text-transform:uppercase}
-.split span{font-size:.8rem;opacity:.65;line-height:1.4}
-@media (max-width:480px){.split{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:16px}}
-
-/* drop info */
-.info{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--fg)}
-.info>div{padding:22px 22px 26px 0;display:flex;flex-direction:column;gap:10px;min-width:0}
-.info>div+div{border-left:1px solid var(--line);padding-left:22px}
-.info h3{margin:0;font-family:var(--wide);font-stretch:125%;font-weight:800;font-size:clamp(1.2rem,2.4vw,1.7rem);text-transform:uppercase;line-height:1}
-.info p{margin:0;color:var(--muted);font-size:.95rem}
-@media (max-width:760px){.info{grid-template-columns:1fr}.info>div+div{border-left:0;border-top:1px solid var(--line);padding-left:0}}
-.tbd{display:inline-block;border:1px dashed var(--muted);padding:2px 8px;font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);width:max-content}
-
-/* footer */
-footer{border-top:1px solid var(--line);padding-block:40px 32px}
-.foot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;align-items:end}
-.foot .big{font-size:clamp(2.2rem,8vw,6rem);margin:0}
-.coords{font-size:.7rem;letter-spacing:.26em;text-transform:uppercase;color:var(--muted);display:flex;flex-direction:column;gap:6px;text-align:right}
-@media (max-width:560px){.coords{text-align:left}}
+  /* tablets keep the three-up and four-up rows, so each section stays on its screens */
+  @media (min-width: 640px) and (max-width: 1279px) {
+    #collection .grid > .tile.span-4 { grid-column: span 4; }
+  }
+  @media (min-width: 1024px) and (max-width: 1279px) { .strip .grid > .shot--a { grid-column: span 5; } .strip .grid > .shot--b { grid-column: span 4; } .strip .grid > .shot--c { grid-column: span 3; } }
+  @media (min-width: 640px) and (max-width: 1023px) {
+    #collection { --h: 1; }
+    main > #collection.g2 > .wrap { display: flex; flex-direction: column; row-gap: var(--s-5); }
+    #collection .tile { --tile-ratio: 1; }
+    .strip .grid > .shot--a { grid-column: span 5; }
+    .strip .grid > .shot--b { grid-column: span 4; }
+    .strip .grid > .shot--c { grid-column: span 3; }
+    #drop .grid > .span-6:first-child { grid-column: 1 / span 6; }
+    #drop .grid > .shot { grid-column: 7 / -1; aspect-ratio: auto; height: 100%; max-height: none; margin-top: 0; }
+    #drop .type-moment { font-size: 40px; }
+    [data-moment="pinned-chapters"]#train:not(.is-live) .mo-pc__visual > img { max-height: 15svh; }
+    .btn--xl { height: var(--btn-h, 44px); font-size: 16px; }
+  }
+  @media (max-width: 1023px) {
+    #drop .shot { aspect-ratio: 4 / 3; height: auto; margin-top: var(--s-7); }
+  }
+  @media (max-width: 639px) {
+    main > #train[data-moment]:not(.is-live) { min-height: 200lvh; }
+    .strip .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .hero--product .hero__stage { aspect-ratio: 4 / 3; }
+    #collection .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    #collection .grid > .tile { grid-column: auto; }
+    #drop .shot { aspect-ratio: 16 / 9; margin-top: var(--s-6); }
+    .type-moment { margin: var(--s-4) 0 var(--s-5); }
+    .strip .grid > .shot--a { grid-column: 1 / -1; }
+    .strip .grid > .shot--b, .strip .grid > .shot--c { grid-column: auto; }
+    .strip .shot { height: 200px; }
+    .strip .shot--a { height: 240px; }
+    main > #collection > .wrap { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-5) var(--s-3); align-content: start; }
+    #collection .group, #collection .wrap > .grid, #collection .group > .grid { display: contents; }
+    #collection .section-head { grid-column: 1 / -1; }
+    #collection .tile { --tile-ratio: 1; }
+    #collection .tile__head > h3 { font-size: 16px; }
+    #collection .tile__foot { flex-wrap: wrap; }
+  }
 </style>
 </head>
 <body>
-<header>
-  <div class="wrap bar">
-    <a class="brand" href="#top" aria-label="Motion Therapy home"><span class="mono">MT</span><span>Motion Therapy®</span></a>
-    <nav aria-label="Main">
-      <a href="#collection">Collection</a>
-      <a href="#ethos">Ethos</a>
-      <a href="https://www.instagram.com/wearmotiontherapy/" target="_blank" rel="noopener">Instagram</a>
-      <a class="cta-link" href="#drop">Dec 4 Drop</a>
+<!-- type: product (site-kind other)
+     deal: hero product, nav nav-mega, close close-type, footer footer-dark, rhythm dark-band, buttons solid, mark wordmark (the client's own), grounds none
+     palette: the client's own black and bone (start.mjs brand), type hanken + the client's wordmark in Archivo
+     moments: pinned-chapters in #train (train, recover, grow: the brand's own cycle), word-highlight in #story (the brand line) -->
+<header class="nav">
+  <div class="wrap nav__bar">
+    <a class="skip-link" href="#top">Skip to content</a>
+    <a class="nav__logo wordmark" href="#top" aria-label="Motion Therapy home">Motion Therapy<sup aria-hidden="true">®</sup></a>
+    <nav class="nav__links" aria-label="Main">
+      <div class="nav__item">
+        <a class="nav__link" href="#collection">Collection <svg class="chev" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="nav__menu">
+          <div class="wrap grid">
+            <div class="menu-col span-3">
+              <p class="t-label">Tees and hoodies</p>
+              <a href="#collection">Signature Tee<span>Black, script logo, $18</span></a>
+              <a href="#collection">Summit Tee<span>Bone, mountain print, $18</span></a>
+              <a href="#collection">Lily Hoodie<span>Black fleece, lily print, $39</span></a>
+              <a href="#collection">Clean Contrast Hoodie<span>Bone fleece, $39</span></a>
+            </div>
+            <div class="menu-col span-3">
+              <p class="t-label">Bottoms and more</p>
+              <a href="#collection">Everyday Sweatpants<span>Black or bone, $32</span></a>
+              <a href="#collection">Ribbed Beanie<span>Bone, one size, $12</span></a>
+              <a href="#set">Matching set<span>Hoodie and sweatpants, $65</span></a>
+            </div>
+            <a class="menu-card span-3 start-10" href="#details">
+              <div class="panel"><img class="frame__img" src="img/n-contrast-back.jpg" alt="The back of the bone hoodie: the wordmark, Discipline Builds Freedom and a small globe" data-source="client" data-subject="hoodie back print"></div>
+              <span class="t-card">The back prints</span>
+              <span class="t-small muted">Every hoodie and tee</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="nav__item"><a class="nav__link" href="#details">Details</a></div>
+      <div class="nav__item"><a class="nav__link" href="#set">Set</a></div>
+      <div class="nav__item"><a class="nav__link" href="#play">Play</a></div>
+      <div class="nav__item"><a class="nav__link" href="#drop">Drop</a></div>
     </nav>
+    <div class="nav__actions">
+      <a class="btn btn--primary" href="https://www.instagram.com/wearmotiontherapy/" target="_blank" rel="noopener">Follow on Instagram</a>
+    </div>
+    <button class="nav__toggle" type="button" aria-expanded="false" aria-label="Menu">
+      <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M2 5h14M2 13h14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+    </button>
   </div>
 </header>
 
 <main id="top">
-  <div class="wrap hero">
-    <h1 class="wide">Motion Therapy<span class="reg">®</span></h1>
-    <p class="tagline">Movement fuels a better mind.</p>
-
-    <div class="hero-grid">
-      <div class="hero-img"><img src="img/lily-hoodie.jpg" alt="Black Motion Therapy hoodie, front and back. The back shows a cream lily illustration wrapped in a ribbon with the wordmark across it." width="1200" height="900"></div>
-      <aside class="drop-card" aria-labelledby="drop-title">
+  <section class="hero hero--product" data-enter aria-labelledby="hero-h">
+    <div class="wrap"><div class="hero-text hero__in">
+      <div class="hero__head">
         <div>
-          <span class="label">Drop 01 · First run</span>
-          <p class="script">Thursday</p>
-          <h2 class="wide" id="drop-title">December 4</h2>
+          <h1 id="hero-h">Streetwear that won&rsquo;t break the bank</h1>
+          <p class="hero__lead">Drop 01 launches on December 4th.</p>
         </div>
-        <div>
-          <div class="count" id="count" aria-live="off">
-            <div><b id="cd-d">--</b><span>Days</span></div>
-            <div><b id="cd-h">--</b><span>Hrs</span></div>
-            <div><b id="cd-m">--</b><span>Min</span></div>
-            <div><b id="cd-s">--</b><span>Sec</span></div>
-          </div>
-          <p id="count-note" class="label" style="margin:16px 0 20px;opacity:.7">Live at AWB · 9 AM to 4 PM</p>
-          <a class="btn" href="#collection">See the collection →</a>
-        </div>
-      </aside>
-    </div>
-  </div>
-
-  <div class="ticker" aria-hidden="true">
-    <div class="ticker-track">
-      <span>Train</span><i>/</i><span>Recover</span><i>/</i><span>Grow</span><i>/</i><span>Repeat</span><i>/</i><span>Discipline builds freedom</span><i>/</i>
-      <span>Train</span><i>/</i><span>Recover</span><i>/</i><span>Grow</span><i>/</i><span>Repeat</span><i>/</i><span>Discipline builds freedom</span><i>/</i>
-      <span>Train</span><i>/</i><span>Recover</span><i>/</i><span>Grow</span><i>/</i><span>Repeat</span><i>/</i><span>Discipline builds freedom</span><i>/</i>
-      <span>Train</span><i>/</i><span>Recover</span><i>/</i><span>Grow</span><i>/</i><span>Repeat</span><i>/</i><span>Discipline builds freedom</span><i>/</i>
-    </div>
-  </div>
-
-  <section id="collection">
-    <div class="wrap">
-      <div class="sec-head">
-        <div>
-          <span class="label muted">Drop 01 · 6 pieces</span>
-          <h2 class="wide">The Collection</h2>
-        </div>
-        <p class="muted">Everyday pieces in two colours, black and bone, at student-friendly prices. Every piece is printed in a small first run, so once a size is gone, it's gone.</p>
+        <div class="btn-row"><a class="btn btn--primary" href="https://www.instagram.com/wearmotiontherapy/" target="_blank" rel="noopener">Follow on Instagram<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a><a class="btn btn--secondary" href="#collection">See the six pieces</a></div>
       </div>
+      <div class="hero__stage">
+        <img src="img/hero-lily.jpg" alt="The black Lily Hoodie from the front and the back. The back carries a cream lily wrapped in a ribbon, the wordmark and the line Movement fuels a better mind." style="--ly-pos: 50% 46%" width="1448" height="1086" fetchpriority="high" data-source="client" data-subject="Lily Hoodie">
+      </div>
+    </div></div>
+  </section>
 
+  <section class="section g2" id="collection" style="--hm: 2" aria-labelledby="collection-h">
+    <div class="wrap">
+      <div class="group">
+        <div class="section-head section-head--row">
+          <div><h2 id="collection-h">Drop 01 has six pieces. <span class="muted">Tees, hoodies, sweatpants and a beanie.</span></h2></div>
+          <a class="link" href="#drop">See where to buy</a>
+        </div>
+        <div class="grid">
+          <article class="tile span-4">
+            <div class="tile__media spin" data-spin data-tone="black" data-start="0" data-back="img/spin-signature-b.webp" data-back-alt="The back of the Signature Tee with a large script logo and the line Movement fuels a better mind" style="--ar: 0.9085365853658537"><div class="spin__shadow" aria-hidden="true"></div><div class="spin__stage"><div class="spin__body"><img class="spin__face" src="img/spin-signature-f.webp" alt="The front of the washed black Signature Tee with the script logo on the chest" loading="lazy" width="745" height="820" draggable="false" data-source="client" data-subject="Signature Tee"></div></div><button class="spin__turn" type="button" aria-label="Turn the Signature Tee around">Turn</button></div>
+            <div class="tile__head"><h3>Signature Tee</h3><span class="tile__price">$18</span></div>
+            <p class="tile__facts">Black cotton, script logo front and back</p>
+          </article>
+          <article class="tile span-4">
+            <div class="tile__media spin" data-spin data-tone="bone" data-start="180" data-back="img/spin-summit-b.webp" data-back-alt="The back of the Summit Tee: a drawn mountain range over the script logo" style="--ar: 0.9036585365853659"><div class="spin__shadow" aria-hidden="true"></div><div class="spin__stage"><div class="spin__body"><img class="spin__face" src="img/spin-summit-f.webp" alt="The front of the bone Summit Tee with a small script logo on the chest" loading="lazy" width="741" height="820" draggable="false" data-source="client" data-subject="Summit Tee"></div></div><button class="spin__turn" type="button" aria-label="Turn the Summit Tee around">Turn</button></div>
+            <div class="tile__head"><h3>Summit Tee</h3><span class="tile__price">$18</span></div>
+            <p class="tile__facts">Bone cotton, mountain print on the back</p>
+          </article>
+          <article class="tile span-4">
+            <div class="tile__media spin" data-spin data-tone="black" data-start="180" data-back="img/spin-lily-b.webp" data-back-alt="The back of the Lily Hoodie with the cream lily and ribbon print" style="--ar: 0.8670731707317073"><div class="spin__shadow" aria-hidden="true"></div><div class="spin__stage"><div class="spin__body"><img class="spin__face" src="img/spin-lily-f.webp" alt="The front of the black Lily Hoodie with a small wordmark on the chest" loading="lazy" width="711" height="820" draggable="false" data-source="client" data-subject="Lily Hoodie"></div></div><button class="spin__turn" type="button" aria-label="Turn the Lily Hoodie around">Turn</button></div>
+            <div class="tile__head"><h3>Lily Hoodie</h3><span class="tile__price">$39</span></div>
+            <p class="tile__facts">Black fleece, lily print across the back</p>
+          </article>
+        </div>
+      </div>
       <div class="grid">
-        <article class="piece">
-          <figure><img src="img/signature-tee.jpg" alt="Washed black Signature Tee with the script Motion Therapy logo on the chest and a larger script logo on the back." loading="lazy" width="960" height="1200"><span class="tag">Signature</span></figure>
-          <div class="piece-top"><h3>Signature Tee</h3><span class="price">$18</span></div>
-          <p>Script logo on the chest. On the back: the full signature, the tagline, and Train Recover Grow Repeat.</p>
-          <div class="specs"><span>Black</span><span>100% cotton</span><span>Front + back print</span></div>
+        <article class="tile span-4">
+          <div class="tile__media spin" data-spin data-tone="bone" data-start="0" data-back="img/spin-contrast-b.webp" data-back-alt="The back of the Clean Contrast Hoodie with Discipline Builds Freedom under the wordmark" style="--ar: 0.8621951219512195"><div class="spin__shadow" aria-hidden="true"></div><div class="spin__stage"><div class="spin__body"><img class="spin__face" src="img/spin-contrast-f.webp" alt="The front of the bone Clean Contrast Hoodie with the wordmark in black" loading="lazy" width="707" height="820" draggable="false" data-source="client" data-subject="Clean Contrast Hoodie"></div></div><button class="spin__turn" type="button" aria-label="Turn the Clean Contrast Hoodie around">Turn</button></div>
+          <div class="tile__head"><h3>Clean Contrast Hoodie</h3><span class="tile__price">$39</span></div>
+          <p class="tile__facts">Bone fleece, Discipline Builds Freedom on the back</p>
         </article>
-
-        <article class="piece">
-          <figure><img src="img/contrast-hoodie.jpg" alt="Bone-coloured Clean Contrast Hoodie with a small black wordmark on the chest, and a back print reading Discipline Builds Freedom with a globe and coordinates." loading="lazy" width="960" height="1200"></figure>
-          <div class="piece-top"><h3>Clean Contrast Hoodie</h3><span class="price">$39</span></div>
-          <p>Bone fleece with sharp black type. The back carries Discipline Builds Freedom and our coordinates.</p>
-          <div class="specs"><span>Bone</span><span>Everyday fleece</span><span>Front + back print</span></div>
-        </article>
-
-        <article class="piece">
-          <figure><img src="img/lily-hoodie.jpg" alt="Black Lily Hoodie, front and back, with a large lily and ribbon illustration on the back." loading="lazy" width="1200" height="900" style="object-position:72% 50%"><span class="tag">Statement</span></figure>
-          <div class="piece-top"><h3>Lily Hoodie</h3><span class="price">$39</span></div>
-          <p>Clean wordmark on the front, full lily illustration across the back. The loudest piece in the drop.</p>
-          <div class="specs"><span>Black</span><span>Everyday fleece</span><span>Front + back print</span></div>
-        </article>
-
-        <article class="piece">
-          <figure><img src="img/summit-tee.jpg" alt="Bone Summit Tee with a script logo on the chest and a mountain landscape print on the back." loading="lazy" width="1200" height="800" style="object-position:75% 50%"></figure>
-          <div class="piece-top"><h3>Summit Tee</h3><span class="price">$18</span></div>
-          <p>A hand-drawn mountain range on the back, because the hardest climbs are the ones that change you.</p>
-          <div class="specs"><span>Bone</span><span>100% cotton</span><span>Front + back print</span></div>
-        </article>
-
-        <article class="piece" id="sweats">
-          <figure><img id="sweats-img" src="img/sweats-black.jpg" alt="Black Everyday Sweatpants with a stacked Motion Therapy wordmark on the left thigh." loading="lazy" width="800" height="1200"></figure>
-          <div class="piece-top"><h3>Everyday Sweatpants</h3><span class="price">$32</span></div>
-          <p>Stacked wordmark on the thigh, cuffed ankle. Pairs with either hoodie.</p>
-          <div class="specs" style="align-items:center;justify-content:space-between">
-            <span id="sweats-colour">Black</span>
-            <div class="swatches" role="group" aria-label="Colour">
-              <button class="swatch black" type="button" id="sw-black" aria-pressed="true" aria-label="Black"></button>
-              <button class="swatch cream" type="button" id="sw-cream" aria-pressed="false" aria-label="Bone"></button>
+        <article class="tile span-4" id="sweatpants">
+          <div class="tile__media spin" data-spin data-tone="bone" data-start="0" style="--ar: 0.40555555555555556"><div class="spin__shadow" aria-hidden="true"></div><div class="spin__stage"><div class="spin__body"><img class="spin__face" id="sweats-img" src="img/spin-sweats-bone-f.webp" alt="Bone Everyday Sweatpants with the stacked wordmark on the left thigh" loading="lazy" width="365" height="900" draggable="false" data-source="client" data-subject="Everyday Sweatpants"></div></div></div>
+          <div class="tile__head"><h3>Everyday Sweatpants</h3><span class="tile__price">$32</span></div>
+          <div class="tile__foot">
+            <p class="tile__facts" id="sweats-colour" style="margin-top:0">Bone fleece, cuffed ankle</p>
+            <div class="swatches" role="group" aria-label="Sweatpants colour">
+              <button class="swatch swatch--bone" type="button" aria-pressed="true" aria-label="Bone" data-src="img/spin-sweats-bone-f.webp" data-tone="bone" data-name="Bone"></button>
+              <button class="swatch swatch--black" type="button" aria-pressed="false" aria-label="Black" data-src="img/spin-sweats-black-f.webp" data-tone="black" data-name="Black"></button>
             </div>
           </div>
         </article>
-
-        <article class="piece">
-          <figure><img src="img/toque.jpg" alt="Bone ribbed beanie with Motion Therapy embroidered in black on the cuff." loading="lazy" width="1200" height="800"></figure>
-          <div class="piece-top"><h3>Ribbed Beanie</h3><span class="price">$12</span></div>
-          <p>Rib-knit with the wordmark on the cuff. One size, made for early-morning runs in December.</p>
-          <div class="specs"><span>Bone</span><span>Knit</span><span>One size</span></div>
+        <article class="tile span-4">
+          <div class="tile__media spin" data-spin data-tone="bone" data-start="0" style="--ar: 1.0473684210526315"><div class="spin__shadow" aria-hidden="true"></div><div class="spin__stage"><div class="spin__body"><img class="spin__face" src="img/spin-beanie-f.webp" alt="The bone Ribbed Beanie with the wordmark embroidered in black on the cuff" loading="lazy" width="796" height="760" draggable="false" data-source="client" data-subject="Ribbed Beanie"></div></div></div>
+          <div class="tile__head"><h3>Ribbed Beanie</h3><span class="tile__price">$12</span></div>
+          <p class="tile__facts">Bone knit, one size</p>
         </article>
       </div>
-
-      <div class="set">
-        <span class="label">Matching set</span>
-        <div>
-          <h3 class="wide">Hoodie + Sweatpants</h3>
-          <p>Any hoodie with a pair of Everyday Sweatpants. Bought separately it's $71, so the set saves you $6.</p>
-        </div>
-        <span class="price">$65</span>
-      </div>
     </div>
   </section>
 
-  <section class="ethos" id="ethos">
-    <div class="wrap ethos-grid">
-      <div>
-        <p class="script">Motion Therapy</p>
-        <h2 class="wide">Discipline builds freedom.</h2>
-      </div>
-      <div>
-        <p>We started Motion Therapy as a group of friends who noticed the same thing: the days we moved were the days our heads felt clear. A run before school, a lift after a bad test, a long walk when everything felt like too much.</p>
-        <p>So we made clothes for that. Pieces you can train in, recover in, and wear everywhere after. A lifestyle brand for a stronger tomorrow.</p>
-        <div class="split">
-          <div><b>Train</b><span>Show up, even on the off days.</span></div>
-          <div><b>Recover</b><span>Rest is part of the work.</span></div>
-          <div><b>Grow</b><span>Small gains, stacked daily.</span></div>
-          <div><b>Repeat</b><span>That's the whole secret.</span></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="drop">
+  <section class="section" id="details" aria-labelledby="details-h">
     <div class="wrap">
-      <div class="sec-head">
-        <div>
-          <span class="label muted">Drop 01</span>
-          <h2 class="wide">Find us Dec 4</h2>
-        </div>
-        <p class="muted">The first batch launches in person at AWB, 9 AM to 4 PM. Every piece is a limited first run.</p>
+      <div class="section-head">
+        <h2 id="details-h">The prints up close</h2>
+        <p class="measure">The embroidered cuff of the beanie, the lily across the back of the Lily Hoodie, and the globe and coordinates on the Clean Contrast Hoodie.</p>
       </div>
-      <div class="info">
-        <div>
-          <span class="label muted">When</span>
-          <h3>Thu, Dec 4</h3>
-          <p>Our booth is open from 9 AM to 4 PM. Come early for the best size range.</p>
+      <div class="strip"><div class="grid">
+        <div class="shot shot--a span-5"><img src="img/d-cuff.jpg" alt="Close-up of the black embroidered wordmark on the beanie's ribbed cuff" loading="lazy" width="615" height="594" data-source="client" data-subject="beanie embroidery"></div>
+        <div class="shot shot--b span-4"><img src="img/d-lily.jpg" alt="Close-up of the cream lily and ribbon print on black fleece" loading="lazy" width="406" height="412" data-source="client" data-subject="lily print"></div>
+        <div class="shot shot--c span-3"><img src="img/d-globe.jpg" alt="Close-up of the hoodie's back: the wordmark, Discipline Builds Freedom, a globe and two coordinates" loading="lazy" width="370" height="406" data-source="client" data-subject="globe print"></div>
+      </div></div>
+    </div>
+  </section>
+
+  <section class="section" id="train" style="--h: 2; --hm: 2" data-moment="pinned-chapters" aria-labelledby="train-h">
+    <div class="wrap mo-pc__grid">
+      <div class="mo-pc__text">
+        <h2 id="train-h">Clothes for the gym, the rest day and the walk home</h2>
+        <ol class="mo-pc__steps">
+          <li class="mo-pc__step">
+            <h3>Train</h3>
+            <p>Loose tees that move when you do. The Signature Tee lists the whole cycle on its back: train, recover, grow, repeat.</p>
+            <figure class="mo-pc__visual"><img src="img/p-train.jpg" alt="The black Signature Tee from the front, with the script logo on the chest" width="718" height="925" data-source="client" data-subject="Signature Tee front"></figure>
+          </li>
+          <li class="mo-pc__step">
+            <h3>Recover</h3>
+            <p>Fleece sweatpants with a drawstring and cuffed ankles, for the bus ride after practice and the couch after that.</p>
+            <figure class="mo-pc__visual"><img src="img/p-recover.jpg" alt="The waistband and drawstring of the bone sweatpants, with the stacked wordmark" width="921" height="952" data-source="client" data-subject="sweatpants waistband"></figure>
+          </li>
+          <li class="mo-pc__step">
+            <h3>Grow</h3>
+            <p>The mountain on the Summit Tee is the long view: small gains, stacked every day, until the climb looks different.</p>
+            <figure class="mo-pc__visual"><img src="img/p-grow.jpg" alt="The mountain range print on the back of the bone Summit Tee" width="675" height="532" data-source="client" data-subject="mountain print"></figure>
+          </li>
+        </ol>
+      </div>
+      <div class="mo-pc__visuals frame"></div>
+    </div>
+  </section>
+
+  <section class="section statement" id="story" data-moment="word-highlight" aria-label="Our line">
+    <div class="wrap">
+      <p class="mo-wh__text">Movement fuels a <strong>better mind.</strong> Made for students who value comfort, confidence, and effortless style without the luxury price tag.</p>
+    </div>
+  </section>
+
+  <section class="section" id="play" style="--hm: 2" aria-labelledby="play-h">
+    <div class="wrap grid grid--top">
+      <div class="span-5">
+        <h2 id="play-h">Beat the dealer for $10 off</h2>
+        <ol class="steps">
+          <li><b>1</b><span>Deal one hand of blackjack. Get closer to 21 than the dealer without going over.</span></li>
+          <li><b>2</b><span>Win a hand and enter your email.</span></li>
+          <li><b>3</b><span>Show the code from your inbox at our AWB booth on December 4.</span></li>
+        </ol>
+        <p class="bj__terms" id="bj-terms">The code takes $10 off any order of $65 or more. One code per person, used once, at the booth only. The game is free. Every hand has a 2 in 5 chance to win however you play it, and you get one hand per visit: refresh the page to play again.</p>
+      </div>
+      <div class="bj ground-inverse span-7" id="bj" role="group" aria-label="Blackjack table">
+        <div class="bj__row">
+          <div class="bj__label"><span>Dealer</span><span class="bj__total" id="bj-dt"></span></div>
+          <div class="bj__cards" id="bj-dealer"></div>
         </div>
-        <div>
-          <span class="label muted">Where</span>
-          <h3>AWB</h3>
-          <p>Find our booth at the AWB trade show. Look for the black and bone setup with the lily banner.</p>
+        <div class="bj__row">
+          <div class="bj__label"><span>You</span><span class="bj__total" id="bj-pt"></span></div>
+          <div class="bj__cards" id="bj-player"></div>
         </div>
-        <div>
-          <span class="label muted">Stay posted</span>
-          <h3>Follow the drop</h3>
-          <p>Restocks, sizing and behind-the-scenes go up on Instagram first.</p>
-          <a class="btn" style="width:max-content" href="https://www.instagram.com/wearmotiontherapy/" target="_blank" rel="noopener">@wearmotiontherapy →</a>
+        <p class="bj__status" id="bj-status" role="status" aria-live="polite">Deal a hand to start.</p>
+        <div class="bj__actions" id="bj-actions">
+          <button class="btn btn--primary" type="button" id="bj-deal">Deal a hand</button>
+          <button class="btn btn--secondary" type="button" id="bj-hit" disabled>Hit</button>
+          <button class="btn btn--secondary" type="button" id="bj-stand" disabled>Stand</button>
+        </div>
+        <form class="bj__claim" id="bj-claim" hidden novalidate>
+          <div class="field"><label for="bj-email">Email for your code</label>
+            <input id="bj-email" name="email" type="email" autocomplete="email" inputmode="email" required aria-describedby="bj-email-err">
+            <p class="field__error" id="bj-email-err" hidden>Write an email address with an @, like name@example.com.</p></div>
+          <div class="bj__actions"><button class="btn btn--primary" type="submit" id="bj-send">Email my code</button></div>
+        </form>
+        <div class="bj__claim" id="bj-done" hidden>
+          <p class="bj__code" id="bj-code"></p>
+          <p class="bj__note" id="bj-done-note"></p>
         </div>
       </div>
+    </div>
+  </section>
+
+  <section class="section ground-inverse" id="set" aria-labelledby="set-h">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="set-h">The matching set, $65. <span class="muted">Any hoodie with a pair of sweatpants.</span></h2>
+        <p class="measure">Buy the matching set for $65.</p>
+      </div>
+      <div class="pair"><div class="grid">
+        <div class="shot span-6"><img src="img/s-hoodie.jpg" alt="The black Lily Hoodie from the front, with the small wordmark on the chest" loading="lazy" width="752" height="934" data-source="client" data-subject="Lily Hoodie front"></div>
+        <div class="shot span-6"><img src="img/s-pants.jpg" alt="The black Everyday Sweatpants with the stacked wordmark in cream on the thigh" loading="lazy" width="900" height="1079" data-source="client" data-subject="black sweatpants"></div>
+      </div></div>
+    </div>
+  </section>
+
+  <section class="section" id="drop" aria-labelledby="drop-h">
+    <div class="wrap grid grid--top">
+      <div class="span-6">
+        <h2 id="drop-h">Drop 01 at the AWB trade show</h2>
+        <p class="type-moment">Thursday, December&nbsp;4</p>
+        <ul class="rows">
+          <li><span class="rows__name">Hours</span><span class="rows__value">9 AM to 4 PM</span></li>
+          <li><span class="rows__name">Where</span><span class="rows__value">In person at our AWB booth</span></li>
+          <li><span class="rows__name">Restocks and sizes</span><span class="rows__value">Posted on Instagram first</span></li>
+        </ul>
+      </div>
+      <div class="shot span-6 start-7"><img src="img/v-beanie.jpg" alt="The bone Ribbed Beanie, cuff folded, wordmark embroidered on the front" loading="lazy" width="1400" height="933" style="object-position: 50% 50%" data-source="client" data-subject="Ribbed Beanie"></div>
     </div>
   </section>
 </main>
 
-<footer>
-  <div class="wrap foot">
-    <p class="wide big">MT<span class="reg">®</span></p>
-    <div class="coords">
-      <span>Movement fuels a better mind.</span>
-      <a href="https://www.instagram.com/wearmotiontherapy/" target="_blank" rel="noopener">@wearmotiontherapy</a>
-      <span>40.7128° N · 74.0060° W</span>
-      <span>© 2026 Motion Therapy</span>
+<footer class="footer closing g2m footer--dark ground-inverse" id="contact" aria-labelledby="close-h">
+  <div class="wrap">
+    <div class="closing__cta close--type">
+      <div class="section-head">
+        <h2 id="close-h">Follow the drop on Instagram</h2>
+        <p>Restocks, sizes and what sells out go up on @wearmotiontherapy first.</p>
+      </div>
+      <a class="btn btn--primary btn--xl" href="https://www.instagram.com/wearmotiontherapy/" target="_blank" rel="noopener">Follow on Instagram<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a>
+    </div>
+    <div class="closing__links">
+      <div class="grid">
+        <div class="span-4 stack-4">
+          <a class="nav__logo wordmark" href="#top" aria-label="Motion Therapy home">Motion Therapy</a>
+          <p class="footer__lede">Student-led streetwear in black and bone.</p>
+        </div>
+        <div class="span-2 footer__col"><h3>Shop</h3><ul><li><a href="#collection">Collection</a></li><li><a href="#set">Matching set</a></li></ul></div>
+        <div class="span-2 footer__col"><h3>Brand</h3><ul><li><a href="#details">The prints</a></li><li><a href="#train">Train, recover, grow</a></li></ul></div>
+        <div class="span-2 footer__col"><h3>Drop</h3><ul><li><a href="#drop">AWB, December 4</a></li><li><a href="#drop">9 AM to 4 PM</a></li></ul></div>
+        <div class="span-2 footer__col"><h3>Follow</h3><ul><li><a href="https://www.instagram.com/wearmotiontherapy/" target="_blank" rel="noopener">Instagram</a></li></ul></div>
+      </div>
+      <div class="footer__legal">
+        <span>&copy; 2026 Motion Therapy</span>
+      </div>
     </div>
   </div>
 </footer>
 
+<nav class="actionbar" aria-label="Quick actions">
+  <a class="btn btn--primary" href="https://www.instagram.com/wearmotiontherapy/" target="_blank" rel="noopener">Follow on Instagram</a>
+</nav>
+
 <script>
-(function(){
-  // Drop opens 9:00 AM on Dec 4, 2026 in the viewer's local time.
-  var target = new Date(2026, 11, 4, 9, 0, 0).getTime();
-  var ids = ['d','h','m','s'].map(function(k){return document.getElementById('cd-'+k)});
-  var note = document.getElementById('count-note');
-  function pad(n){return n<10?'0'+n:''+n}
-  function tick(){
-    var diff = target - Date.now();
-    if (diff <= 0){
-      ids.forEach(function(el){el.textContent='00'});
-      note.textContent = 'Drop 01 is live';
-      return;
-    }
-    var s = Math.floor(diff/1000);
-    ids[0].textContent = pad(Math.floor(s/86400));
-    ids[1].textContent = pad(Math.floor(s%86400/3600));
-    ids[2].textContent = pad(Math.floor(s%3600/60));
-    ids[3].textContent = pad(s%60);
-    setTimeout(tick, 1000 - (Date.now()%1000));
-  }
-  tick();
-
-  var img = document.getElementById('sweats-img');
-  var label = document.getElementById('sweats-colour');
-  var bBlack = document.getElementById('sw-black');
-  var bCream = document.getElementById('sw-cream');
-  function set(c){
-    var black = c==='black';
-    img.src = black ? 'img/sweats-black.jpg' : 'img/sweats-cream.jpg';
-    img.alt = (black?'Black':'Bone') + ' Everyday Sweatpants with a stacked Motion Therapy wordmark on the left thigh.';
-    label.textContent = black ? 'Black' : 'Bone';
-    bBlack.setAttribute('aria-pressed', black);
-    bCream.setAttribute('aria-pressed', !black);
-  }
-  bBlack.addEventListener('click', function(){set('black')});
-  bCream.addEventListener('click', function(){set('cream')});
-  new Image().src = 'img/sweats-cream.jpg';
-})();
+  // the sweatpants swatches swap the picture and the colour line
+  (function () {
+    var img = document.getElementById('sweats-img');
+    var line = document.getElementById('sweats-colour');
+    var buttons = document.querySelectorAll('#sweatpants .swatch');
+    buttons.forEach(function (b) {
+      b.addEventListener('click', function () {
+        buttons.forEach(function (o) { o.setAttribute('aria-pressed', String(o === b)); });
+        img.src = b.dataset.src;
+        img.closest('.spin').dataset.tone = b.dataset.tone;
+        img.alt = b.dataset.name + ' Everyday Sweatpants with the stacked wordmark on the left thigh';
+        line.textContent = b.dataset.name + ' fleece, cuffed ankle';
+      });
+    });
+  })();
 </script>
+<script>
+  // Turnable pieces. Drag a piece to turn it; it carries on with the throw and settles on its front or back.
+  // Pieces with no drawn back (sweatpants, beanie) swing and come back to the front.
+  (function () {
+    var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var SLICES = 7, DEPTH = 18;
+    document.querySelectorAll('[data-spin]').forEach(function (el) {
+      var body = el.querySelector('.spin__body'), front = el.querySelector('.spin__face');
+      var turn = el.querySelector('.spin__turn'), hasBack = !!el.dataset.back, LIMIT = 55;
+      var slices = [];
+      for (var i = 1; i < SLICES; i++) {
+        var d = document.createElement('div'); d.className = 'spin__slice'; d.setAttribute('aria-hidden', 'true');
+        d.style.setProperty('--z', (DEPTH / 2 - (DEPTH * i) / SLICES).toFixed(1) + 'px');
+        body.insertBefore(d, front); slices.push(d);
+      }
+      function mask() { var u = 'url("' + front.getAttribute('src') + '")'; slices.forEach(function (d) { d.style.setProperty('--m', u); }); }
+      mask(); front.addEventListener('load', mask);
+      if (hasBack) {
+        var back = new Image(); back.className = 'spin__face spin__face--back'; back.alt = el.dataset.backAlt; back.draggable = false;
+        back.src = el.dataset.back; body.appendChild(back);
+      }
+      var a = +el.dataset.start || 0, v = 0, target = a, raf = 0, held = false, last = 0;
+      function paint() {
+        var c = Math.abs(Math.cos(a * Math.PI / 180));
+        el.style.setProperty('--a', a.toFixed(2) + 'deg');
+        el.style.setProperty('--lit', (0.7 + 0.3 * c).toFixed(3));
+        el.style.setProperty('--sh', (0.3 + 0.7 * c).toFixed(3));
+        if (turn) {
+          var showsBack = Math.round(target / 180) % 2 !== 0;
+          front.setAttribute('aria-hidden', String(showsBack)); back.setAttribute('aria-hidden', String(!showsBack));
+        }
+      }
+      function tick(t) {            // a damped spring toward the resting face
+        var dt = Math.min(0.032, (t - last) / 1000 || 0.016); last = t;
+        v += ((target - a) * 90 - v * 15) * dt; a += v * dt;
+        if (Math.abs(target - a) < 0.05 && Math.abs(v) < 0.5) { a = target; v = 0; raf = 0; paint(); return; }
+        paint(); raf = requestAnimationFrame(tick);
+      }
+      function settle() {
+        if (still) { a = target; v = 0; return paint(); }
+        if (!raf) { last = performance.now(); raf = requestAnimationFrame(tick); }
+      }
+      var x0 = 0, a0 = 0, px = 0, pt = 0;
+      el.addEventListener('pointerdown', function (e) {
+        if (e.target === turn || (e.pointerType === 'mouse' && e.button !== 0)) return;
+        held = true; cancelAnimationFrame(raf); raf = 0; x0 = px = e.clientX; a0 = a; pt = e.timeStamp; v = 0;
+        el.classList.add('is-held'); el.setPointerCapture(e.pointerId);
+      });
+      el.addEventListener('pointermove', function (e) {
+        if (!held) return;
+        var next = a0 + (e.clientX - x0) * 0.55;
+        if (!hasBack && Math.abs(next) > LIMIT) next = Math.sign(next) * (LIMIT + (Math.abs(next) - LIMIT) * 0.18);   // resist past the limit
+        var dt = (e.timeStamp - pt) / 1000;
+        if (dt > 0) v = 0.6 * v + 0.4 * ((e.clientX - px) * 0.55 / dt);
+        px = e.clientX; pt = e.timeStamp; a = next; paint();
+      });
+      function drop(e) {
+        if (!held) return;
+        held = false; el.classList.remove('is-held');
+        if (e.timeStamp - pt > 90) v = 0;
+        v = Math.max(-900, Math.min(900, v));
+        target = hasBack ? Math.round((a + v * 0.22) / 180) * 180 : 0;
+        settle();
+      }
+      el.addEventListener('mousedown', function (e) { if (e.target !== turn) e.preventDefault(); });   // no text selection while dragging
+      el.addEventListener('pointerup', drop); el.addEventListener('pointercancel', drop);
+      if (turn) turn.addEventListener('click', function () { target = Math.round(target / 180) * 180 + 180; settle(); });
+      paint();
+      // one small sway the first time a piece scrolls into view, so it reads as something to grab
+      if (!still && 'IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (en) {
+          if (!en[0].isIntersecting) return;
+          io.disconnect(); if (!held && !raf) { v = 260; settle(); }
+        }, { threshold: 0.6 });
+        io.observe(el);
+      }
+    });
+  })();
+</script>
+<script>
+  // Blackjack for a discount code. A win opens the email step; the code goes to the player and to the brand.
+  (function () {
+    // EmailJS (emailjs.com): fill these three in to switch email delivery on. The template sends to
+    // {{to_email}} and copies the brand's own inbox, which is set inside the EmailJS template, not here.
+    var EMAIL = { serviceId: 'service_qhrfaoj', templateId: 'template_bzoc9k9', publicKey: 'VPz4HT9fkX5xFaYqL' };
+    var OFFER = '$10 off any order of $65 or more';
 
+    var $ = function (id) { return document.getElementById(id); };
+    var dealerEl = $('bj-dealer'), playerEl = $('bj-player'), statusEl = $('bj-status');
+    var dealBtn = $('bj-deal'), hitBtn = $('bj-hit'), standBtn = $('bj-stand');
+    var claim = $('bj-claim'), done = $('bj-done'), actions = $('bj-actions');
+    var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var player = [], dealer = [], hidden = true, busy = false, played = false, used = {};
+    // Each page load is one hand, and the hand wins 2 times in 5 however it is played (the page says so).
+    var WINS = Math.random() < 0.4;
+    var SUITS = [['♠', 0], ['♥', 1], ['♦', 1], ['♣', 0]];
+    function rnd(n) { return Math.floor(Math.random() * n); }
+    function pick(list) { return list[rnd(list.length)]; }
+    // a card worth v points (1 or 11 is an ace), never the same card twice
+    function card(v) {
+      var ranks = v === 1 || v === 11 ? ['A'] : v === 10 ? ['10', 'J', 'Q', 'K'] : [String(v)];
+      for (var i = 0; i < 40; i++) {
+        var r = pick(ranks), su = pick(SUITS), key = r + su[0];
+        if (!used[key]) { used[key] = 1; return { r: r, s: su[0], soft: su[1] }; }
+      }
+      return { r: pick(ranks), s: pick(SUITS)[0], soft: 0 };
+    }
+    function total(hand) {
+      var sum = 0, aces = 0;
+      hand.forEach(function (c) {
+        if (c.r === 'A') { sum += 11; aces++; }
+        else if (c.r === 'K' || c.r === 'Q' || c.r === 'J') sum += 10;
+        else sum += Number(c.r);
+      });
+      while (sum > 21 && aces) { sum -= 10; aces--; }
+      return sum;
+    }
+    function cardEl(c, back) {
+      var el = document.createElement('div');
+      if (back) { el.className = 'bj-card bj-card--back'; el.innerHTML = '<span>MT</span>'; el.setAttribute('aria-label', 'Face-down card'); }
+      else {
+        el.className = 'bj-card' + (c.soft ? ' bj-card--soft' : '');
+        el.innerHTML = '<span class="bj-card__rank"></span><span class="bj-card__suit" aria-hidden="true"></span>';
+        el.firstChild.textContent = c.r; el.lastChild.textContent = c.s;
+        el.setAttribute('aria-label', c.r + ' of ' + { '♠': 'spades', '♥': 'hearts', '♦': 'diamonds', '♣': 'clubs' }[c.s]);
+      }
+      el.setAttribute('role', 'img');
+      return el;
+    }
+    function draw(el, hand, hideSecond) {
+      var had = el.children.length;
+      el.textContent = '';
+      hand.forEach(function (c, i) {
+        var node = c ? cardEl(c, false) : cardEl(null, true);
+        el.appendChild(node);
+        if (!still && i >= had && node.animate) {
+          node.animate([{ opacity: 0, transform: 'translateY(-14px) scale(0.96)' }, { opacity: 1, transform: 'none' }],
+            { duration: 240, delay: (i - had) * 70, easing: 'cubic-bezier(0.23, 1, 0.32, 1)', fill: 'backwards' });
+        }
+      });
+    }
+    function render() {
+      draw(dealerEl, hidden ? [dealer[0], null] : dealer, hidden);
+      draw(playerEl, player, false);
+      $('bj-pt').textContent = player.length ? total(player) : '';
+      $('bj-dt').textContent = dealer.length && !hidden ? total(dealer) : '';
+    }
+    function controls(playing) { dealBtn.disabled = playing || played; hitBtn.disabled = !playing; standBtn.disabled = !playing; }
+    function wait(ms) { return new Promise(function (r) { setTimeout(r, still ? 0 : ms); }); }
+    function say(t) { statusEl.textContent = t; }
+    function over(text) {
+      played = true; controls(false); say(text);
+      dealBtn.disabled = false; dealBtn.textContent = 'Refresh to play again';
+      hitBtn.hidden = true; standBtn.hidden = true;
+    }
+
+    function deal() {
+      if (busy) return;
+      if (played) { location.hash = 'play'; return location.reload(); }
+      var natural = WINS && Math.random() < 0.12;
+      if (natural) player = Math.random() < 0.5 ? [card(11), card(10)] : [card(10), card(11)];
+      else {
+        var t = pick([12, 13, 14, 15, 15, 16, 16, 17, 18, 19, 20]);
+        var lo = Math.max(2, t - 10), hi = Math.min(10, t - 2), x = lo + rnd(hi - lo + 1);
+        player = [card(x), card(t - x)];
+      }
+      dealer = [card(pick([2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10]))]; hidden = true;
+      dealerEl.textContent = ''; playerEl.textContent = '';
+      render();
+      if (natural) return stand();
+      controls(true); say('You have ' + total(player) + '. Hit or stand?');
+    }
+    function hit() {
+      if (busy) return;
+      var now = total(player), v;
+      if (WINS) { var room = 21 - now; v = room < 2 ? 1 : 2 + rnd(Math.min(10, room) - 1); }   // a winning hand never busts
+      else { do { v = 2 + rnd(9); } while (now + v === 21); }                                    // a losing hand never makes 21
+      player.push(card(v)); render();
+      var t = total(player);
+      if (t > 21) { hidden = false; dealer.push(card(pick([7, 8, 9, 10]))); render(); return over('Bust at ' + t + '. Refresh the page to play again.'); }
+      if (t === 21) return stand();
+      say('You have ' + t + '. Hit or stand?');
+    }
+    // the dealer's cards after the upcard, so the dealer ends on exactly `target` (17 to 21) by the house rule
+    function dealerTo(up, target) {
+      var need = target - up, opts = [];
+      if (need >= 2 && need <= 11) return [need];
+      for (var h = 2; h <= 10; h++) { var d = need - h; if (up + h <= 16 && d >= 2 && d <= 10) opts.push([h, d]); }
+      return pick(opts);
+    }
+    function dealerBust(up) {
+      var opts = [];
+      for (var h = 2; h <= 10; h++) if (up + h >= 12 && up + h <= 16) opts.push([h, 10]);
+      return pick(opts);
+    }
+    async function stand() {
+      if (busy) return;
+      busy = true; hitBtn.disabled = true; standBtn.disabled = true; dealBtn.disabled = true;
+      var p = total(player), up = total([dealer[0]]), natural = player.length === 2 && p === 21, rest;
+      if (WINS) rest = (p >= 18 && (natural || Math.random() < 0.5)) ? dealerTo(up, 17 + rnd(Math.min(p, 21) - 17)) : dealerBust(up);
+      else { var low = Math.max(17, p + 1); rest = dealerTo(up, low + rnd(21 - low + 1)); }
+      hidden = false; dealer.push(card(rest[0])); render(); await wait(480);
+      for (var i = 1; i < rest.length; i++) { dealer.push(card(rest[i])); render(); await wait(480); }
+      var d = total(dealer);
+      busy = false;
+      if (d > 21 || p > d) return win(natural ? 'Blackjack. You win $10 off.' : 'You win, ' + p + ' to ' + (d > 21 ? 'a dealer bust' : d) + '. That is $10 off.');
+      over('Dealer wins, ' + d + ' to ' + p + '. Refresh the page to play again.');
+    }
+    function stored() { try { return localStorage.getItem('mt-bj-code'); } catch (e) { return null; } }
+    function newCode() {
+      var a = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789', s = '';
+      var buf = new Uint32Array(5); (window.crypto || window.msCrypto).getRandomValues(buf);
+      for (var i = 0; i < 5; i++) s += a[buf[i] % a.length];
+      return 'MT10-' + s;
+    }
+    function win(text) {
+      played = true; say(text);
+      var had = stored();
+      if (had) return show(had, 'This is the code already sent from this device. Show it at our AWB booth on December 4.');
+      actions.hidden = true; claim.hidden = false; $('bj-email').focus({ preventScroll: true });
+    }
+    function show(code, note) {
+      actions.hidden = true; claim.hidden = true; done.hidden = false;
+      $('bj-code').textContent = code; $('bj-done-note').textContent = note;
+    }
+    claim.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      var input = $('bj-email'), err = $('bj-email-err'), btn = $('bj-send');
+      var ok = input.value.trim() && input.checkValidity();
+      input.setAttribute('aria-invalid', String(!ok)); err.hidden = !!ok;
+      if (!ok) return input.focus();
+      var code = newCode();
+      if (!EMAIL.serviceId) {   // delivery not connected yet: show the code so the flow can be tried
+        return show(code, 'Email delivery is not connected yet, so the code only shows here for now.');
+      }
+      btn.disabled = true; btn.textContent = 'Sending';
+      try {
+        var res = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ service_id: EMAIL.serviceId, template_id: EMAIL.templateId, user_id: EMAIL.publicKey,
+            template_params: { to_email: input.value.trim(), code: code, offer: OFFER } })
+        });
+        if (!res.ok) throw new Error(String(res.status));
+        try { localStorage.setItem('mt-bj-code', code); } catch (e2) {}
+        show(code, 'Sent to ' + input.value.trim() + '. Show the email at our AWB booth on December 4.');
+      } catch (e3) {
+        btn.disabled = false; btn.textContent = 'Email my code';
+        say('The email did not send. Check the address and try again.');
+      }
+    });
+    dealBtn.addEventListener('click', deal); hitBtn.addEventListener('click', hit); standBtn.addEventListener('click', stand);
+  })();
+</script>
+<script type="module" src="assets/system.js"></script>
+<script type="module" src="assets/motion/motion.js"></script>
+<script type="module" src="assets/layout/layout.js"></script>
 </body>
 </html>
