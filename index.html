@@ -63,10 +63,50 @@
   .spin .spin__face--back { transform: rotateY(180deg) translateZ(9px); }
   .spin__slice { background: var(--edge); -webkit-mask: var(--m) center / contain no-repeat; mask: var(--m) center / contain no-repeat; transform: translateZ(var(--z)); }
   .spin__shadow { position: absolute; left: 50%; bottom: 7.5%; width: 46%; height: 5%; border-radius: 50%; background: radial-gradient(closest-side, rgb(40 28 18 / 0.34), transparent); transform: translateX(-50%) scaleX(var(--sh, 1)); }
-  .spin__turn { position: absolute; right: var(--s-3); bottom: var(--s-3); min-height: 36px; padding: 0 14px; border-radius: 999px; border: 1px solid color-mix(in oklab, var(--ink) 18%, transparent); background: color-mix(in oklab, var(--bg) 82%, transparent); color: var(--ink); font: inherit; font-size: 13px; cursor: pointer; transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1); }
-  @media (max-width: 640px) { .spin__stage { inset: 6% 6% 12%; } .spin__turn { right: 6px; bottom: 6px; min-height: 30px; padding: 0 10px; font-size: 12px; } }
-  .spin__turn::after { content: ""; position: absolute; inset: -6px; }
-  .spin__turn:active { transform: scale(0.97); }
+  .spin__open { position: absolute; right: var(--s-3); bottom: var(--s-3); min-height: 36px; padding: 0 14px; border-radius: 999px; border: 1px solid color-mix(in oklab, var(--ink) 18%, transparent); background: color-mix(in oklab, var(--bg) 82%, transparent); color: var(--ink); font: inherit; font-size: 13px; cursor: pointer; transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1); }
+  @media (max-width: 640px) { .spin__stage { inset: 6% 6% 12%; } .spin__open { right: 6px; bottom: 6px; min-height: 30px; padding: 0 10px; font-size: 12px; } }
+  .spin__open::after { content: ""; position: absolute; inset: -6px; }
+  .spin__open:active { transform: scale(0.97); }
+  /* popups: the blackjack table and the 3D viewer */
+  dialog.pop { border: 0; padding: 0; margin: auto; background: transparent; color: var(--ink); max-width: none; max-height: none; width: min(600px, calc(100vw - 24px)); overflow: visible; }
+  dialog.pop::backdrop { background: rgb(21 19 17 / 0.6); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+  dialog.pop[open] { animation: pop-in 320ms cubic-bezier(0.23, 1, 0.32, 1); }
+  dialog.pop[open]::backdrop { animation: pop-fade 320ms ease-out; }
+  @keyframes pop-in { from { opacity: 0; transform: translateY(14px) scale(0.97); } }
+  @keyframes pop-fade { from { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { dialog.pop[open], dialog.pop[open]::backdrop { animation: none; } }
+  .pop__close { position: absolute; top: 12px; right: 12px; min-height: 36px; padding: 0 14px; border-radius: 999px; border: 1px solid color-mix(in oklab, currentColor 28%, transparent); background: transparent; color: inherit; font: inherit; font-size: 13px; cursor: pointer; transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1); }
+  .pop__close:active { transform: scale(0.97); }
+  #play-pop .pop__close { color: var(--p-bg); }
+  #play-pop .bj { max-height: calc(100dvh - 24px); overflow: auto; min-height: 0; margin: 0; }
+  .bj__title { font: var(--display-weight) 20px/1.2 var(--font-display); letter-spacing: -0.02em; margin: 0; padding-right: 84px; }
+  .bj--teaser { min-height: 420px; align-content: center; }
+  .bj-card { transform-origin: 50% 50%; backface-visibility: hidden; }
+  dialog.viewer { width: min(1180px, calc(100vw - 32px)); height: min(760px, calc(100dvh - 32px)); background: var(--p-bg); border-radius: var(--r-lg); overflow: hidden; }
+  dialog.viewer[open] { display: grid; grid-template-columns: minmax(0, 1fr) 320px; grid-template-rows: minmax(0, 1fr); }
+  .viewer__stage { position: relative; min-height: 0; background: radial-gradient(120% 90% at 50% 40%, #e6d8cb, #d3c0b1); touch-action: none; cursor: grab; user-select: none; -webkit-user-select: none; }
+  .viewer__stage.is-held { cursor: grabbing; }
+  .viewer__stage canvas, .viewer__flat { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .viewer__flat { object-fit: contain; padding: 10%; }
+  .viewer__hint { position: absolute; left: 0; right: 0; bottom: 16px; margin: 0; text-align: center; font-size: 13px; color: #5e554d; pointer-events: none; }
+  .viewer__side { padding: 64px var(--s-6) var(--s-6); display: flex; flex-direction: column; justify-content: space-between; gap: var(--s-5); overflow: auto; }
+  .viewer__name { font: var(--display-weight) 28px/1.15 var(--font-display); letter-spacing: -0.02em; margin: 0; }
+  .viewer__price { font-size: 20px; margin: var(--s-2) 0 var(--s-3); font-variant-numeric: tabular-nums; }
+  .viewer__facts { margin: 0; color: var(--muted); }
+  .viewer__picks { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .viewer__pick { aspect-ratio: 1; border-radius: 10px; background: #dccbbe; border: 1.5px solid transparent; padding: 6px; cursor: pointer; transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1); }
+  .viewer__pick img { width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+  .viewer__pick:active { transform: scale(0.95); }
+  .viewer__pick[aria-pressed="true"] { border-color: var(--ink); }
+  @media (max-width: 760px) {
+    dialog.viewer { width: 100vw; height: 100dvh; border-radius: 0; }
+    dialog.viewer[open] { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto; }
+    .viewer__side { padding: var(--s-4); gap: var(--s-3); }
+    .viewer__name { font-size: 22px; }
+    .viewer__price { font-size: 17px; margin: 2px 0 4px; }
+    .viewer__picks { grid-template-columns: repeat(7, 1fr); gap: 6px; }
+    .viewer__pick { padding: 3px; border-radius: 8px; }
+  }
   /* sweatpants colour swatches: the picture follows the colour */
   .swatches { display: flex; gap: var(--s-3); align-items: center; }
   .swatch { width: 28px; height: 28px; border-radius: 50%; border: 1px solid color-mix(in oklab, var(--ink) 25%, transparent); padding: 0; cursor: pointer; position: relative; transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1); }
@@ -243,17 +283,17 @@
         </div>
         <div class="grid">
           <article class="tile span-4">
-            <div class="tile__media spin" data-spin data-tone="black" data-start="0" data-back="img/spin-signature-b.webp" data-back-alt="The back of the Signature Tee with a large script logo and the line Movement fuels a better mind" style="--ar: 0.9085365853658537"><div class="spin__shadow" aria-hidden="true"></div><div class="spin__stage"><div class="spin__body"><img class="spin__face" src="img/spin-signature-f.webp" alt="The front of the washed black Signature Tee with the script logo on the chest" loading="lazy" width="745" height="820" draggable="false" data-source="client" data-subject="Signature Tee"></div></div><button class="spin__turn" type="button" aria-label="Turn the Signature Tee around">Turn</button></div>
+            <div class="tile__media spin" data-spin data-tone="black" data-start="0" data-back="img/spin-signature-b.webp" data-back-alt="The back of the Signature Tee with a large script logo and the line Movement fuels a better mind" style="--ar: 0.9085365853658537"><div class="spin__shadow" aria-hidden="true"></div><div class="spin__stage"><div class="spin__body"><img class="spin__face" src="img/spin-signature-f.webp" alt="The front of the washed black Signature Tee with the script logo on the chest" loading="lazy" width="745" height="820" draggable="false" data-source="client" data-subject="Signature Tee"></div></div><button class="spin__open" type="button" aria-label="View the Signature Tee in 3D">View in 3D</button></div>
             <div class="tile__head"><h3>Signature Tee</h3><span class="tile__price">$18</span></div>
             <p class="tile__facts">Black cotton, script logo front and back</p>
           </article>
           <article class="tile span-4">
-            <div class="tile__media spin" data-spin data-tone="bone" data-start="180" data-back="img/spin-summit-b.webp" data-back-alt="The back of the Summit Tee: a drawn mountain range over the script logo" style="--ar: 0.9036585365853659"><div class="spin__shadow" aria-hidden="true"></div><div class="spin__stage"><div class="spin__body"><img class="spin__face" src="img/spin-summit-f.webp" alt="The front of the bone Summit Tee with a small script logo on the chest" loading="lazy" width="741" height="820" draggable="false" data-source="client" data-subject="Summit Tee"></div></div><button class="spin__turn" type="button" aria-label="Turn the Summit Tee around">Turn</button></div>
+            <div class="tile__media spin" data-spin data-tone="bone" data-start="180" data-back="img/spin-summit-b.webp" data-back-alt="The back of the Summit Tee: a drawn mountain range over the script logo" style="--ar: 0.9036585365853659"><div class="spin__shadow" aria-hidden="true"></div><div class="spin__stage"><div class="spin__body"><img class="spin__face" src="img/spin-summit-f.webp" alt="The front of the bone Summit Tee with a small script logo on the chest" loading="lazy" width="741" height="820" draggable="false" data-source="client" data-subject="Summit Tee"></div></div><button class="spin__open" type="button" aria-label="View the Summit Tee in 3D">View in 3D</button></div>
             <div class="tile__head"><h3>Summit Tee</h3><span class="tile__price">$18</span></div>
             <p class="tile__facts">Bone cotton, mountain print on the back</p>
           </article>
           <article class="tile span-4">
-            <div class="tile__media spin" data-spin data-tone="black" data-start="180" data-back="img/spin-lily-b.webp" data-back-alt="The back of the Lily Hoodie with the cream lily and ribbon print" style="--ar: 0.8670731707317073"><div class="spin__shadow" aria-hidden="true"></div><div class="spin__stage"><div class="spin__body"><img class="spin__face" src="img/spin-lily-f.webp" alt="The front of the black Lily Hoodie with a small wordmark on the chest" loading="lazy" width="711" height="820" draggable="false" data-source="client" data-subject="Lily Hoodie"></div></div><button class="spin__turn" type="button" aria-label="Turn the Lily Hoodie around">Turn</button></div>
+            <div class="tile__media spin" data-spin data-tone="black" data-start="180" data-back="img/spin-lily-b.webp" data-back-alt="The back of the Lily Hoodie with the cream lily and ribbon print" style="--ar: 0.8670731707317073"><div class="spin__shadow" aria-hidden="true"></div><div class="spin__stage"><div class="spin__body"><img class="spin__face" src="img/spin-lily-f.webp" alt="The front of the black Lily Hoodie with a small wordmark on the chest" loading="lazy" width="711" height="820" draggable="false" data-source="client" data-subject="Lily Hoodie"></div></div><button class="spin__open" type="button" aria-label="View the Lily Hoodie in 3D">View in 3D</button></div>
             <div class="tile__head"><h3>Lily Hoodie</h3><span class="tile__price">$39</span></div>
             <p class="tile__facts">Black fleece, lily print across the back</p>
           </article>
@@ -261,12 +301,12 @@
       </div>
       <div class="grid">
         <article class="tile span-4">
-          <div class="tile__media spin" data-spin data-tone="bone" data-start="0" data-back="img/spin-contrast-b.webp" data-back-alt="The back of the Clean Contrast Hoodie with Discipline Builds Freedom under the wordmark" style="--ar: 0.8621951219512195"><div class="spin__shadow" aria-hidden="true"></div><div class="spin__stage"><div class="spin__body"><img class="spin__face" src="img/spin-contrast-f.webp" alt="The front of the bone Clean Contrast Hoodie with the wordmark in black" loading="lazy" width="707" height="820" draggable="false" data-source="client" data-subject="Clean Contrast Hoodie"></div></div><button class="spin__turn" type="button" aria-label="Turn the Clean Contrast Hoodie around">Turn</button></div>
+          <div class="tile__media spin" data-spin data-tone="bone" data-start="0" data-back="img/spin-contrast-b.webp" data-back-alt="The back of the Clean Contrast Hoodie with Discipline Builds Freedom under the wordmark" style="--ar: 0.8621951219512195"><div class="spin__shadow" aria-hidden="true"></div><div class="spin__stage"><div class="spin__body"><img class="spin__face" src="img/spin-contrast-f.webp" alt="The front of the bone Clean Contrast Hoodie with the wordmark in black" loading="lazy" width="707" height="820" draggable="false" data-source="client" data-subject="Clean Contrast Hoodie"></div></div><button class="spin__open" type="button" aria-label="View the Clean Contrast Hoodie in 3D">View in 3D</button></div>
           <div class="tile__head"><h3>Clean Contrast Hoodie</h3><span class="tile__price">$39</span></div>
           <p class="tile__facts">Bone fleece, Discipline Builds Freedom on the back</p>
         </article>
         <article class="tile span-4" id="sweatpants">
-          <div class="tile__media spin" data-spin data-tone="bone" data-start="0" style="--ar: 0.40555555555555556"><div class="spin__shadow" aria-hidden="true"></div><div class="spin__stage"><div class="spin__body"><img class="spin__face" id="sweats-img" src="img/spin-sweats-bone-f.webp" alt="Bone Everyday Sweatpants with the stacked wordmark on the left thigh" loading="lazy" width="365" height="900" draggable="false" data-source="client" data-subject="Everyday Sweatpants"></div></div></div>
+          <div class="tile__media spin" data-spin data-tone="bone" data-start="0" style="--ar: 0.40555555555555556"><div class="spin__shadow" aria-hidden="true"></div><div class="spin__stage"><div class="spin__body"><img class="spin__face" id="sweats-img" src="img/spin-sweats-bone-f.webp" alt="Bone Everyday Sweatpants with the stacked wordmark on the left thigh" loading="lazy" width="365" height="900" draggable="false" data-source="client" data-subject="Everyday Sweatpants"></div></div><button class="spin__open" type="button" aria-label="View the Everyday Sweatpants in 3D">View in 3D</button></div>
           <div class="tile__head"><h3>Everyday Sweatpants</h3><span class="tile__price">$32</span></div>
           <div class="tile__foot">
             <p class="tile__facts" id="sweats-colour" style="margin-top:0">Bone fleece, cuffed ankle</p>
@@ -277,7 +317,7 @@
           </div>
         </article>
         <article class="tile span-4">
-          <div class="tile__media spin" data-spin data-tone="bone" data-start="0" style="--ar: 1.0473684210526315"><div class="spin__shadow" aria-hidden="true"></div><div class="spin__stage"><div class="spin__body"><img class="spin__face" src="img/spin-beanie-f.webp" alt="The bone Ribbed Beanie with the wordmark embroidered in black on the cuff" loading="lazy" width="796" height="760" draggable="false" data-source="client" data-subject="Ribbed Beanie"></div></div></div>
+          <div class="tile__media spin" data-spin data-tone="bone" data-start="0" style="--ar: 1.0473684210526315"><div class="spin__shadow" aria-hidden="true"></div><div class="spin__stage"><div class="spin__body"><img class="spin__face" src="img/spin-beanie-f.webp" alt="The bone Ribbed Beanie with the wordmark embroidered in black on the cuff" loading="lazy" width="796" height="760" draggable="false" data-source="client" data-subject="Ribbed Beanie"></div></div><button class="spin__open" type="button" aria-label="View the Ribbed Beanie in 3D">View in 3D</button></div>
           <div class="tile__head"><h3>Ribbed Beanie</h3><span class="tile__price">$12</span></div>
           <p class="tile__facts">Bone knit, one size</p>
         </article>
@@ -342,31 +382,13 @@
         </ol>
         <p class="bj__terms" id="bj-terms">The code takes $10 off any order of $65 or more. One code per person, used once, at the booth only. The game is free. Every hand has a 2 in 5 chance to win however you play it, and you get one hand per visit: refresh the page to play again.</p>
       </div>
-      <div class="bj ground-inverse span-7" id="bj" role="group" aria-label="Blackjack table">
-        <div class="bj__row">
-          <div class="bj__label"><span>Dealer</span><span class="bj__total" id="bj-dt"></span></div>
-          <div class="bj__cards" id="bj-dealer"></div>
+      <div class="bj bj--teaser ground-inverse span-7">
+        <div class="bj__cards" aria-hidden="true">
+          <div class="bj-card"><span class="bj-card__rank">A</span><span class="bj-card__suit">♠</span></div>
+          <div class="bj-card bj-card--soft"><span class="bj-card__rank">K</span><span class="bj-card__suit">♥</span></div>
         </div>
-        <div class="bj__row">
-          <div class="bj__label"><span>You</span><span class="bj__total" id="bj-pt"></span></div>
-          <div class="bj__cards" id="bj-player"></div>
-        </div>
-        <p class="bj__status" id="bj-status" role="status" aria-live="polite">Deal a hand to start.</p>
-        <div class="bj__actions" id="bj-actions">
-          <button class="btn btn--primary" type="button" id="bj-deal">Deal a hand</button>
-          <button class="btn btn--secondary" type="button" id="bj-hit" disabled>Hit</button>
-          <button class="btn btn--secondary" type="button" id="bj-stand" disabled>Stand</button>
-        </div>
-        <form class="bj__claim" id="bj-claim" hidden novalidate>
-          <div class="field"><label for="bj-email">Email for your code</label>
-            <input id="bj-email" name="email" type="email" autocomplete="email" inputmode="email" required aria-describedby="bj-email-err">
-            <p class="field__error" id="bj-email-err" hidden>Write an email address with an @, like name@example.com.</p></div>
-          <div class="bj__actions"><button class="btn btn--primary" type="submit" id="bj-send">Email my code</button></div>
-        </form>
-        <div class="bj__claim" id="bj-done" hidden>
-          <p class="bj__code" id="bj-code"></p>
-          <p class="bj__note" id="bj-done-note"></p>
-        </div>
+        <p class="bj__status">One hand of blackjack. Win it and $10 off lands in your inbox.</p>
+        <div class="bj__actions"><button class="btn btn--primary" type="button" data-open-play>Play a hand</button></div>
       </div>
     </div>
   </section>
@@ -427,6 +449,54 @@
   </div>
 </footer>
 
+<dialog class="pop" id="play-pop" aria-labelledby="play-pop-h">
+  <div class="bj ground-inverse" id="bj" role="group" aria-label="Blackjack table">
+        <p class="bj__title" id="play-pop-h">Beat the dealer for $10 off</p>
+        <div class="bj__row">
+          <div class="bj__label"><span>Dealer</span><span class="bj__total" id="bj-dt"></span></div>
+          <div class="bj__cards" id="bj-dealer"></div>
+        </div>
+        <div class="bj__row">
+          <div class="bj__label"><span>You</span><span class="bj__total" id="bj-pt"></span></div>
+          <div class="bj__cards" id="bj-player"></div>
+        </div>
+        <p class="bj__status" id="bj-status" role="status" aria-live="polite">Deal a hand to start.</p>
+        <div class="bj__actions" id="bj-actions">
+          <button class="btn btn--primary" type="button" id="bj-deal">Deal a hand</button>
+          <button class="btn btn--secondary" type="button" id="bj-hit" disabled>Hit</button>
+          <button class="btn btn--secondary" type="button" id="bj-stand" disabled>Stand</button>
+        </div>
+        <form class="bj__claim" id="bj-claim" hidden novalidate>
+          <div class="field"><label for="bj-email">Email for your code</label>
+            <input id="bj-email" name="email" type="email" autocomplete="email" inputmode="email" required aria-describedby="bj-email-err">
+            <p class="field__error" id="bj-email-err" hidden>Write an email address with an @, like name@example.com.</p></div>
+          <div class="bj__actions"><button class="btn btn--primary" type="submit" id="bj-send">Email my code</button></div>
+        </form>
+        <div class="bj__claim" id="bj-done" hidden>
+          <p class="bj__code" id="bj-code"></p>
+          <p class="bj__note" id="bj-done-note"></p>
+        </div>
+      </div>
+  <form method="dialog"><button class="pop__close" aria-label="Close the game">Close</button></form>
+</dialog>
+
+<dialog class="pop viewer" id="viewer" aria-labelledby="viewer-name">
+  <div class="viewer__stage">
+    <canvas aria-label="A 3D model of the piece. Drag to rotate it."></canvas>
+    <img class="viewer__flat" alt="" hidden>
+    <p class="viewer__hint" role="status"></p>
+  </div>
+  <div class="viewer__side">
+    <div>
+      <p class="viewer__name" id="viewer-name"></p>
+      <p class="viewer__price"></p>
+      <p class="viewer__facts"></p>
+    </div>
+    <div class="viewer__picks" role="group" aria-label="Pick a piece"></div>
+  </div>
+  <form method="dialog"><button class="pop__close" aria-label="Close the 3D viewer">Close</button></form>
+</dialog>
+
 <nav class="actionbar" aria-label="Quick actions">
   <a class="btn btn--primary" href="https://www.instagram.com/wearmotiontherapy/" target="_blank" rel="noopener">Follow on Instagram</a>
 </nav>
@@ -456,7 +526,7 @@
     var SLICES = 7, DEPTH = 18;
     document.querySelectorAll('[data-spin]').forEach(function (el) {
       var body = el.querySelector('.spin__body'), front = el.querySelector('.spin__face');
-      var turn = el.querySelector('.spin__turn'), hasBack = !!el.dataset.back, LIMIT = 55;
+      var turn = null, hasBack = !!el.dataset.back, LIMIT = 55;
       var slices = [];
       for (var i = 1; i < SLICES; i++) {
         var d = document.createElement('div'); d.className = 'spin__slice'; d.setAttribute('aria-hidden', 'true');
@@ -492,7 +562,7 @@
       }
       var x0 = 0, a0 = 0, px = 0, pt = 0;
       el.addEventListener('pointerdown', function (e) {
-        if (e.target === turn || (e.pointerType === 'mouse' && e.button !== 0)) return;
+        if (e.target.closest('.spin__open') || (e.pointerType === 'mouse' && e.button !== 0)) return;
         held = true; cancelAnimationFrame(raf); raf = 0; x0 = px = e.clientX; a0 = a; pt = e.timeStamp; v = 0;
         el.classList.add('is-held'); el.setPointerCapture(e.pointerId);
       });
@@ -512,7 +582,7 @@
         target = hasBack ? Math.round((a + v * 0.22) / 180) * 180 : 0;
         settle();
       }
-      el.addEventListener('mousedown', function (e) { if (e.target !== turn) e.preventDefault(); });   // no text selection while dragging
+      el.addEventListener('mousedown', function (e) { if (!e.target.closest('.spin__open')) e.preventDefault(); });   // no text selection while dragging
       el.addEventListener('pointerup', drop); el.addEventListener('pointercancel', drop);
       if (turn) turn.addEventListener('click', function () { target = Math.round(target / 180) * 180 + 180; settle(); });
       paint();
@@ -540,7 +610,7 @@
     var dealBtn = $('bj-deal'), hitBtn = $('bj-hit'), standBtn = $('bj-stand');
     var claim = $('bj-claim'), done = $('bj-done'), actions = $('bj-actions');
     var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var player = [], dealer = [], hidden = true, busy = false, played = false, used = {};
+    var player = [], dealer = [], hidden = true, wasHidden = true, busy = false, played = false, used = {};
     // Each page load is one hand, and the hand wins 2 times in 5 however it is played (the page says so).
     var WINS = Math.random() < 0.4;
     var SUITS = [['♠', 0], ['♥', 1], ['♦', 1], ['♣', 0]];
@@ -577,21 +647,27 @@
       el.setAttribute('role', 'img');
       return el;
     }
-    function draw(el, hand, hideSecond) {
+    var DEAL = 620, GAP = 420, BEAT = 1300;   // card travel, gap between cards, pause between dealer cards
+    function draw(el, hand, flip, lead) {
       var had = el.children.length;
       el.textContent = '';
       hand.forEach(function (c, i) {
         var node = c ? cardEl(c, false) : cardEl(null, true);
         el.appendChild(node);
-        if (!still && i >= had && node.animate) {
-          node.animate([{ opacity: 0, transform: 'translateY(-14px) scale(0.96)' }, { opacity: 1, transform: 'none' }],
-            { duration: 240, delay: (i - had) * 70, easing: 'cubic-bezier(0.23, 1, 0.32, 1)', fill: 'backwards' });
+        if (still || !node.animate) return;
+        if (i >= had) {
+          node.animate([{ opacity: 0, transform: 'translate(26px, -46px) rotate(7deg) scale(0.94)' }, { opacity: 1, transform: 'none' }],
+            { duration: DEAL, delay: (lead || 0) + (i - had) * GAP * 2, easing: 'cubic-bezier(0.23, 1, 0.32, 1)', fill: 'backwards' });
+        } else if (flip && i === 1) {
+          node.animate([{ transform: 'perspective(600px) rotateY(90deg)' }, { transform: 'perspective(600px) rotateY(0deg)' }],
+            { duration: DEAL, easing: 'cubic-bezier(0.23, 1, 0.32, 1)' });
         }
       });
     }
     function render() {
-      draw(dealerEl, hidden ? [dealer[0], null] : dealer, hidden);
-      draw(playerEl, player, false);
+      draw(dealerEl, hidden ? [dealer[0], null] : dealer, wasHidden && !hidden, GAP);   // you, dealer, you, dealer
+      draw(playerEl, player, false, 0);
+      wasHidden = hidden;
       $('bj-pt').textContent = player.length ? total(player) : '';
       $('bj-dt').textContent = dealer.length && !hidden ? total(dealer) : '';
     }
@@ -617,8 +693,12 @@
       dealer = [card(pick([2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10]))]; hidden = true;
       dealerEl.textContent = ''; playerEl.textContent = '';
       render();
-      if (natural) return stand();
-      controls(true); say('You have ' + total(player) + '. Hit or stand?');
+      say('Dealing.'); dealBtn.disabled = true; busy = true;
+      wait(GAP * 3 + DEAL).then(function () {
+        busy = false;
+        if (natural) return stand();
+        controls(true); say('You have ' + total(player) + '. Hit or stand?');
+      });
     }
     function hit() {
       if (busy) return;
@@ -627,7 +707,7 @@
       else { do { v = 2 + rnd(9); } while (now + v === 21); }                                    // a losing hand never makes 21
       player.push(card(v)); render();
       var t = total(player);
-      if (t > 21) { hidden = false; dealer.push(card(pick([7, 8, 9, 10]))); render(); return over('Bust at ' + t + '. Refresh the page to play again.'); }
+      if (t > 21) { hidden = false; dealer[1] = card(pick([7, 8, 9, 10])); render(); return over('Bust at ' + t + '. Refresh the page to play again.'); }
       if (t === 21) return stand();
       say('You have ' + t + '. Hit or stand?');
     }
@@ -649,8 +729,8 @@
       var p = total(player), up = total([dealer[0]]), natural = player.length === 2 && p === 21, rest;
       if (WINS) rest = (p >= 18 && (natural || Math.random() < 0.5)) ? dealerTo(up, 17 + rnd(Math.min(p, 21) - 17)) : dealerBust(up);
       else { var low = Math.max(17, p + 1); rest = dealerTo(up, low + rnd(21 - low + 1)); }
-      hidden = false; dealer.push(card(rest[0])); render(); await wait(480);
-      for (var i = 1; i < rest.length; i++) { dealer.push(card(rest[i])); render(); await wait(480); }
+      await wait(500); dealer[1] = card(rest[0]); hidden = false; render(); await wait(BEAT);
+      for (var i = 1; i < rest.length; i++) { dealer.push(card(rest[i])); render(); await wait(BEAT); }
       var d = total(dealer);
       busy = false;
       if (d > 21 || p > d) return win(natural ? 'Blackjack. You win $10 off.' : 'You win, ' + p + ' to ' + (d > 21 ? 'a dealer bust' : d) + '. That is $10 off.');
@@ -701,6 +781,27 @@
     dealBtn.addEventListener('click', deal); hitBtn.addEventListener('click', hit); standBtn.addEventListener('click', stand);
   })();
 </script>
+<script>
+  // The blackjack popup: it opens on its own once per visit, from the Play links, and after a refresh for a new hand.
+  (function () {
+    var pop = document.getElementById('play-pop');
+    if (!pop || !pop.showModal) return;
+    function open() { if (!document.querySelector('dialog[open]')) pop.showModal(); }
+    document.addEventListener('click', function (e) {
+      var t = e.target.closest('[data-open-play], a[href="#play"]');
+      if (!t) return;
+      e.preventDefault(); open();
+    });
+    document.querySelectorAll('dialog.pop').forEach(function (d) {      // a click on the dimmed page closes the popup
+      d.addEventListener('click', function (e) { if (e.target === d) d.close(); });
+    });
+    var seen = false;
+    try { seen = sessionStorage.getItem('mt-pop') === '1'; } catch (e) {}
+    if (location.hash === '#play') { open(); }
+    else if (!seen) setTimeout(function () { open(); try { sessionStorage.setItem('mt-pop', '1'); } catch (e) {} }, 3500);
+  })();
+</script>
+<script src="assets/viewer.js" defer></script>
 <script type="module" src="assets/system.js"></script>
 <script type="module" src="assets/motion/motion.js"></script>
 <script type="module" src="assets/layout/layout.js"></script>
