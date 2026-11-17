@@ -10,7 +10,7 @@
   var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   // how full each kind of piece is: depth is half the body's thickness (the piece is 2 units tall),
   // round is how far in from the outline the body keeps rising, as a share of the picture's width
-  var FORMS = { top: { depth: 0.2, round: 0.2 }, pants: { depth: 0.17, round: 0.17 }, beanie: { depth: 0.6, round: 0.5 } };
+  var FORMS = { top: { depth: 0.3, k: 0.6, rim: 0.09 }, pants: { depth: 0.2, k: 0.75, rim: 0.06 }, beanie: { depth: 0.62, k: 0.9, rim: 0.16 } };
   function formOf(name) { return /beanie/i.test(name) ? 'beanie' : /pants/i.test(name) ? 'pants' : 'top'; }
 
   // the pieces, read from the collection tiles so the viewer never drifts from the page
@@ -55,6 +55,30 @@
   var libP, T, renderer, scene, camera, model, raf = 0, token = 0;
   var yaw = 0, pitch = 0, vyaw = 0, zoom = 1, ar = 1, lastTouch = 0, held = false;
 
+  // Sculpted models, when there are any: a GLB file per piece in models/, keyed by the item's label.
+  // A piece without one is built from its mockups as below.
+  var MODELS = {
+    // 'Signature Tee': 'models/signature-tee.glb',
+  };
+  var loaderP;
+  function gltf() {
+    return loaderP || (loaderP = new Promise(function (res, rej) {
+      var s = document.createElement('script'); s.src = 'assets/vendor/GLTFLoader.js';
+      s.onload = function () { res(new T.GLTFLoader()); }; s.onerror = rej; document.head.appendChild(s);
+    }));
+  }
+  function sculpted(url) {           // load a GLB, stand it up 2 units tall and centred on the turning axis
+    return gltf().then(function (loader) {
+      return new Promise(function (res, rej) { loader.load(url, function (g) { res(g.scene); }, null, rej); });
+    }).then(function (obj) {
+      var box = new T.Box3().setFromObject(obj), size = box.getSize(new T.Vector3()), c = box.getCenter(new T.Vector3());
+      var k = 2 / size.y;
+      obj.position.sub(c); var holder = new T.Group(); holder.add(obj); holder.scale.setScalar(k);
+      obj.traverse(function (m) { if (m.isMesh && m.material) { m.material.side = T.DoubleSide; if (m.material.map) m.material.map.encoding = T.sRGBEncoding; } });
+      ar = size.x / size.y;
+      return holder;
+    });
+  }
   function lib() {
     return libP || (libP = new Promise(function (res, rej) {
       var s = document.createElement('script'); s.src = 'assets/vendor/three.min.js';
@@ -109,7 +133,7 @@
   // Fabric everywhere: drop the faint fringe around a cut-out and spread the nearest fabric colour into every
   // empty pixel, so wherever the shared outline reaches past this picture there is cloth, not a hole.
   function fabric(c) {
-    var w = c.width, h = c.height, id = pixels(c), d = id.data, keep = shrink(solidMask(id, 215), w, h, 6);
+    var w = c.width, h = c.height, id = pixels(c), d = id.data, keep = shrink(solidMask(id, 215), w, h, 10);
     var q = 4, sw = Math.ceil(w / q), sh = Math.ceil(h / q), n = sw * sh, col = new Float32Array(n * 3), has = new Uint8Array(n), cnt = new Uint16Array(n), x, y, i, j;
     for (y = 0; y < h; y++) for (x = 0; x < w; x++) {
       if (!keep[y * w + x]) continue;
@@ -149,6 +173,19 @@
         s += mask[py * w + px]; c++;
       }
       d[(y * w + x) * 4 + 3] = 255 * s / c;
+    }
+    // darken toward the outline, the way cloth falls into shadow as it turns away
+    var soft = new Float32Array(w * h), tmp = new Float32Array(w * h), r = 14, sum, n, k2;
+    for (y = 0; y < h; y++) for (x = 0; x < w; x++) soft[y * w + x] = mask[y * w + x];
+    for (var pass = 0; pass < 2; pass++) {
+      for (y = 0; y < h; y++) { sum = 0; for (k2 = -r; k2 <= r; k2++) sum += x0v(soft, y, k2); for (x = 0; x < w; x++) { tmp[y * w + x] = sum / (2 * r + 1); sum += x0v(soft, y, x + r + 1) - x0v(soft, y, x - r); } }
+      for (x = 0; x < w; x++) { sum = 0; for (k2 = -r; k2 <= r; k2++) sum += y0v(tmp, k2, x); for (y = 0; y < h; y++) { soft[y * w + x] = sum / (2 * r + 1); sum += y0v(tmp, y + r + 1, x) - y0v(tmp, y - r, x); } }
+    }
+    function x0v(a, yy, xx) { return xx < 0 || xx >= w ? 0 : a[yy * w + xx]; }
+    function y0v(a, yy, xx) { return yy < 0 || yy >= h ? 0 : a[yy * w + xx]; }
+    for (y = 0; y < h; y++) for (x = 0; x < w; x++) {
+      var e = Math.min(1, Math.max(0, (soft[y * w + x] - 0.5) * 2)), f = 0.72 + 0.28 * Math.sqrt(e), j2 = (y * w + x) * 4;
+      d[j2] *= f; d[j2 + 1] *= f; d[j2 + 2] *= f;
     }
     var out = blank(w, h); out.getContext('2d').putImageData(id, 0, 0);
     return out;
@@ -247,13 +284,28 @@
         }
       }
     }
-    // Smooth the distances first, so the rim follows the outline in one clean curve, and start the body a
-    // step inside the outline: it comes down to nothing just before the edge, where the two halves close.
+    // Each row of the piece is a set of solid runs (a torso with its sleeves, or one leg). Every run gets a
+    // round cross-section like a tube, deepest at its middle and closing to nothing at its sides, so the piece
+    // turns into a body rather than a slab. Top and bottom edges (shoulders, hems, cuffs) roll over the same way.
     soften(d, 2, 2);
-    var R = cw * form.round, z = new Float32Array(cw * ch);
-    for (i = 0; i < cw * ch; i++) { var t = 1 - Math.min(Math.max(d[i] - 1.8, 0) / R, 1); z[i] = form.depth * Math.sqrt(1 - t * t); }
-    soften(z, 1, 1);
-    for (i = 0; i < cw * ch; i++) z[i] -= 0.012;
+    var unit = (2 * w / h) / (cw - 1), z = new Float32Array(cw * ch), Rr = cw * form.rim;
+    for (y = 0; y < ch; y++) {
+      x = 0;
+      while (x < cw) {
+        if (d[y * cw + x] <= 0.5) { x++; continue; }
+        var x0 = x; while (x < cw && d[y * cw + x] > 0.5) x++;
+        var x1 = x - 1, half = (x1 - x0 + 1) / 2, mid = (x0 + x1) / 2;
+        if (half < 1) continue;
+        var thick = Math.min(form.depth, form.k * half * unit);
+        for (var xx = x0; xx <= x1; xx++) {
+          var u = (xx - mid) / (half + 0.5), across = Math.sqrt(Math.max(0, 1 - u * u));
+          var t = 1 - Math.min(Math.max(d[y * cw + xx] - 1, 0) / Rr, 1), roll = Math.sqrt(1 - t * t);
+          z[y * cw + xx] = thick * Math.min(across, roll);
+        }
+      }
+    }
+    soften(z, 2, 2);                           // rows join into one smooth surface
+    for (i = 0; i < cw * ch; i++) z[i] = d[i] > 0.5 ? z[i] - 0.008 : -0.008;
     return { cw: cw, ch: ch, z: z };
   }
   function shell(tex, mask, w, h, form, tone) {
@@ -262,22 +314,25 @@
     for (var i = 0; i < pos.count; i++) pos.setZ(i, hf.z[i]);
     geo.computeVertexNormals();
     var map = new T.Texture(tex); map.encoding = T.sRGBEncoding; map.anisotropy = renderer.capabilities.getMaxAnisotropy(); map.needsUpdate = true;
-    var mat = new T.MeshPhongMaterial({ map: map, alphaTest: 0.5, shininess: tone === 'black' ? 7 : 4,
-      specular: new T.Color(tone === 'black' ? 0x191715 : 0x0c0b0a) });
+    var mat = new T.MeshStandardMaterial({ map: map, alphaTest: 0.5, roughness: 1, metalness: 0, side: T.DoubleSide });   // matte, like cotton
     return new T.Mesh(geo, mat);
   }
   function clear() {
     if (!model) return;
-    model.children.forEach(function (m) { m.geometry.dispose(); m.material.map.dispose(); m.material.dispose(); });
+    model.traverse(function (m) {
+      if (!m.isMesh) return;
+      m.geometry.dispose();
+      [].concat(m.material).forEach(function (mt) { if (mt.map) mt.map.dispose(); mt.dispose(); });
+    });
     scene.remove(model); model = null;
   }
   function setup() {
     renderer = new T.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
     renderer.outputEncoding = T.sRGBEncoding; renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     scene = new T.Scene(); camera = new T.PerspectiveCamera(30, 1, 0.1, 50);
-    scene.add(new T.AmbientLight(0xffffff, 0.6));
-    var key = new T.DirectionalLight(0xffffff, 0.58); key.position.set(-1.6, 2.2, 4); scene.add(key);
-    var rim = new T.DirectionalLight(0xffffff, 0.2); rim.position.set(3, 0.5, 1.5); scene.add(rim);
+    scene.add(new T.HemisphereLight(0xffffff, 0xb9a796, 0.75));
+    var key = new T.DirectionalLight(0xffffff, 0.75); key.position.set(-1.6, 2.2, 4); scene.add(key);
+    var rim = new T.DirectionalLight(0xffffff, 0.3); rim.position.set(3, 0.5, 1.5); scene.add(rim);
   }
   function fit() {
     var w = stage.clientWidth, h = stage.clientHeight;
@@ -308,6 +363,15 @@
       if (mine !== token) return;
       T = r[0];
       if (!renderer) setup();
+      if (MODELS[it.label]) {
+        return sculpted(MODELS[it.label]).then(function (obj) {
+          if (mine !== token) return;
+          clear(); model = obj; scene.add(model);
+          yaw = -0.5; pitch = 0.06; vyaw = 0; zoom = 1; lastTouch = performance.now() - 1200;
+          fit(); hint.textContent = 'Drag to rotate. Scroll or pinch to zoom.';
+          if (!raf) raf = requestAnimationFrame(frame);
+        });
+      }
       if (!it.faces) it.faces = faces(r[1], r[2]);
       var fc = it.faces, form = FORMS[formOf(it.name)];
       clear();
