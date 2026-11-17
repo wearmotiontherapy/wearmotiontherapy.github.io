@@ -53,21 +53,20 @@
   #collection .tile { --tile-ratio: 6 / 7; }
   #collection .tile__media { background: #dccbbe; }
   /* turnable pieces: a cut-out front and back on a slab of fabric-coloured slices, dragged around its own axis */
-  .spin { touch-action: pan-y; cursor: grab; user-select: none; -webkit-user-select: none; --edge: #cbbba8; }
+  .spin { --edge: #cbbba8; }
   .spin[data-tone="black"] { --edge: #0c0b0a; }
-  .spin.is-held { cursor: grabbing; }
-  .spin__stage { position: absolute; inset: 9% 9% 13%; container-type: size; display: grid; place-items: center; perspective: 900px; }
-  .spin__body { position: relative; width: min(100cqw, 100cqh * var(--ar)); aspect-ratio: var(--ar); transform-style: preserve-3d; transform: rotateY(var(--a, 0deg)); }
+  .spin__stage { position: absolute; inset: 9% 9% 13%; container-type: size; display: grid; place-items: center; }
+  .spin__body { position: relative; width: min(100cqw, 100cqh * var(--ar)); aspect-ratio: var(--ar); }
   .spin__body > * { position: absolute; inset: 0; width: 100%; height: 100%; }
-  .spin .spin__face { object-fit: contain; backface-visibility: hidden; -webkit-backface-visibility: hidden; filter: brightness(var(--lit, 1)); transform: translateZ(9px); transition: none; pointer-events: none; }
-  .spin .spin__face--back { transform: rotateY(180deg) translateZ(9px); }
-  .spin__slice { background: var(--edge); -webkit-mask: var(--m) center / contain no-repeat; mask: var(--m) center / contain no-repeat; transform: translateZ(var(--z)); }
-  .spin__shadow { position: absolute; left: 50%; bottom: 7.5%; width: 46%; height: 5%; border-radius: 50%; background: radial-gradient(closest-side, rgb(40 28 18 / 0.34), transparent); transform: translateX(-50%) scaleX(var(--sh, 1)); }
-  .spin__open { position: absolute; right: var(--s-3); bottom: var(--s-3); min-height: 36px; padding: 0 14px; border-radius: 999px; border: 1px solid color-mix(in oklab, var(--ink) 18%, transparent); background: color-mix(in oklab, var(--bg) 82%, transparent); color: var(--ink); font: inherit; font-size: 13px; cursor: pointer; transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1); }
-  @media (max-width: 640px) { .spin__stage { inset: 6% 6% 12%; } .spin__open { right: 6px; bottom: 6px; min-height: 30px; padding: 0 10px; font-size: 12px; } }
-  .spin__open::after { content: ""; position: absolute; inset: -6px; }
-  .spin__open:active { transform: scale(0.97); }
-  /* popups: the blackjack table and the 3D viewer */
+  .spin .spin__face { object-fit: contain; pointer-events: none; transition: opacity 140ms ease; }
+  .spin .spin__face.is-swapping { opacity: 0; }
+  .spin__shadow { position: absolute; left: 50%; bottom: 7.5%; width: 46%; height: 5%; border-radius: 50%; background: radial-gradient(closest-side, rgb(40 28 18 / 0.34), transparent); transform: translateX(-50%); }
+  .flip { position: absolute; right: var(--s-3); bottom: var(--s-3); display: flex; gap: 2px; padding: 3px; border-radius: 999px; background: color-mix(in oklab, var(--bg) 82%, transparent); border: 1px solid color-mix(in oklab, var(--ink) 14%, transparent); }
+  .flip button { min-height: 32px; padding: 0 12px; border: 0; border-radius: 999px; background: transparent; color: var(--ink); font: inherit; font-size: 13px; cursor: pointer; transition: background-color 160ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1); }
+  .flip button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+  .flip button:active { transform: scale(0.96); }
+  @media (max-width: 640px) { .spin__stage { inset: 6% 6% 12%; } .flip { right: 6px; bottom: 6px; } .flip button { min-height: 30px; padding: 0 10px; font-size: 12px; } }
+  /* popups: the blackjack table */
   dialog.pop { border: 0; padding: 0; margin: auto; background: transparent; color: var(--ink); max-width: none; max-height: none; width: min(600px, calc(100vw - 24px)); overflow: visible; }
   dialog.pop::backdrop { background: rgb(21 19 17 / 0.6); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
   dialog.pop[open] { animation: pop-in 320ms cubic-bezier(0.23, 1, 0.32, 1); }
@@ -82,39 +81,7 @@
   .bj__title { font: var(--display-weight) 20px/1.2 var(--font-display); letter-spacing: -0.02em; margin: 0; padding-right: 84px; }
   .bj--teaser { min-height: 420px; align-content: center; }
   .bj-card { transform-origin: 50% 50%; backface-visibility: hidden; }
-  dialog.viewer { width: min(1180px, calc(100vw - 32px)); height: min(760px, calc(100dvh - 32px)); background: var(--p-bg); border-radius: var(--r-lg); overflow: hidden; }
-  dialog.viewer[open] { display: grid; grid-template-columns: minmax(0, 1fr) 320px; grid-template-rows: minmax(0, 1fr); }
-  .viewer__stage { position: relative; min-height: 0; background: radial-gradient(90% 75% at 50% 38%, #f3ece3 0%, #e7dccf 58%, #d9cbbb 100%); touch-action: none; cursor: grab; user-select: none; -webkit-user-select: none; }
-  .viewer__stage.is-held { cursor: grabbing; }
-  .viewer__stage canvas, .viewer__flat { position: absolute; inset: 0; width: 100%; height: 100%; }
-  .viewer__flat { object-fit: contain; padding: 10%; }
-  .viewer__hint { position: absolute; left: 0; right: 0; top: 18px; margin: 0; padding: 0 64px; text-align: center; font-size: 13px; color: #6a5f55; pointer-events: none; }
-  .viewer__tools { position: absolute; left: 50%; bottom: 16px; transform: translateX(-50%); display: flex; gap: 4px; padding: 4px; border-radius: 999px; background: rgb(255 252 247 / 0.72); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); box-shadow: 0 1px 0 rgb(255 255 255 / 0.6) inset, 0 6px 20px rgb(60 40 25 / 0.12); max-width: calc(100% - 24px); overflow-x: auto; scrollbar-width: none; }
-  .viewer__tools button { min-height: 36px; padding: 0 14px; border: 0; border-radius: 999px; background: transparent; color: #2b2622; font: 500 13px/1 var(--font-text); white-space: nowrap; cursor: pointer; transition: background-color 160ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1); }
-  .viewer__tools button:hover { background: rgb(43 38 34 / 0.07); }
-  .viewer__tools button:active { transform: scale(0.96); }
-  .viewer__tools button[aria-pressed="true"] { background: #2b2622; color: #f6efe6; }
-  .viewer__tools button:focus-visible { outline: 2px solid #2b2622; outline-offset: 1px; }
-  .viewer__side { padding: 64px var(--s-6) var(--s-6); display: flex; flex-direction: column; justify-content: space-between; gap: var(--s-5); overflow: auto; }
-  .viewer__name { font: var(--display-weight) 28px/1.15 var(--font-display); letter-spacing: -0.02em; margin: 0; }
-  .viewer__price { font-size: 20px; margin: var(--s-2) 0 var(--s-3); font-variant-numeric: tabular-nums; }
-  .viewer__facts { margin: 0; color: var(--muted); }
-  .viewer__picks { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-  .viewer__pick { aspect-ratio: 1; border-radius: 10px; background: #dccbbe; border: 1.5px solid transparent; padding: 6px; cursor: pointer; transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1); }
-  .viewer__pick img { width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
-  .viewer__pick:active { transform: scale(0.95); }
-  .viewer__pick[aria-pressed="true"] { border-color: var(--ink); }
   @media (max-width: 760px) {
-    dialog.viewer { width: 100vw; height: 100dvh; border-radius: 0; }
-    dialog.viewer[open] { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto; }
-    .viewer__side { padding: var(--s-4); gap: var(--s-3); }
-    .viewer__name { font-size: 22px; }
-    .viewer__price { font-size: 17px; margin: 2px 0 4px; }
-    .viewer__picks { grid-template-columns: repeat(7, 1fr); gap: 6px; }
-    .viewer__pick { padding: 3px; border-radius: 8px; }
-    .viewer__tools { bottom: 10px; }
-    .viewer__tools button { min-height: 34px; padding: 0 11px; font-size: 12.5px; }
-    .viewer__hint { top: 20px; font-size: 12px; text-align: left; padding: 0 104px 0 16px; }
   }
   /* sweatpants colour swatches: the picture follows the colour */
   .swatches { display: flex; gap: var(--s-3); align-items: center; }
@@ -294,17 +261,17 @@
         </div>
         <div class="grid">
           <article class="tile span-4">
-            <div class="tile__media spin" data-spin data-tone="black" data-start="0" data-back="img/spin-signature-b.webp" data-back-alt="The back of the Signature Tee with a large script logo and the line Movement fuels a better mind" style="--ar: 0.9085365853658537"><div class="spin__shadow" aria-hidden="true"></div><div class="spin__stage"><div class="spin__body"><img class="spin__face" src="img/spin-signature-f.webp" alt="The front of the washed black Signature Tee with the script logo on the chest" loading="lazy" width="745" height="820" draggable="false" data-source="client" data-subject="Signature Tee"></div></div><button class="spin__open" type="button" aria-label="View the Signature Tee in 3D">View in 3D</button></div>
+            <div class="tile__media spin" data-spin data-tone="black" data-start="0" data-back="img/spin-signature-b.webp" data-back-alt="The back of the Signature Tee with a large script logo and the line Movement fuels a better mind" style="--ar: 0.9085365853658537"><div class="spin__shadow" aria-hidden="true"></div><div class="spin__stage"><div class="spin__body"><img class="spin__face" src="img/spin-signature-f.webp" alt="The front of the washed black Signature Tee with the script logo on the chest" loading="lazy" width="745" height="820" draggable="false" data-source="client" data-subject="Signature Tee"></div></div></div>
             <div class="tile__head"><h3>Signature Tee</h3><span class="tile__price">$18</span></div>
             <p class="tile__facts">Black cotton, script logo front and back</p>
           </article>
           <article class="tile span-4">
-            <div class="tile__media spin" data-spin data-tone="bone" data-start="180" data-back="img/spin-summit-b.webp" data-back-alt="The back of the Summit Tee: a drawn mountain range over the script logo" style="--ar: 0.9036585365853659"><div class="spin__shadow" aria-hidden="true"></div><div class="spin__stage"><div class="spin__body"><img class="spin__face" src="img/spin-summit-f.webp" alt="The front of the bone Summit Tee with a small script logo on the chest" loading="lazy" width="741" height="820" draggable="false" data-source="client" data-subject="Summit Tee"></div></div><button class="spin__open" type="button" aria-label="View the Summit Tee in 3D">View in 3D</button></div>
+            <div class="tile__media spin" data-spin data-tone="bone" data-start="180" data-back="img/spin-summit-b.webp" data-back-alt="The back of the Summit Tee: a drawn mountain range over the script logo" style="--ar: 0.9036585365853659"><div class="spin__shadow" aria-hidden="true"></div><div class="spin__stage"><div class="spin__body"><img class="spin__face" src="img/spin-summit-f.webp" alt="The front of the bone Summit Tee with a small script logo on the chest" loading="lazy" width="741" height="820" draggable="false" data-source="client" data-subject="Summit Tee"></div></div></div>
             <div class="tile__head"><h3>Summit Tee</h3><span class="tile__price">$18</span></div>
             <p class="tile__facts">Bone cotton, mountain print on the back</p>
           </article>
           <article class="tile span-4">
-            <div class="tile__media spin" data-spin data-tone="black" data-start="180" data-back="img/spin-lily-b.webp" data-back-alt="The back of the Lily Hoodie with the cream lily and ribbon print" style="--ar: 0.8670731707317073"><div class="spin__shadow" aria-hidden="true"></div><div class="spin__stage"><div class="spin__body"><img class="spin__face" src="img/spin-lily-f.webp" alt="The front of the black Lily Hoodie with a small wordmark on the chest" loading="lazy" width="711" height="820" draggable="false" data-source="client" data-subject="Lily Hoodie"></div></div><button class="spin__open" type="button" aria-label="View the Lily Hoodie in 3D">View in 3D</button></div>
+            <div class="tile__media spin" data-spin data-tone="black" data-start="180" data-back="img/spin-lily-b.webp" data-back-alt="The back of the Lily Hoodie with the cream lily and ribbon print" style="--ar: 0.8670731707317073"><div class="spin__shadow" aria-hidden="true"></div><div class="spin__stage"><div class="spin__body"><img class="spin__face" src="img/spin-lily-f.webp" alt="The front of the black Lily Hoodie with a small wordmark on the chest" loading="lazy" width="711" height="820" draggable="false" data-source="client" data-subject="Lily Hoodie"></div></div></div>
             <div class="tile__head"><h3>Lily Hoodie</h3><span class="tile__price">$39</span></div>
             <p class="tile__facts">Black fleece, lily print across the back</p>
           </article>
@@ -312,12 +279,12 @@
       </div>
       <div class="grid">
         <article class="tile span-4">
-          <div class="tile__media spin" data-spin data-tone="bone" data-start="0" data-back="img/spin-contrast-b.webp" data-back-alt="The back of the Clean Contrast Hoodie with Discipline Builds Freedom under the wordmark" style="--ar: 0.8621951219512195"><div class="spin__shadow" aria-hidden="true"></div><div class="spin__stage"><div class="spin__body"><img class="spin__face" src="img/spin-contrast-f.webp" alt="The front of the bone Clean Contrast Hoodie with the wordmark in black" loading="lazy" width="707" height="820" draggable="false" data-source="client" data-subject="Clean Contrast Hoodie"></div></div><button class="spin__open" type="button" aria-label="View the Clean Contrast Hoodie in 3D">View in 3D</button></div>
+          <div class="tile__media spin" data-spin data-tone="bone" data-start="0" data-back="img/spin-contrast-b.webp" data-back-alt="The back of the Clean Contrast Hoodie with Discipline Builds Freedom under the wordmark" style="--ar: 0.8621951219512195"><div class="spin__shadow" aria-hidden="true"></div><div class="spin__stage"><div class="spin__body"><img class="spin__face" src="img/spin-contrast-f.webp" alt="The front of the bone Clean Contrast Hoodie with the wordmark in black" loading="lazy" width="707" height="820" draggable="false" data-source="client" data-subject="Clean Contrast Hoodie"></div></div></div>
           <div class="tile__head"><h3>Clean Contrast Hoodie</h3><span class="tile__price">$39</span></div>
           <p class="tile__facts">Bone fleece, Discipline Builds Freedom on the back</p>
         </article>
         <article class="tile span-4" id="sweatpants">
-          <div class="tile__media spin" data-spin data-tone="bone" data-start="0" style="--ar: 0.40555555555555556"><div class="spin__shadow" aria-hidden="true"></div><div class="spin__stage"><div class="spin__body"><img class="spin__face" id="sweats-img" src="img/spin-sweats-bone-f.webp" alt="Bone Everyday Sweatpants with the stacked wordmark on the left thigh" loading="lazy" width="365" height="900" draggable="false" data-source="client" data-subject="Everyday Sweatpants"></div></div><button class="spin__open" type="button" aria-label="View the Everyday Sweatpants in 3D">View in 3D</button></div>
+          <div class="tile__media spin" data-spin data-tone="bone" data-start="0" style="--ar: 0.40555555555555556"><div class="spin__shadow" aria-hidden="true"></div><div class="spin__stage"><div class="spin__body"><img class="spin__face" id="sweats-img" src="img/spin-sweats-bone-f.webp" alt="Bone Everyday Sweatpants with the stacked wordmark on the left thigh" loading="lazy" width="365" height="900" draggable="false" data-source="client" data-subject="Everyday Sweatpants"></div></div></div>
           <div class="tile__head"><h3>Everyday Sweatpants</h3><span class="tile__price">$32</span></div>
           <div class="tile__foot">
             <p class="tile__facts" id="sweats-colour" style="margin-top:0">Bone fleece, cuffed ankle</p>
@@ -328,7 +295,7 @@
           </div>
         </article>
         <article class="tile span-4">
-          <div class="tile__media spin" data-spin data-tone="bone" data-start="0" style="--ar: 1.0473684210526315"><span class="tile__limited">Limited pink, 10 made</span><div class="spin__shadow" aria-hidden="true"></div><div class="spin__stage"><div class="spin__body"><img class="spin__face" src="img/spin-beanie-f.webp" alt="The bone Ribbed Beanie with the wordmark embroidered in black on the cuff" loading="lazy" width="796" height="760" draggable="false" data-source="client" data-subject="Ribbed Beanie"></div></div><button class="spin__open" type="button" aria-label="View the Ribbed Beanie in 3D">View in 3D</button></div>
+          <div class="tile__media spin" data-spin data-tone="bone" data-start="0" style="--ar: 1.0473684210526315"><span class="tile__limited">Limited pink, 10 made</span><div class="spin__shadow" aria-hidden="true"></div><div class="spin__stage"><div class="spin__body"><img class="spin__face" src="img/spin-beanie-f.webp" alt="The bone Ribbed Beanie with the wordmark embroidered in black on the cuff" loading="lazy" width="796" height="760" draggable="false" data-source="client" data-subject="Ribbed Beanie"></div></div></div>
           <div class="tile__head"><h3>Ribbed Beanie</h3><span class="tile__price">$12</span></div>
           <div class="tile__foot">
             <p class="tile__facts" style="margin-top:0">Bone knit, one size</p>
@@ -498,30 +465,6 @@
   <form method="dialog"><button class="pop__close" aria-label="Close the game">Close</button></form>
 </dialog>
 
-<dialog class="pop viewer" id="viewer" aria-labelledby="viewer-name">
-  <div class="viewer__stage">
-    <canvas aria-label="A 3D model of the piece. Drag to rotate it."></canvas>
-    <img class="viewer__flat" alt="" hidden>
-    <p class="viewer__hint" role="status"></p>
-    <div class="viewer__tools" role="group" aria-label="Views">
-      <button type="button" data-view="front">Front</button>
-      <button type="button" data-view="back">Back</button>
-      <button type="button" data-view="left">Left</button>
-      <button type="button" data-view="right">Right</button>
-      <button type="button" data-auto aria-pressed="false">Auto-turn</button>
-      <button type="button" data-reset>Reset</button>
-    </div>
-  </div>
-  <div class="viewer__side">
-    <div>
-      <p class="viewer__name" id="viewer-name"></p>
-      <p class="viewer__price"></p>
-      <p class="viewer__facts"></p>
-    </div>
-    <div class="viewer__picks" role="group" aria-label="Pick a piece"></div>
-  </div>
-  <form method="dialog"><button class="pop__close" aria-label="Close the 3D viewer">Close</button></form>
-</dialog>
 
 <nav class="actionbar" aria-label="Quick actions">
   <a class="btn btn--primary" href="https://www.instagram.com/wearmotiontherapy/" target="_blank" rel="noopener">Follow on Instagram</a>
@@ -537,90 +480,38 @@
       b.addEventListener('click', function () {
         buttons.forEach(function (o) { o.setAttribute('aria-pressed', String(o === b)); });
         img.src = b.dataset.src; img.alt = b.dataset.alt;
-        img.closest('.spin').dataset.tone = b.dataset.tone;
         line.textContent = b.dataset.facts;
       });
     });
   });
 </script>
 <script>
-  // Turnable pieces. Drag a piece to turn it; it carries on with the throw and settles on its front or back.
-  // Pieces with no drawn back (sweatpants, beanie) swing and come back to the front.
-  (function () {
-    var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var SLICES = 7, DEPTH = 18;
-    document.querySelectorAll('[data-spin]').forEach(function (el) {
-      var body = el.querySelector('.spin__body'), front = el.querySelector('.spin__face');
-      var turn = null, hasBack = !!el.dataset.back, LIMIT = 55;
-      var slices = [];
-      for (var i = 1; i < SLICES; i++) {
-        var d = document.createElement('div'); d.className = 'spin__slice'; d.setAttribute('aria-hidden', 'true');
-        d.style.setProperty('--z', (DEPTH / 2 - (DEPTH * i) / SLICES).toFixed(1) + 'px');
-        body.insertBefore(d, front); slices.push(d);
-      }
-      function mask() { var u = 'url("' + front.getAttribute('src') + '")'; slices.forEach(function (d) { d.style.setProperty('--m', u); }); }
-      mask(); front.addEventListener('load', mask);
-      if (hasBack) {
-        var back = new Image(); back.className = 'spin__face spin__face--back'; back.alt = el.dataset.backAlt; back.draggable = false;
-        back.src = el.dataset.back; body.appendChild(back);
-      }
-      var a = +el.dataset.start || 0, v = 0, target = a, raf = 0, held = false, last = 0;
-      function paint() {
-        var c = Math.abs(Math.cos(a * Math.PI / 180));
-        el.style.setProperty('--a', a.toFixed(2) + 'deg');
-        el.style.setProperty('--lit', (0.7 + 0.3 * c).toFixed(3));
-        el.style.setProperty('--sh', (0.3 + 0.7 * c).toFixed(3));
-        if (turn) {
-          var showsBack = Math.round(target / 180) % 2 !== 0;
-          front.setAttribute('aria-hidden', String(showsBack)); back.setAttribute('aria-hidden', String(!showsBack));
-        }
-      }
-      function tick(t) {            // a damped spring toward the resting face
-        var dt = Math.min(0.032, (t - last) / 1000 || 0.016); last = t;
-        v += ((target - a) * 90 - v * 15) * dt; a += v * dt;
-        if (Math.abs(target - a) < 0.05 && Math.abs(v) < 0.5) { a = target; v = 0; raf = 0; paint(); return; }
-        paint(); raf = requestAnimationFrame(tick);
-      }
-      function settle() {
-        if (still) { a = target; v = 0; return paint(); }
-        if (!raf) { last = performance.now(); raf = requestAnimationFrame(tick); }
-      }
-      var x0 = 0, a0 = 0, px = 0, pt = 0;
-      el.addEventListener('pointerdown', function (e) {
-        if (e.target.closest('.spin__open') || (e.pointerType === 'mouse' && e.button !== 0)) return;
-        held = true; cancelAnimationFrame(raf); raf = 0; x0 = px = e.clientX; a0 = a; pt = e.timeStamp; v = 0;
-        el.classList.add('is-held'); el.setPointerCapture(e.pointerId);
-      });
-      el.addEventListener('pointermove', function (e) {
-        if (!held) return;
-        var next = a0 + (e.clientX - x0) * 0.55;
-        if (!hasBack && Math.abs(next) > LIMIT) next = Math.sign(next) * (LIMIT + (Math.abs(next) - LIMIT) * 0.18);   // resist past the limit
-        var dt = (e.timeStamp - pt) / 1000;
-        if (dt > 0) v = 0.6 * v + 0.4 * ((e.clientX - px) * 0.55 / dt);
-        px = e.clientX; pt = e.timeStamp; a = next; paint();
-      });
-      function drop(e) {
-        if (!held) return;
-        held = false; el.classList.remove('is-held');
-        if (e.timeStamp - pt > 90) v = 0;
-        v = Math.max(-900, Math.min(900, v));
-        target = hasBack ? Math.round((a + v * 0.22) / 180) * 180 : 0;
-        settle();
-      }
-      el.addEventListener('mousedown', function (e) { if (!e.target.closest('.spin__open')) e.preventDefault(); });   // no text selection while dragging
-      el.addEventListener('pointerup', drop); el.addEventListener('pointercancel', drop);
-      if (turn) turn.addEventListener('click', function () { target = Math.round(target / 180) * 180 + 180; settle(); });
-      paint();
-      // one small sway the first time a piece scrolls into view, so it reads as something to grab
-      if (!still && 'IntersectionObserver' in window) {
-        var io = new IntersectionObserver(function (en) {
-          if (!en[0].isIntersecting) return;
-          io.disconnect(); if (!held && !raf) { v = 260; settle(); }
-        }, { threshold: 0.6 });
-        io.observe(el);
-      }
+  // Front and back: pieces with a back picture get a small switch to show either side.
+  document.querySelectorAll('[data-spin]').forEach(function (el) {
+    if (!el.dataset.back) return;
+    var img = el.querySelector('.spin__face'), sides = {
+      front: { src: img.getAttribute('src'), alt: img.alt },
+      back: { src: el.dataset.back, alt: el.dataset.backAlt }
+    };
+    new Image().src = sides.back.src;
+    var bar = document.createElement('div'), btns = {};
+    bar.className = 'flip'; bar.setAttribute('role', 'group'); bar.setAttribute('aria-label', 'Show the front or the back');
+    ['front', 'back'].forEach(function (k) {
+      var b = document.createElement('button'); b.type = 'button'; b.textContent = k === 'front' ? 'Front' : 'Back';
+      b.addEventListener('click', function () { show(k); });
+      bar.appendChild(b); btns[k] = b;
     });
-  })();
+    el.appendChild(bar);
+    var now = '';
+    function show(k, instant) {
+      if (k === now) return; now = k;
+      btns.front.setAttribute('aria-pressed', String(k === 'front')); btns.back.setAttribute('aria-pressed', String(k === 'back'));
+      if (instant) { img.src = sides[k].src; img.alt = sides[k].alt; return; }
+      img.classList.add('is-swapping');
+      setTimeout(function () { img.src = sides[k].src; img.alt = sides[k].alt; img.classList.remove('is-swapping'); }, 140);
+    }
+    show(el.dataset.start === '180' ? 'back' : 'front', true);
+  });
 </script>
 <script>
   // Blackjack for a discount code. A win opens the email step; the code goes to the player and to the brand.
@@ -826,7 +717,7 @@
     else if (!seen) setTimeout(function () { open(); try { sessionStorage.setItem('mt-pop', '1'); } catch (e) {} }, 3500);
   })();
 </script>
-<script src="assets/viewer.js" defer></script>
+
 <script type="module" src="assets/system.js"></script>
 <script type="module" src="assets/motion/motion.js"></script>
 <script type="module" src="assets/layout/layout.js"></script>
