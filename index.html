@@ -77,6 +77,20 @@
   .pop__close { position: absolute; top: 12px; right: 12px; min-height: 36px; padding: 0 14px; border-radius: 999px; border: 1px solid color-mix(in oklab, currentColor 28%, transparent); background: transparent; color: inherit; font: inherit; font-size: 13px; cursor: pointer; transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1); }
   .pop__close:active { transform: scale(0.97); }
   #play-pop .pop__close { color: var(--p-bg); }
+  /* the larger picture */
+  .tile__zoom { position: absolute; inset: 0; z-index: 0; border: 0; padding: 0; background: transparent; cursor: zoom-in; }
+  .tile__zoom:focus-visible { outline: 2px solid var(--ink); outline-offset: -4px; border-radius: inherit; }
+  .spin .flip, .tile__limited { z-index: 1; }
+  .spin__stage, .spin__shadow { pointer-events: none; }
+  dialog.zoom { width: min(940px, calc(100vw - 24px)); }
+  .zoom__frame { display: grid; grid-template-rows: minmax(0, 1fr) auto; height: min(880px, calc(100dvh - 24px)); background: #dccbbe; border-radius: var(--r-lg); overflow: hidden; }
+  .zoom__img { width: 100%; height: 100%; min-height: 0; object-fit: contain; padding: 64px 5% 8px; transition: opacity 140ms ease; }
+  .zoom__img.is-swapping { opacity: 0; }
+  .zoom__bar { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); padding: 12px 16px 16px; }
+  .zoom__name { margin: 0; font-weight: 600; }
+  .zoom .flip { position: static; }
+  .zoom .flip[hidden] { display: none; }
+  #zoom .pop__close { background: color-mix(in oklab, var(--bg) 82%, transparent); }
   #play-pop .bj { max-height: calc(100dvh - 24px); overflow: auto; min-height: 0; margin: 0; }
   .bj__title { font: var(--display-weight) 20px/1.2 var(--font-display); letter-spacing: -0.02em; margin: 0; padding-right: 84px; }
   .bj--teaser { min-height: 420px; align-content: center; }
@@ -108,7 +122,7 @@
   .type-moment { font: var(--display-weight) clamp(44px, 6.4vw, 96px)/1.02 var(--font-display); letter-spacing: -0.035em; margin: var(--s-6) 0 var(--s-7); text-wrap: balance; }
   #drop .shot { border-radius: var(--r-lg); overflow: hidden; background: #dccbbe; height: 100%; max-height: 600px; }
   #drop .shot img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .mo-pc__visual img { object-fit: cover; }
+  [data-moment="pinned-chapters"] .mo-pc__visual > img, .mo-pc__visuals img { object-fit: contain !important; }
   /* blackjack: the table is one dark panel beside the words */
   .bj { background: var(--p-ink); color: var(--p-bg); border-radius: var(--r-lg); padding: var(--s-6); display: grid; gap: var(--s-5); align-content: start; min-height: 520px; }
   .bj__row { display: grid; gap: var(--s-3); }
@@ -185,6 +199,24 @@
     #collection .tile__head > h3 { font-size: 16px; }
     #collection .tile__foot { flex-wrap: wrap; }
   }
+  /* sections size to their content, so there are no empty screens between them; Train/Recover/Grow keeps its scroll room */
+  main > section.section:not(#train), footer.closing { height: auto !important; min-height: 0 !important; }
+  main > section.section:not(#train) > .wrap, footer.closing > .wrap { height: auto !important; }
+  main > section.section.g2 > .wrap, footer.closing.g2m > .wrap { display: flex !important; flex-direction: column; row-gap: var(--head-gap); }
+  /* the set photos at their own shape, so both pieces show whole */
+  #set .pair { max-width: 960px; }
+  #set .pair .shot { height: auto !important; aspect-ratio: 4 / 5; }
+  /* the game teaser is as tall as what's in it */
+  .bj--teaser { min-height: 0 !important; }
+  /* the hero shows both hoodies whole */
+  .hero__stage > img.is-whole { object-fit: contain; }
+  /* on a phone the front/back switch sits under the piece, not over it */
+  @media (max-width: 640px) {
+    .spin:has(.flip) .spin__stage { inset: 5% 8% 24%; }
+    .spin:has(.flip) .spin__shadow { bottom: 21%; }
+    .flip { left: 50%; right: auto; bottom: 8px; transform: translateX(-50%); padding: 2px; }
+    .flip button { min-height: 28px; padding: 0 10px; font-size: 12px; }
+  }
 </style>
 </head>
 <body>
@@ -247,7 +279,7 @@
         <div class="btn-row"><a class="btn btn--primary" href="https://www.instagram.com/wearmotiontherapy/" target="_blank" rel="noopener">Follow on Instagram<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a><a class="btn btn--secondary" href="#collection">See the six pieces</a></div>
       </div>
       <div class="hero__stage">
-        <img src="img/hero-lily.jpg" alt="The black Lily Hoodie from the front and the back. The back carries a cream lily wrapped in a ribbon, the wordmark and the line Movement fuels a better mind." style="--ly-pos: 50% 46%" width="1448" height="1086" fetchpriority="high" data-source="client" data-subject="Lily Hoodie">
+        <img class="is-whole" style="background-color: #d9cac3" src="img/hero-lily.jpg" alt="The black Lily Hoodie from the front and the back. The back carries a cream lily wrapped in a ribbon, the wordmark and the line Movement fuels a better mind." width="1448" height="1086" fetchpriority="high" data-source="client" data-subject="Lily Hoodie">
       </div>
     </div></div>
   </section>
@@ -317,8 +349,8 @@
       </div>
       <div class="strip"><div class="grid">
         <div class="shot shot--a span-5"><img src="img/d-cuff.jpg" alt="Close-up of the black embroidered wordmark on the beanie's ribbed cuff" loading="lazy" width="615" height="594" data-source="client" data-subject="beanie embroidery"></div>
-        <div class="shot shot--b span-4"><img src="img/d-lily.jpg" alt="Close-up of the cream lily and ribbon print on black fleece" loading="lazy" width="406" height="412" data-source="client" data-subject="lily print"></div>
-        <div class="shot shot--c span-3"><img src="img/d-globe.jpg" alt="Close-up of the hoodie's back: the wordmark, Discipline Builds Freedom, a globe and two coordinates" loading="lazy" width="370" height="406" data-source="client" data-subject="globe print"></div>
+        <div class="shot shot--b span-4"><img src="img/d-lily.jpg" alt="Close-up of the cream lily and ribbon print on black fleece" loading="lazy" width="505" height="520" data-source="client" data-subject="lily print"></div>
+        <div class="shot shot--c span-3"><img src="img/d-globe.jpg" alt="Close-up of the hoodie's back: the wordmark, Discipline Builds Freedom, a globe and two coordinates" loading="lazy" width="380" height="550" data-source="client" data-subject="globe print"></div>
       </div></div>
     </div>
   </section>
@@ -331,17 +363,17 @@
           <li class="mo-pc__step">
             <h3>Train</h3>
             <p>Loose tees that move when you do. The Signature Tee lists the whole cycle on its back: train, recover, grow, repeat.</p>
-            <figure class="mo-pc__visual"><img src="img/p-train.jpg" alt="The black Signature Tee from the front, with the script logo on the chest" width="718" height="925" data-source="client" data-subject="Signature Tee front"></figure>
+            <figure class="mo-pc__visual"><img style="background-color: #e5d5c6" src="img/p-train.jpg" alt="The black Signature Tee from the front, with the script logo on the chest" width="718" height="925" data-source="client" data-subject="Signature Tee front"></figure>
           </li>
           <li class="mo-pc__step">
             <h3>Recover</h3>
             <p>Fleece sweatpants with a drawstring and cuffed ankles, for the bus ride after practice and the couch after that.</p>
-            <figure class="mo-pc__visual"><img src="img/p-recover.jpg" alt="The waistband and drawstring of the bone sweatpants, with the stacked wordmark" width="921" height="952" data-source="client" data-subject="sweatpants waistband"></figure>
+            <figure class="mo-pc__visual"><img style="background-color: #ddcfc5" src="img/p-recover.jpg" alt="The waistband and drawstring of the bone sweatpants, with the stacked wordmark" width="921" height="952" data-source="client" data-subject="sweatpants waistband"></figure>
           </li>
           <li class="mo-pc__step">
             <h3>Grow</h3>
             <p>The mountain on the Summit Tee is the long view: small gains, stacked every day, until the climb looks different.</p>
-            <figure class="mo-pc__visual"><img src="img/p-grow.jpg" alt="The mountain range print on the back of the bone Summit Tee" width="675" height="532" data-source="client" data-subject="mountain print"></figure>
+            <figure class="mo-pc__visual"><img style="background-color: #cbbfb3" src="img/p-grow.jpg" alt="The mountain range print on the back of the bone Summit Tee" width="675" height="532" data-source="client" data-subject="mountain print"></figure>
           </li>
         </ol>
       </div>
@@ -433,6 +465,17 @@
   </div>
 </footer>
 
+<dialog class="pop zoom" id="zoom" aria-labelledby="zoom-name">
+  <div class="zoom__frame">
+    <img class="zoom__img" alt="">
+    <div class="zoom__bar">
+      <p class="zoom__name" id="zoom-name"></p>
+      <div class="flip zoom__flip" role="group" aria-label="Show the front or the back"><button type="button" data-side="front">Front</button><button type="button" data-side="back">Back</button></div>
+    </div>
+  </div>
+  <form method="dialog"><button class="pop__close" aria-label="Close the picture">Close</button></form>
+</dialog>
+
 <dialog class="pop" id="play-pop" aria-labelledby="play-pop-h">
   <div class="bj ground-inverse" id="bj" role="group" aria-label="Blackjack table">
         <p class="bj__title" id="play-pop-h">Beat the dealer for $10 off</p>
@@ -487,31 +530,59 @@
 </script>
 <script>
   // Front and back: pieces with a back picture get a small switch to show either side.
-  document.querySelectorAll('[data-spin]').forEach(function (el) {
-    if (!el.dataset.back) return;
-    var img = el.querySelector('.spin__face'), sides = {
-      front: { src: img.getAttribute('src'), alt: img.alt },
-      back: { src: el.dataset.back, alt: el.dataset.backAlt }
-    };
-    new Image().src = sides.back.src;
-    var bar = document.createElement('div'), btns = {};
-    bar.className = 'flip'; bar.setAttribute('role', 'group'); bar.setAttribute('aria-label', 'Show the front or the back');
-    ['front', 'back'].forEach(function (k) {
-      var b = document.createElement('button'); b.type = 'button'; b.textContent = k === 'front' ? 'Front' : 'Back';
-      b.addEventListener('click', function () { show(k); });
-      bar.appendChild(b); btns[k] = b;
-    });
-    el.appendChild(bar);
-    var now = '';
-    function show(k, instant) {
-      if (k === now) return; now = k;
-      btns.front.setAttribute('aria-pressed', String(k === 'front')); btns.back.setAttribute('aria-pressed', String(k === 'back'));
-      if (instant) { img.src = sides[k].src; img.alt = sides[k].alt; return; }
+  // A click anywhere else on the picture opens it larger, on the same side, with the same switch.
+  (function () {
+    var zoom = document.getElementById('zoom'), zImg = zoom.querySelector('.zoom__img'), zName = zoom.querySelector('.zoom__name');
+    var zFlip = zoom.querySelector('.zoom__flip'), zBtns = zFlip.querySelectorAll('button'), zSides = null, zSide = '';
+    function swap(img, side, instant) {
+      if (instant) { img.src = side.src; img.alt = side.alt; return; }
       img.classList.add('is-swapping');
-      setTimeout(function () { img.src = sides[k].src; img.alt = sides[k].alt; img.classList.remove('is-swapping'); }, 140);
+      setTimeout(function () { img.src = side.src; img.alt = side.alt; img.classList.remove('is-swapping'); }, 140);
     }
-    show(el.dataset.start === '180' ? 'back' : 'front', true);
-  });
+    function zShow(k, instant) {
+      zSide = k;
+      zBtns.forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.side === k)); });
+      swap(zImg, zSides[k], instant);
+    }
+    zBtns.forEach(function (b) { b.addEventListener('click', function () { if (b.dataset.side !== zSide) zShow(b.dataset.side); }); });
+
+    document.querySelectorAll('#collection .tile').forEach(function (tile) {
+      var el = tile.querySelector('[data-spin]'); if (!el) return;
+      var img = el.querySelector('.spin__face'), name = tile.querySelector('h3').textContent, now = 'front', btns = null;
+      var hasBack = !!el.dataset.back;
+      var back = hasBack ? { src: el.dataset.back, alt: el.dataset.backAlt } : null, front = { src: img.getAttribute('src'), alt: img.alt };
+      function show(k, instant) {
+        if (k === now && !instant) return; now = k;
+        btns.front.setAttribute('aria-pressed', String(k === 'front')); btns.back.setAttribute('aria-pressed', String(k === 'back'));
+        swap(img, k === 'front' ? front : back, instant);
+      }
+      if (hasBack) {
+        new Image().src = back.src;
+        var bar = document.createElement('div'); btns = {};
+        bar.className = 'flip'; bar.setAttribute('role', 'group'); bar.setAttribute('aria-label', 'Show the front or the back');
+        ['front', 'back'].forEach(function (k) {
+          var b = document.createElement('button'); b.type = 'button'; b.textContent = k === 'front' ? 'Front' : 'Back';
+          b.addEventListener('click', function () { show(k); });
+          bar.appendChild(b); btns[k] = b;
+        });
+        el.appendChild(bar);
+        now = '';
+        show(el.dataset.start === '180' ? 'back' : 'front', true);
+      }
+      // the whole picture is a button that opens it larger
+      var open = document.createElement('button');
+      open.type = 'button'; open.className = 'tile__zoom'; open.setAttribute('aria-label', 'See a larger picture of the ' + name);
+      el.insertBefore(open, el.firstChild);
+      open.addEventListener('click', function () {
+        // pieces with colour swatches show whichever colour is picked
+        zSides = hasBack ? { front: front, back: back } : { front: { src: img.getAttribute('src'), alt: img.alt } };
+        zName.textContent = name;
+        zFlip.hidden = !hasBack;
+        zShow(hasBack ? now : 'front', true);
+        if (!document.querySelector('dialog[open]')) zoom.showModal();
+      });
+    });
+  })();
 </script>
 <script>
   // Blackjack for a discount code. A win opens the email step; the code goes to the player and to the brand.
