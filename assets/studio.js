@@ -290,8 +290,7 @@ function frameIt(resetView) {
   });
   const tanV = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)), tanH = tanV * camera.aspect;
   // far enough that the whole piece stays in frame from every side, sleeves and hood included
-  const dist = Math.max((size.y / 2) * 1.2 / tanV, (rxz * 1.12) / tanH) + rxz * 0.55;
-  c.y -= size.y * 0.04;              // sit a little high, clear of the view buttons
+  const dist = Math.max((size.y / 2) * 1.32 / tanV, (rxz * 1.15) / tanH) + rxz * 0.55;
   fit = { dist, center: c, size, rxz };
   controls.target.copy(c); state.target.position.copy(c);
   controls.minDistance = dist * 0.42; controls.maxDistance = dist * 1.45;
