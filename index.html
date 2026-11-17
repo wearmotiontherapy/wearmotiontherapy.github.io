@@ -204,7 +204,6 @@
   main > section.section:not(#train) > .wrap, footer.closing > .wrap { height: auto !important; }
   main > section.section.g2 > .wrap, footer.closing.g2m > .wrap { display: flex !important; flex-direction: column; row-gap: var(--head-gap); }
   /* the set photos at their own shape, so both pieces show whole */
-  #set .pair { max-width: 960px; }
   #set .pair .shot { height: auto !important; aspect-ratio: 4 / 5; }
   /* the game teaser is as tall as what's in it */
   .bj--teaser { min-height: 0 !important; }
@@ -219,6 +218,13 @@
   [data-moment="pinned-chapters"]#train.is-live .mo-pc__visuals { background: none !important; border: 0 !important; box-shadow: none !important; }
   [data-moment="pinned-chapters"]#train.is-live .mo-pc__visual { display: flex; align-items: center; justify-content: center; background: none; }
   [data-moment="pinned-chapters"]#train.is-live .mo-pc__visual > img { width: auto !important; height: auto !important; max-width: 100%; max-height: 100%; aspect-ratio: auto !important; object-fit: contain; border-radius: var(--r-md); }
+  /* a phone: no empty screen after the Train/Recover/Grow rows */
+  [data-moment="pinned-chapters"]#train:not(.is-live) { min-height: 0 !important; }
+  /* a phone: the drop's names keep their width and the values wrap beside them, not a word a line */
+  @media (max-width: 639px) {
+    #drop .rows > li { grid-template-columns: auto minmax(0, 1fr); }
+    #drop .rows__value { white-space: normal; max-width: none; text-wrap: pretty; }
+  }
   /* the hero shows both hoodies whole */
   .hero__stage > img.is-whole { object-fit: contain; }
   /* on a phone the front/back switch sits under the piece, not over it */
@@ -427,7 +433,7 @@
         <p class="measure">Buy the matching set for $65.</p>
       </div>
       <div class="pair"><div class="grid">
-        <div class="shot span-6"><img src="img/s-hoodie.jpg" alt="The black Lily Hoodie from the front, with the small wordmark on the chest" loading="lazy" width="752" height="934" data-source="client" data-subject="Lily Hoodie front"></div>
+        <div class="shot span-6"><img src="img/s-hoodie.jpg" alt="The black Lily Hoodie from the front, with the small wordmark on the chest" loading="lazy" width="722" height="934" data-source="client" data-subject="Lily Hoodie front"></div>
         <div class="shot span-6"><img src="img/s-pants.jpg" alt="The black Everyday Sweatpants with the stacked wordmark in cream on the thigh" loading="lazy" width="900" height="1079" data-source="client" data-subject="black sweatpants"></div>
       </div></div>
     </div>
