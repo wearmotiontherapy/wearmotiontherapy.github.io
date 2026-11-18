@@ -247,6 +247,11 @@
   .bj__terms { color: #433c36; }
   /* the popup Close button takes the page's button corner, so the page keeps one button family */
   .pop__close { border-radius: var(--r-btn); }
+  /* where to buy: the preorder line and its button */
+  .drop__lead { max-width: 52ch; margin: var(--s-5) 0 var(--s-6); }
+  .drop__cta { margin-top: var(--s-6); }
+  #drop .rows__value a { color: inherit; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  @media (max-width: 639px) { .drop__cta .btn { width: 100%; } }
   /* the hero shows both hoodies whole */
   .hero__stage > img.is-whole { object-fit: contain; }
   /* on a phone the front/back switch sits under the piece, not over it */
@@ -313,9 +318,9 @@
       <div class="hero__head">
         <div>
           <h1 id="hero-h">Streetwear that won&rsquo;t break the bank</h1>
-          <p class="hero__lead">Drop 01 launches on December 4th.</p>
+          <p class="hero__lead">Drop 01 launches on December 4th. Preorders are open now.</p>
         </div>
-        <div class="btn-row"><a class="btn btn--primary" href="https://www.instagram.com/wearmotiontherapy/" target="_blank" rel="noopener">Follow on Instagram<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a><a class="btn btn--secondary" href="#collection">See the six pieces</a></div>
+        <div class="btn-row"><a class="btn btn--primary" href="https://ig.me/m/wearmotiontherapy" target="_blank" rel="noopener">DM us to preorder<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a><a class="btn btn--secondary" href="#collection">See the six pieces</a></div>
       </div>
       <div class="hero__stage">
         <img class="is-whole" style="background-color: #d9cac3" src="img/hero-lily.jpg" alt="The black Lily Hoodie from the front and the back. The back carries a cream lily wrapped in a ribbon, the wordmark and the line Movement fuels a better mind." width="1448" height="1086" fetchpriority="high" data-source="client" data-subject="Lily Hoodie">
@@ -328,7 +333,7 @@
       <div class="group">
         <div class="section-head section-head--row">
           <div><h2 id="collection-h">Drop 01 has six pieces. <span class="muted">Tees, hoodies, sweatpants and a beanie.</span></h2></div>
-          <a class="link" href="#drop">See where to buy</a>
+          <a class="link" href="#drop">How to preorder</a>
         </div>
         <div class="grid">
           <article class="tile span-4">
@@ -464,15 +469,18 @@
   <section class="section" id="drop" aria-labelledby="drop-h">
     <div class="wrap grid grid--top">
       <div class="span-6">
-        <h2 id="drop-h">Drop 01 at the AWB trade show</h2>
+        <h2 id="drop-h">Preorder now, try it on at AWB</h2>
         <p class="type-moment">Thursday, December&nbsp;4</p>
+        <p class="drop__lead">Preorders are open now: DM us on Instagram with the piece and your size, and we make every preorder first. On December 4, come to our booth, try the hoodies and the rest on in your size, and order there.</p>
         <ul class="rows">
           <li><span class="rows__name">Hours</span><span class="rows__value">9 AM to 4 PM</span></li>
-          <li><span class="rows__name">Where</span><span class="rows__value">In person at our AWB booth</span></li>
+          <li><span class="rows__name">Preorders</span><span class="rows__value"><a href="https://ig.me/m/wearmotiontherapy" target="_blank" rel="noopener">DM @wearmotiontherapy</a></span></li>
+          <li><span class="rows__name">At the booth</span><span class="rows__value">Try it on, then order</span></li>
           <li><span class="rows__name">Sizes</span><span class="rows__value">S to XL, beanie one size</span></li>
           <li><span class="rows__name">Payment</span><span class="rows__value">Cash, e-transfer or card</span></li>
           <li><span class="rows__name">Restocks</span><span class="rows__value">Posted on Instagram first</span></li>
         </ul>
+        <div class="btn-row drop__cta"><a class="btn btn--primary" href="https://ig.me/m/wearmotiontherapy" target="_blank" rel="noopener">DM us to preorder<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a></div>
       </div>
       <div class="shot span-6 start-7"><img src="img/v-beanie.jpg" alt="The bone Ribbed Beanie, cuff folded, wordmark embroidered on the front" loading="lazy" width="1400" height="933" style="object-position: 50% 50%" data-source="client" data-subject="Ribbed Beanie"></div>
     </div>
@@ -484,7 +492,7 @@
     <div class="closing__cta close--type">
       <div class="section-head">
         <h2 id="close-h">Follow the drop on Instagram</h2>
-        <p>Restocks and what sells out go up on @wearmotiontherapy first.</p>
+        <p>Preorders go through our DMs, and restocks and what sells out go up there first.</p>
       </div>
       <a class="btn btn--primary btn--xl" href="https://www.instagram.com/wearmotiontherapy/" target="_blank" rel="noopener">Follow on Instagram<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a>
     </div>
@@ -551,7 +559,7 @@
 
 
 <nav class="actionbar" aria-label="Quick actions">
-  <a class="btn btn--primary" href="https://www.instagram.com/wearmotiontherapy/" target="_blank" rel="noopener">Follow on Instagram</a>
+  <a class="btn btn--primary" href="https://ig.me/m/wearmotiontherapy" target="_blank" rel="noopener">DM us to preorder</a>
 </nav>
 
 <script>
