@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Motion Therapy: black and cream streetwear, Drop 01 on December 4</title>
-<meta name="description" content="Six pieces from a student-led clothing brand, from $12 to $39, sold in person at the AWB trade show on December 4 from 9 AM to 4 PM.">
+<meta name="description" content="Six pieces from a student-led clothing brand, from $12 to $45 at launch, sold in person at the AWB trade show on December 4 from 9 AM to 4 PM.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Motion Therapy: Drop 01 at AWB on December 4">
 <meta property="og:description" content="Tees, hoodies, sweatpants and a beanie in black and cream, from $12. In person at AWB, 9 AM to 4 PM.">
@@ -256,6 +256,13 @@
   .zoom__info { min-width: 0; }
   .zoom__specs { margin: 6px 0 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(2, max-content); gap: 2px 28px; font-size: 13px; line-height: 1.45; color: #433c36; }
   @media (max-width: 639px) { .zoom__bar { align-items: flex-end; } .zoom__specs { grid-template-columns: 1fr; font-size: 12px; } }
+  /* launch prices: the after-launch price struck through beside the price paid now */
+  .price__was { color: var(--muted); font-weight: 400; text-decoration-thickness: 1.5px; margin-right: 4px; }
+  .tile__price .price__was { font-size: 0.92em; }
+  .price__now { font-weight: 600; }
+  .ground-inverse .price__was { color: color-mix(in oklab, var(--p-bg) 62%, transparent); }
+  .price-note { margin: var(--s-4) 0 0; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; color: #433c36; }
+  .price-note__tag { display: inline-flex; align-items: center; min-height: 26px; padding: 0 10px; border-radius: 999px; background: var(--p-ink); color: var(--p-bg); font-size: 12px; font-weight: 600; letter-spacing: 0.01em; }
   /* the hero shows both hoodies whole */
   .hero__stage > img.is-whole { object-fit: contain; }
   /* on a phone the front/back switch sits under the piece, not over it */
@@ -336,23 +343,23 @@
     <div class="wrap">
       <div class="group">
         <div class="section-head section-head--row">
-          <div><h2 id="collection-h">Drop 01 has six pieces. <span class="muted">Tees, hoodies, sweatpants and a beanie.</span></h2></div>
+          <div><h2 id="collection-h">Drop 01 has six pieces. <span class="muted">Tees, hoodies, sweatpants and a beanie.</span></h2><p class="price-note"><span class="price-note__tag">Launch prices</span> For preorders and the December 4 booth. Prices go up after the drop.</p></div>
           <a class="link" href="#drop">How to preorder</a>
         </div>
         <div class="grid">
           <article class="tile span-4" data-specs="100% cotton|Heavyweight 6 oz fabric, about 203 GSM|Relaxed fit|Wide rib collar, taped neck and shoulders|Script logo front and back">
             <div class="tile__media spin" data-spin data-tone="black" data-start="0" data-back="img/spin-signature-b.webp" data-back-alt="The back of the Signature Tee with a large script logo and the line Movement fuels a better mind" style="--ar: 0.9085365853658537"><div class="spin__shadow" aria-hidden="true"></div><div class="spin__stage"><div class="spin__body"><img class="spin__face" src="img/spin-signature-f.webp" alt="The front of the black Signature Tee with the script logo on the chest" width="745" height="820" draggable="false" data-source="client" data-subject="Signature Tee"></div></div></div>
-            <div class="tile__head"><h3>Signature Tee</h3><span class="tile__price">$18</span></div>
+            <div class="tile__head"><h3>Signature Tee</h3><span class="tile__price"><del class="price__was"><span class="sr-only">After launch </span>$25</del> <span class="price__now"><span class="sr-only">Launch price </span>$20</span></span></div>
             <p class="tile__facts">Black, heavyweight 100% cotton, relaxed fit</p>
           </article>
           <article class="tile span-4" data-specs="100% cotton|Heavyweight 6 oz fabric, about 203 GSM|Relaxed fit|Wide rib collar, taped neck and shoulders|Mountain print on the back">
             <div class="tile__media spin" data-spin data-tone="bone" data-start="180" data-back="img/spin-summit-b.webp" data-back-alt="The back of the Summit Tee: a drawn mountain range over the script logo" style="--ar: 0.9036585365853659"><div class="spin__shadow" aria-hidden="true"></div><div class="spin__stage"><div class="spin__body"><img class="spin__face" src="img/spin-summit-f.webp" alt="The front of the cream Summit Tee with a small script logo on the chest" width="741" height="820" draggable="false" data-source="client" data-subject="Summit Tee"></div></div></div>
-            <div class="tile__head"><h3>Summit Tee</h3><span class="tile__price">$18</span></div>
+            <div class="tile__head"><h3>Summit Tee</h3><span class="tile__price"><del class="price__was"><span class="sr-only">After launch </span>$25</del> <span class="price__now"><span class="sr-only">Launch price </span>$20</span></span></div>
             <p class="tile__facts">Cream, heavyweight 100% cotton, relaxed fit</p>
           </article>
           <article class="tile span-4" data-specs="Soft fleece|Lily and ribbon print across the back">
             <div class="tile__media spin" data-spin data-tone="black" data-start="180" data-back="img/spin-lily-b.webp" data-back-alt="The back of the Lily Hoodie with the cream lily and ribbon print" style="--ar: 0.8670731707317073"><div class="spin__shadow" aria-hidden="true"></div><div class="spin__stage"><div class="spin__body"><img class="spin__face" src="img/spin-lily-f.webp" alt="The front of the black Lily Hoodie with a small wordmark on the chest" width="711" height="820" draggable="false" data-source="client" data-subject="Lily Hoodie"></div></div></div>
-            <div class="tile__head"><h3>Lily Hoodie</h3><span class="tile__price">$39</span></div>
+            <div class="tile__head"><h3>Lily Hoodie</h3><span class="tile__price"><del class="price__was"><span class="sr-only">After launch </span>$55</del> <span class="price__now"><span class="sr-only">Launch price </span>$45</span></span></div>
             <p class="tile__facts">Black soft fleece, lily print across the back</p>
           </article>
         </div>
@@ -360,12 +367,12 @@
       <div class="grid">
         <article class="tile span-4" data-specs="76% cotton, 24% polyester, with a 100% cotton face|Combed ring-spun cotton, three-end fleece|Double-lined hood and front pouch pocket|Modern fit|Discipline Builds Freedom on the back">
           <div class="tile__media spin" data-spin data-tone="bone" data-start="0" data-back="img/spin-contrast-b.webp" data-back-alt="The back of the Clean Contrast Hoodie with Discipline Builds Freedom under the wordmark" style="--ar: 0.8621951219512195"><div class="spin__shadow" aria-hidden="true"></div><div class="spin__stage"><div class="spin__body"><img class="spin__face" src="img/spin-contrast-f.webp" alt="The front of the Sahara Clean Contrast Hoodie with the wordmark in black" width="707" height="820" draggable="false" data-source="client" data-subject="Clean Contrast Hoodie"></div></div></div>
-          <div class="tile__head"><h3>Clean Contrast Hoodie</h3><span class="tile__price">$39</span></div>
+          <div class="tile__head"><h3>Clean Contrast Hoodie</h3><span class="tile__price"><del class="price__was"><span class="sr-only">After launch </span>$55</del> <span class="price__now"><span class="sr-only">Launch price </span>$45</span></span></div>
           <p class="tile__facts">Sahara cotton-rich fleece, modern fit</p>
         </article>
         <article class="tile span-4" data-specs="76% cotton, 24% polyester, with a 100% cotton face|Relaxed fit, open bottom|Flat elastic waistband and drawstring|Deep side pockets and a back pocket|The Sahara pair matches the Sahara hoodie" id="sweatpants">
           <div class="tile__media spin" data-spin data-tone="bone" data-start="0" style="--ar: 0.40555555555555556"><div class="spin__shadow" aria-hidden="true"></div><div class="spin__stage"><div class="spin__body"><img class="spin__face" id="sweats-img" src="img/spin-sweats-bone-f.webp" alt="Sahara Everyday Sweatpants with the stacked wordmark on the left thigh" width="365" height="900" draggable="false" data-source="client" data-subject="Everyday Sweatpants"></div></div></div>
-          <div class="tile__head"><h3>Everyday Sweatpants</h3><span class="tile__price">$32</span></div>
+          <div class="tile__head"><h3>Everyday Sweatpants</h3><span class="tile__price"><del class="price__was"><span class="sr-only">After launch </span>$45</del> <span class="price__now"><span class="sr-only">Launch price </span>$38</span></span></div>
           <div class="tile__foot">
             <p class="tile__facts" id="sweats-colour" style="margin-top:0">Sahara fleece, relaxed fit, open bottom</p>
             <div class="swatches" role="group" aria-label="Sweatpants colour">
@@ -375,12 +382,12 @@
           </div>
         </article>
         <article class="tile span-4" data-specs="Classic cuffed knit|One size">
-          <div class="tile__media spin" data-spin data-tone="bone" data-start="0" style="--ar: 1.0473684210526315"><span class="tile__limited">Limited pink, 10 made</span><div class="spin__shadow" aria-hidden="true"></div><div class="spin__stage"><div class="spin__body"><img class="spin__face" src="img/spin-beanie-f.webp" alt="The cream Ribbed Beanie with the wordmark embroidered in black on the cuff" width="796" height="760" draggable="false" data-source="client" data-subject="Ribbed Beanie"></div></div></div>
-          <div class="tile__head"><h3>Ribbed Beanie</h3><span class="tile__price">$12</span></div>
+          <div class="tile__media spin" data-spin data-tone="black" data-start="0" style="--ar: 1.0473684210526315"><span class="tile__limited">Limited pink, 10 made</span><div class="spin__shadow" aria-hidden="true"></div><div class="spin__stage"><div class="spin__body"><img class="spin__face" src="img/spin-beanie-black-f.webp" alt="The black Ribbed Beanie with the wordmark embroidered in cream on the cuff" width="796" height="760" draggable="false" data-source="client" data-subject="Ribbed Beanie"></div></div></div>
+          <div class="tile__head"><h3>Ribbed Beanie</h3><span class="tile__price"><del class="price__was"><span class="sr-only">After launch </span>$15</del> <span class="price__now"><span class="sr-only">Launch price </span>$12</span></span></div>
           <div class="tile__foot">
-            <p class="tile__facts" style="margin-top:0">Classic cuffed knit, one size</p>
+            <p class="tile__facts" style="margin-top:0">Black cuffed knit, one size</p>
             <div class="swatches" role="group" aria-label="Beanie colour">
-              <button class="swatch swatch--bone" type="button" aria-pressed="true" aria-label="Cream" data-src="img/spin-beanie-f.webp" data-tone="bone" data-name="Cream" data-facts="Classic cuffed knit, one size" data-alt="The cream Ribbed Beanie with the wordmark embroidered in black on the cuff"></button>
+              <button class="swatch swatch--black" type="button" aria-pressed="true" aria-label="Black" data-src="img/spin-beanie-black-f.webp" data-tone="black" data-name="Black" data-facts="Black cuffed knit, one size" data-alt="The black Ribbed Beanie with the wordmark embroidered in cream on the cuff"></button>
               <button class="swatch swatch--pink" type="button" aria-pressed="false" aria-label="Pink, limited to 10" data-src="img/spin-beanie-pink-f.webp" data-tone="bone" data-name="Pink" data-facts="Limited pink, only 10 made. First 10 customers." data-alt="The limited pink Ribbed Beanie with the wordmark embroidered in black on the cuff"></button>
             </div>
           </div>
@@ -396,7 +403,7 @@
         <p class="measure">The embroidered cuff of the beanie, the lily across the back of the Lily Hoodie, and the globe and coordinates on the Clean Contrast Hoodie.</p>
       </div>
       <div class="strip"><div class="grid">
-        <div class="shot shot--a span-5"><img src="img/d-cuff.jpg" alt="Close-up of the black embroidered wordmark on the beanie's ribbed cuff" loading="lazy" width="615" height="594" data-source="client" data-subject="beanie embroidery"></div>
+        <div class="shot shot--a span-5"><img src="img/d-cuff-black.jpg" alt="Close-up of the cream embroidered wordmark on the black beanie's ribbed cuff" loading="lazy" width="615" height="475" data-source="client" data-subject="beanie embroidery"></div>
         <div class="shot shot--b span-4"><img src="img/d-lily.jpg" alt="Close-up of the cream lily and ribbon print on black fleece" loading="lazy" width="505" height="520" data-source="client" data-subject="lily print"></div>
         <div class="shot shot--c span-3"><img src="img/d-globe.jpg" alt="Close-up of the hoodie's back: the wordmark, Discipline Builds Freedom, a globe and two coordinates" loading="lazy" width="380" height="550" data-source="client" data-subject="globe print"></div>
       </div></div>
@@ -460,8 +467,8 @@
   <section class="section ground-inverse" id="set" aria-labelledby="set-h">
     <div class="wrap">
       <div class="section-head">
-        <h2 id="set-h">The matching set, $65. <span class="muted">Any hoodie with a pair of sweatpants.</span></h2>
-        <p class="measure">Buy the matching set for $65. The Sahara hoodie and Sahara sweatpants come from the same cotton-rich fleece collection.</p>
+        <h2 id="set-h">The matching set, <del class="price__was"><span class="sr-only">after launch </span>$90</del> $75. <span class="muted">Any hoodie with a pair of sweatpants.</span></h2>
+        <p class="measure">$75 at launch, then $90 after the drop. The Sahara hoodie and Sahara sweatpants come from the same cotton-rich fleece collection.</p>
       </div>
       <div class="pair"><div class="grid">
         <div class="shot span-6"><img src="img/s-hoodie.jpg" alt="The black Lily Hoodie from the front, with the small wordmark on the chest" loading="lazy" width="722" height="934" data-source="client" data-subject="Lily Hoodie front"></div>
@@ -486,7 +493,7 @@
         </ul>
         <div class="btn-row drop__cta"><a class="btn btn--primary" href="https://ig.me/m/wearmotiontherapy" target="_blank" rel="noopener">DM us to preorder<svg class="m-arrow" viewBox="0 0 12 12" aria-hidden="true"><path class="m-arrow__stem" d="M1 6h8"/><path class="m-arrow__head" d="M4.5 2.5 8 6l-3.5 3.5"/></svg></a></div>
       </div>
-      <div class="shot span-6 start-7"><img src="img/v-beanie.jpg" alt="The cream Ribbed Beanie, cuff folded, wordmark embroidered on the front" loading="lazy" width="1400" height="933" style="object-position: 50% 50%" data-source="client" data-subject="Ribbed Beanie"></div>
+      <div class="shot span-6 start-7"><img src="img/v-beanie-black.jpg" alt="The black Ribbed Beanie, cuff folded, wordmark embroidered in cream on the front" loading="lazy" width="1400" height="933" style="object-position: 50% 50%" data-source="client" data-subject="Ribbed Beanie"></div>
     </div>
   </section>
 </main>
