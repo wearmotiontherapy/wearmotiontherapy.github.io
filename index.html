@@ -290,16 +290,16 @@
           <div class="wrap grid">
             <div class="menu-col span-3">
               <p class="t-label">Tees and hoodies</p>
-              <a href="#collection">Signature Tee<span>Black, script logo, $18</span></a>
-              <a href="#collection">Summit Tee<span>Bone, mountain print, $18</span></a>
-              <a href="#collection">Lily Hoodie<span>Black fleece, lily print, $39</span></a>
-              <a href="#collection">Clean Contrast Hoodie<span>Bone fleece, $39</span></a>
+              <a href="#collection">Signature Tee<span>Black, script logo, $20</span></a>
+              <a href="#collection">Summit Tee<span>Cream, mountain print, $20</span></a>
+              <a href="#collection">Lily Hoodie<span>Black fleece, lily print, $45</span></a>
+              <a href="#collection">Clean Contrast Hoodie<span>Sahara fleece, $45</span></a>
             </div>
             <div class="menu-col span-3">
               <p class="t-label">Bottoms and more</p>
-              <a href="#collection">Everyday Sweatpants<span>Black or bone, $32</span></a>
-              <a href="#collection">Ribbed Beanie<span>Bone or limited pink, $12</span></a>
-              <a href="#set">Matching set<span>Hoodie and sweatpants, $65</span></a>
+              <a href="#collection">Everyday Sweatpants<span>Onyx or Sahara, $38</span></a>
+              <a href="#collection">Ribbed Beanie<span>Black, or limited pink, $12</span></a>
+              <a href="#set">Matching set<span>Hoodie and sweatpants, $75</span></a>
             </div>
             <a class="menu-card span-3 start-10" href="#details">
               <div class="panel"><img class="frame__img" src="img/n-contrast-back.jpg" alt="The back of the bone hoodie: the wordmark, Discipline Builds Freedom and a small globe" data-source="client" data-subject="hoodie back print"></div>
@@ -382,13 +382,13 @@
           </div>
         </article>
         <article class="tile span-4" data-specs="Classic cuffed knit|One size">
-          <div class="tile__media spin" data-spin data-tone="black" data-start="0" style="--ar: 1.0473684210526315"><span class="tile__limited">Limited pink, 10 made</span><div class="spin__shadow" aria-hidden="true"></div><div class="spin__stage"><div class="spin__body"><img class="spin__face" src="img/spin-beanie-black-f.webp" alt="The black Ribbed Beanie with the wordmark embroidered in cream on the cuff" width="796" height="760" draggable="false" data-source="client" data-subject="Ribbed Beanie"></div></div></div>
+          <div class="tile__media spin" data-spin data-tone="black" data-start="0" style="--ar: 1.0473684210526315"><span class="tile__limited">Also in limited pink</span><div class="spin__shadow" aria-hidden="true"></div><div class="spin__stage"><div class="spin__body"><img class="spin__face" src="img/spin-beanie-black-f.webp" alt="The black Ribbed Beanie with the wordmark embroidered in cream on the cuff" width="796" height="760" draggable="false" data-source="client" data-subject="Ribbed Beanie"></div></div></div>
           <div class="tile__head"><h3>Ribbed Beanie</h3><span class="tile__price"><del class="price__was"><span class="sr-only">After launch </span>$15</del> <span class="price__now"><span class="sr-only">Launch price </span>$12</span></span></div>
           <div class="tile__foot">
-            <p class="tile__facts" style="margin-top:0">Black cuffed knit, one size</p>
+            <p class="tile__facts" style="margin-top:0">Black knit, one size. Pink: first 10 customers only</p>
             <div class="swatches" role="group" aria-label="Beanie colour">
-              <button class="swatch swatch--black" type="button" aria-pressed="true" aria-label="Black" data-src="img/spin-beanie-black-f.webp" data-tone="black" data-name="Black" data-facts="Black cuffed knit, one size" data-alt="The black Ribbed Beanie with the wordmark embroidered in cream on the cuff"></button>
-              <button class="swatch swatch--pink" type="button" aria-pressed="false" aria-label="Pink, limited to 10" data-src="img/spin-beanie-pink-f.webp" data-tone="bone" data-name="Pink" data-facts="Limited pink, only 10 made. First 10 customers." data-alt="The limited pink Ribbed Beanie with the wordmark embroidered in black on the cuff"></button>
+              <button class="swatch swatch--black" type="button" aria-pressed="true" aria-label="Black" data-src="img/spin-beanie-black-f.webp" data-tone="black" data-name="Black" data-facts="Black knit, one size. Pink: first 10 customers only" data-badge="Also in limited pink" data-alt="The black Ribbed Beanie with the wordmark embroidered in cream on the cuff"></button>
+              <button class="swatch swatch--pink" type="button" aria-pressed="false" aria-label="Pink, limited to 10" data-src="img/spin-beanie-pink-f.webp" data-tone="bone" data-name="Pink" data-facts="Limited pink, one size. Only 10 made, for the first 10 customers" data-badge="Limited pink, 10 made" data-alt="The limited pink Ribbed Beanie with the wordmark embroidered in black on the cuff"></button>
             </div>
           </div>
         </article>
@@ -481,7 +481,7 @@
     <div class="wrap grid grid--top">
       <div class="span-6">
         <h2 id="drop-h">Preorder now, try it on at AWB</h2>
-        <p class="type-moment">Thursday, December&nbsp;4</p>
+        <p class="type-moment">Friday, December&nbsp;4</p>
         <p class="drop__lead">Preorders are open now: DM us on Instagram with the piece and your size, and we make every preorder first. On December 4, come to our booth, try the hoodies and the rest on in your size, and order there.</p>
         <ul class="rows">
           <li><span class="rows__name">Hours</span><span class="rows__value">9 AM to 4 PM</span></li>
@@ -584,6 +584,7 @@
         buttons.forEach(function (o) { o.setAttribute('aria-pressed', String(o === b)); });
         img.src = b.dataset.src; img.alt = b.dataset.alt;
         line.textContent = b.dataset.facts;
+        if (badge && b.dataset.badge) badge.textContent = b.dataset.badge;
       });
     });
   });
